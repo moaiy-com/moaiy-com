@@ -12,15 +12,17 @@ const WEATHER_TYPES = [
   { name: 'tornado', bgColor: 0x374151, speed: 1.5, particleCount: 1000 },
 ];
 
-export default function WeatherSystem() {
+function WeatherSystem() {
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
   const [lightningFlash, setLightningFlash] = useState(false);
   const pointsRef = useRef();
-  const particleRef = useRef();
   
   const currentWeather = WEATHER_TYPES[currentWeatherIndex];
   
+  console.log('WeatherSystem: Rendering, weather:', currentWeather.name);
+  
   const particleData = useMemo(() => {
+    console.log('WeatherSystem: Creating particles');
     const count = 1500;
     const positions = new Float32Array(count * 3);
     const velocities = new Float32Array(count * 3);
@@ -40,6 +42,7 @@ export default function WeatherSystem() {
   }, []);
   
   useEffect(() => {
+    console.log('WeatherSystem: Setting up weather interval');
     const interval = setInterval(() => {
       setCurrentWeatherIndex((prev) => (prev + 1) % WEATHER_TYPES.length);
     }, 10000);
@@ -157,3 +160,5 @@ export default function WeatherSystem() {
     </>
   );
 }
+
+export default WeatherSystem;
