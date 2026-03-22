@@ -15,8 +15,10 @@ export default defineConfig({
     assets: 'assets'
   },
   vite: {
+    server: {
+      allowedHosts: ['.monkeycode-ai.online']
+    },
     ssr: {
-      // Mark Three.js packages as noExternal for SSR compatibility
       noExternal: ['@react-three/fiber', '@react-three/drei', 'three']
     }
   }
