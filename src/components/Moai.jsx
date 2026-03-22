@@ -1,4 +1,4 @@
-import { useRef, useMemo } from 'react';
+import { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -83,6 +83,16 @@ export default function Moai() {
       smileRef.current.material.emissiveIntensity = 0.3 + Math.sin(time * 1.5) * 0.1;
     }
   });
+
+  useEffect(() => {
+    return () => {
+      stoneMaterial.dispose();
+      smileMaterial.dispose();
+      lensMaterial.dispose();
+      frameMaterial.dispose();
+      glowMaterial.dispose();
+    };
+  }, [stoneMaterial, smileMaterial, lensMaterial, frameMaterial, glowMaterial]);
   
   return (
     <group ref={moaiRef} position={[0, 0, 0]}>

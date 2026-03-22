@@ -30,6 +30,7 @@ const vertexShader = `
     
     if (uParticleType < 0.5) {
       // Day - Floating clouds
+      vAlpha = 0.8;
       float drift = t * 0.3 + aRandom * 20.0;
       pos.x = mod(pos.x + drift, 40.0) - 20.0;
       pos.y += sin(t * 0.5 + aRandom * pi * 2.0) * 0.1;
@@ -38,32 +39,35 @@ const vertexShader = `
       vAlpha = 0.4 + 0.6 * sin(t * 3.0 + aRandom * pi * 2.0);
     } else if (uParticleType < 2.5) {
       // Wind - Fast horizontal movement
+      vAlpha = 0.7;
       float drift = t * 2.0 + aRandom * 20.0;
       pos.x = mod(pos.x + drift, 40.0) - 20.0;
       pos.y += sin(t * 2.0 + aRandom * pi) * 0.3;
     } else if (uParticleType < 3.5) {
       // Rain - Falling drops
+      vAlpha = 0.6;
       pos.y = mod(pos.y - t * 3.0 + aRandom * 20.0, 25.0) - 10.0;
       pos.x += sin(t * 4.0 + aRandom * pi * 2.0) * 0.05;
     } else if (uParticleType < 4.5) {
       // Lightning - Rain with flash
+      vAlpha = 0.6;
       pos.y = mod(pos.y - t * 3.0 + aRandom * 20.0, 25.0) - 10.0;
     } else if (uParticleType < 5.5) {
       // Snow - Gentle falling
+      vAlpha = 0.8;
       float angle = t * 0.5 + aRandom * pi * 2.0;
       pos.y = mod(pos.y - t * 0.3 + aRandom * 20.0, 25.0) - 10.0;
       pos.x += sin(angle) * 0.1;
       pos.z += cos(angle * 0.5) * 0.05;
     } else {
       // Tornado - Spinning spiral
+      vAlpha = 0.7;
       float angle = t * 3.0 + aRandom * pi * 2.0;
       float radius = 2.0 + sin(aRandom * pi) * 1.5;
       pos.x = cos(angle) * radius;
       pos.z = sin(angle) * radius;
       pos.y = mod(pos.y - t * 1.5 + aRandom * 20.0, 25.0) - 10.0;
     }
-    
-    vAlpha = 0.8;
     vRandom = aRandom;
     
     vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
@@ -87,8 +91,8 @@ const fragmentShader = `
 
 export default function WeatherSystem() {
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
+  const [lightningFlash, setLightningFlash] = useState(false);
   const pointsRef = useRef();
-  const lightningFlashRef = useRef(false);
   
   const currentWeather = WEATHER_TYPES[currentWeatherIndex];
   
@@ -132,10 +136,8 @@ export default function WeatherSystem() {
     if (currentWeather.name === 'lightning') {
       const flashInterval = setInterval(() => {
         if (Math.random() > 0.7) {
-          lightningFlashRef.current = true;
-          setTimeout(() => {
-            lightningFlashRef.current = false;
-          }, 100);
+          setLightningFlash(true);
+          setTimeout(() => setLightningFlash(false), 100);
         }
       }, 500);
       
@@ -149,12 +151,9 @@ export default function WeatherSystem() {
     }
   });
   
-  const bgColor = useMemo(() => {
-    if (currentWeather.name === 'lightning' && lightningFlashRef.current) {
-      return 0xFFFFFF;
-    }
-    return currentWeather.bgColor;
-  }, [currentWeather, lightningFlashRef.current]);
+  const bgColor = currentWeather.name === 'lightning' && lightningFlash
+    ? 0xFFFFFF
+    : currentWeather.bgColor;
   
   return (
     <>
