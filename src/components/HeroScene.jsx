@@ -32,13 +32,15 @@ export default function HeroScene() {
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
         style={{ 
-          background: 'linear-gradient(180deg, #0A0E27 0%, #151B3B 50%, #1E2545 100%)',
           width: '100%',
           height: '100%'
         }}
         gl={{ 
           antialias: true,
-          alpha: false
+          alpha: true
+        }}
+        onCreated={({ gl }) => {
+          gl.setClearColor(0x0A0E27);
         }}
       >
         <Suspense fallback={null}>

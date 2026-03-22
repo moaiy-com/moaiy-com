@@ -3,121 +3,41 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const WEATHER_TYPES = [
-  { name: 'day', bgColor: 0x87CEEB, particleType: 0, speed: 0.5 },
-  { name: 'night', bgColor: 0x0A0E27, particleType: 1, speed: 0 },
-  { name: 'wind', bgColor: 0x6B7280, particleType: 2, speed: 2.0 },
-  { name: 'rain', bgColor: 0x4A5568, particleType: 3, speed: 3.0 },
-  { name: 'lightning', bgColor: 0x1F2937, particleType: 4, speed: 3.0 },
-  { name: 'snow', bgColor: 0xE5E7EB, particleType: 5, speed: 0.3 },
-  { name: 'tornado', bgColor: 0x374151, particleType: 6, speed: 1.5 },
+  { name: 'day', bgColor: 0x87CEEB, speed: 0.5, particleCount: 200 },
+  { name: 'night', bgColor: 0x0A0E27, speed: 0, particleCount: 500 },
+  { name: 'wind', bgColor: 0x6B7280, speed: 2.0, particleCount: 400 },
+  { name: 'rain', bgColor: 0x4A5568, speed: 3.0, particleCount: 800 },
+  { name: 'lightning', bgColor: 0x1F2937, speed: 3.0, particleCount: 800 },
+  { name: 'snow', bgColor: 0xE5E7EB, speed: 0.3, particleCount: 600 },
+  { name: 'tornado', bgColor: 0x374151, speed: 1.5, particleCount: 1000 },
 ];
-
-const vertexShader = `
-  uniform float uTime;
-  uniform float uSpeed;
-  uniform float uParticleType;
-  
-  attribute float aRandom;
-  attribute float aScale;
-  
-  varying float vAlpha;
-  varying float vRandom;
-  
-  void main() {
-    vec3 pos = position;
-    float t = uTime * uSpeed;
-    float pi = 3.14159265359;
-    
-    if (uParticleType < 0.5) {
-      // Day - Floating clouds
-      vAlpha = 0.8;
-      float drift = t * 0.3 + aRandom * 20.0;
-      pos.x = mod(pos.x + drift, 40.0) - 20.0;
-      pos.y += sin(t * 0.5 + aRandom * pi * 2.0) * 0.1;
-    } else if (uParticleType < 1.5) {
-      // Night - Static stars with twinkle
-      vAlpha = 0.4 + 0.6 * sin(t * 3.0 + aRandom * pi * 2.0);
-    } else if (uParticleType < 2.5) {
-      // Wind - Fast horizontal movement
-      vAlpha = 0.7;
-      float drift = t * 2.0 + aRandom * 20.0;
-      pos.x = mod(pos.x + drift, 40.0) - 20.0;
-      pos.y += sin(t * 2.0 + aRandom * pi) * 0.3;
-    } else if (uParticleType < 3.5) {
-      // Rain - Falling drops
-      vAlpha = 0.6;
-      pos.y = mod(pos.y - t * 3.0 + aRandom * 20.0, 25.0) - 10.0;
-      pos.x += sin(t * 4.0 + aRandom * pi * 2.0) * 0.05;
-    } else if (uParticleType < 4.5) {
-      // Lightning - Rain with flash
-      vAlpha = 0.6;
-      pos.y = mod(pos.y - t * 3.0 + aRandom * 20.0, 25.0) - 10.0;
-    } else if (uParticleType < 5.5) {
-      // Snow - Gentle falling
-      vAlpha = 0.8;
-      float angle = t * 0.5 + aRandom * pi * 2.0;
-      pos.y = mod(pos.y - t * 0.3 + aRandom * 20.0, 25.0) - 10.0;
-      pos.x += sin(angle) * 0.1;
-      pos.z += cos(angle * 0.5) * 0.05;
-    } else {
-      // Tornado - Spinning spiral
-      vAlpha = 0.7;
-      float angle = t * 3.0 + aRandom * pi * 2.0;
-      float radius = 2.0 + sin(aRandom * pi) * 1.5;
-      pos.x = cos(angle) * radius;
-      pos.z = sin(angle) * radius;
-      pos.y = mod(pos.y - t * 1.5 + aRandom * 20.0, 25.0) - 10.0;
-    }
-    vRandom = aRandom;
-    
-    vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = aScale * (300.0 / -mvPosition.z);
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`;
-
-const fragmentShader = `
-  varying float vAlpha;
-  varying float vRandom;
-  
-  void main() {
-    float dist = length(gl_PointCoord - vec2(0.5));
-    if (dist > 0.5) discard;
-    
-    float alpha = vAlpha * (1.0 - dist * 2.0);
-    gl_FragColor = vec4(1.0, 1.0, 1.0, alpha * 0.9);
-  }
-`;
 
 export default function WeatherSystem() {
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
   const [lightningFlash, setLightningFlash] = useState(false);
   const pointsRef = useRef();
+  const particleRef = useRef();
   
   const currentWeather = WEATHER_TYPES[currentWeatherIndex];
   
-  const { positions, randoms, scales } = useMemo(() => {
+  const particleData = useMemo(() => {
     const count = 1500;
     const positions = new Float32Array(count * 3);
+    const velocities = new Float32Array(count * 3);
     const randoms = new Float32Array(count);
-    const scales = new Float32Array(count);
     
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 40;
       positions[i * 3 + 1] = Math.random() * 20 - 10;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+      velocities[i * 3] = 0;
+      velocities[i * 3 + 1] = 0;
+      velocities[i * 3 + 2] = 0;
       randoms[i] = Math.random();
-      scales[i] = 0.05 + Math.random() * 0.1;
     }
     
-    return { positions, randoms, scales };
+    return { positions, velocities, randoms };
   }, []);
-  
-  const uniforms = useMemo(() => ({
-    uTime: { value: 0 },
-    uSpeed: { value: currentWeather.speed },
-    uParticleType: { value: currentWeather.particleType },
-  }), []);
   
   useEffect(() => {
     const interval = setInterval(() => {
@@ -126,11 +46,6 @@ export default function WeatherSystem() {
     
     return () => clearInterval(interval);
   }, []);
-  
-  useEffect(() => {
-    uniforms.uSpeed.value = currentWeather.speed;
-    uniforms.uParticleType.value = currentWeather.particleType;
-  }, [currentWeather, uniforms]);
   
   useEffect(() => {
     if (currentWeather.name === 'lightning') {
@@ -145,10 +60,71 @@ export default function WeatherSystem() {
     }
   }, [currentWeather.name]);
   
-  useFrame((state) => {
-    if (pointsRef.current) {
-      pointsRef.current.material.uniforms.uTime.value = state.clock.elapsedTime;
+  useFrame((state, delta) => {
+    if (!pointsRef.current) return;
+    
+    const positions = pointsRef.current.geometry.attributes.position.array;
+    const count = currentWeather.particleCount;
+    const speed = currentWeather.speed * delta * 10;
+    const time = state.clock.elapsedTime;
+    
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3;
+      const random = particleData.randoms[i];
+      
+      switch (currentWeather.name) {
+        case 'day':
+          positions[i3] += speed * 0.3;
+          if (positions[i3] > 20) positions[i3] = -20;
+          positions[i3 + 1] += Math.sin(time + random * Math.PI * 2) * 0.002;
+          break;
+          
+        case 'night':
+          break;
+          
+        case 'wind':
+          positions[i3] += speed * 4;
+          if (positions[i3] > 20) {
+            positions[i3] = -20;
+            positions[i3 + 1] = Math.random() * 20 - 10;
+          }
+          positions[i3 + 1] += Math.sin(time * 2 + random * Math.PI) * 0.05;
+          break;
+          
+        case 'rain':
+        case 'lightning':
+          positions[i3 + 1] -= speed * 6;
+          positions[i3] += Math.sin(time * 4 + random * Math.PI * 2) * 0.01;
+          if (positions[i3 + 1] < -10) {
+            positions[i3 + 1] = 10;
+            positions[i3] = (Math.random() - 0.5) * 40;
+          }
+          break;
+          
+        case 'snow':
+          positions[i3 + 1] -= speed * 0.5;
+          positions[i3] += Math.sin(time + random * Math.PI * 2) * 0.02;
+          positions[i3 + 2] += Math.cos(time + random * Math.PI) * 0.01;
+          if (positions[i3 + 1] < -10) {
+            positions[i3 + 1] = 10;
+            positions[i3] = (Math.random() - 0.5) * 40;
+          }
+          break;
+          
+        case 'tornado':
+          const angle = time * 3 + random * Math.PI * 2;
+          const radius = 2 + Math.sin(random * Math.PI) * 1.5;
+          positions[i3] = Math.cos(angle) * radius;
+          positions[i3 + 2] = Math.sin(angle) * radius;
+          positions[i3 + 1] -= speed * 2;
+          if (positions[i3 + 1] < -10) {
+            positions[i3 + 1] = 10;
+          }
+          break;
+      }
     }
+    
+    pointsRef.current.geometry.attributes.position.needsUpdate = true;
   });
   
   const bgColor = currentWeather.name === 'lightning' && lightningFlash
@@ -164,32 +140,18 @@ export default function WeatherSystem() {
       
       <points ref={pointsRef}>
         <bufferGeometry>
-          <bufferAttribute 
-            attach="attributes-position" 
-            count={positions.length / 3} 
-            array={positions} 
-            itemSize={3} 
-          />
-          <bufferAttribute 
-            attach="attributes-aRandom" 
-            count={randoms.length} 
-            array={randoms} 
-            itemSize={1} 
-          />
-          <bufferAttribute 
-            attach="attributes-aScale" 
-            count={scales.length} 
-            array={scales} 
-            itemSize={1} 
+          <bufferAttribute
+            attach="attributes-position"
+            args={[particleData.positions, 3]}
           />
         </bufferGeometry>
-        <shaderMaterial
-          vertexShader={vertexShader}
-          fragmentShader={fragmentShader}
-          uniforms={uniforms}
+        <pointsMaterial
+          size={currentWeather.name === 'snow' ? 0.08 : 0.05}
+          color={currentWeather.name === 'snow' || currentWeather.name === 'day' ? 0xFFFFFF : 0x88AACC}
           transparent
+          opacity={currentWeather.name === 'night' ? 0.9 : 0.7}
+          sizeAttenuation
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
         />
       </points>
     </>
