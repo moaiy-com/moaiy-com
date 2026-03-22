@@ -1,0 +1,187 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Debug - Moaiy 3D Scene">
+  <main class="min-h-screen bg-bg-primary py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <h1 class="font-heading text-4xl font-bold text-text-primary mb-8">
+        🔍 3D Scene Diagnostic
+      </h1>
+      
+      <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800 mb-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
+          Browser Information
+        </h2>
+        <div id="browser-info" class="font-code text-sm text-text-secondary space-y-2">
+          Loading...
+        </div>
+      </div>
+      
+      <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800 mb-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
+          WebGL Support
+        </h2>
+        <div id="webgl-info" class="font-code text-sm text-text-secondary space-y-2">
+          Loading...
+        </div>
+      </div>
+      
+      <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800 mb-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
+          Canvas Status
+        </h2>
+        <div id="canvas-info" class="font-code text-sm text-text-secondary space-y-2">
+          Loading...
+        </div>
+      </div>
+      
+      <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800 mb-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
+          Component Status
+        </h2>
+        <div id="component-info" class="font-code text-sm text-text-secondary space-y-2">
+          Loading...
+        </div>
+      </div>
+      
+      <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
+          JavaScript Errors
+        </h2>
+        <div id="error-info" class="font-code text-sm text-text-secondary space-y-2">
+          Loading...
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  // Browser Information
+  const browserInfo = document.getElementById('browser-info');
+  browserInfo.innerHTML = `
+    <div>User Agent: ${navigator.userAgent}</div>
+    <div>Platform: ${navigator.platform}</div>
+    <div>Language: ${navigator.language}</div>
+    <div>Cookies: ${navigator.cookieEnabled ? '✅ Enabled' : '❌ Disabled'}</div>
+    <div>Do Not Track: ${navigator.doNotTrack || 'Not set'}</div>
+  `;
+  
+  // WebGL Support
+  const webglInfo = document.getElementById('webgl-info');
+  const testCanvas = document.createElement('canvas');
+  const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+  
+  if (gl) {
+    const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+    webglInfo.innerHTML = `
+      <div>WebGL: ✅ Supported</div>
+      <div>Version: ${gl.getParameter(gl.VERSION)}</div>
+      <div>Vendor: ${gl.getParameter(gl.VENDOR)}</div>
+      <div>Renderer: ${debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : 'Unknown'}</div>
+      <div>Max Texture Size: ${gl.getParameter(gl.MAX_TEXTURE_SIZE)}</div>
+      <div>Max Viewport: ${gl.getParameter(gl.MAX_VIEWPORT_DIMS).join(' x ')}</div>
+    `;
+  } else {
+    webglInfo.innerHTML = `
+      <div>WebGL: ❌ Not Supported</div>
+      <div>This browser/device does not support WebGL</div>
+    `;
+  }
+  
+  // Canvas Status
+  const canvasInfo = document.getElementById('canvas-info');
+  const heroCanvas = document.querySelector('#hero-canvas');
+  const canvas = document.querySelector('#hero-canvas canvas');
+  
+  if (heroCanvas) {
+    if (canvas) {
+      canvasInfo.innerHTML = `
+        <div>Container: ✅ Found</div>
+        <div>Canvas: ✅ Found</div>
+        <div>Canvas Width: ${canvas.width}</div>
+        <div>Canvas Height: ${canvas.height}</div>
+        <div>Display: ${getComputedStyle(canvas).display}</div>
+        <div>Visibility: ${getComputedStyle(canvas).visibility}</div>
+        <div>Opacity: ${getComputedStyle(canvas).opacity}</div>
+      `;
+    } else {
+      canvasInfo.innerHTML = `
+        <div>Container: ✅ Found</div>
+        <div>Canvas: ❌ Not Found</div>
+        <div>Container HTML: ${heroCanvas.outerHTML.substring(0, 200)}...</div>
+      `;
+    }
+  } else {
+    canvasInfo.innerHTML = `
+      <div>Container: ❌ Not Found</div>
+      <div>This page is not the homepage</div>
+    `;
+  }
+  
+  // Component Status
+  const componentInfo = document.getElementById('component-info');
+  const island = document.querySelector('astro-island');
+  
+  if (island) {
+    componentInfo.innerHTML = `
+      <div>astro-island: ✅ Found</div>
+      <div>UID: ${island.getAttribute('uid')}</div>
+      <div>Component URL: ${island.getAttribute('component-url')}</div>
+      <div>Renderer URL: ${island.getAttribute('renderer-url')}</div>
+      <div>Client: ${island.getAttribute('client')}</div>
+      <div>SSR: ${island.hasAttribute('ssr') ? 'Yes' : 'No'}</div>
+    `;
+    
+    // Check if hydrated
+    setTimeout(() => {
+      const isHydrated = !island.hasAttribute('ssr');
+      const currentInfo = componentInfo.innerHTML;
+      componentInfo.innerHTML = currentInfo + `
+        <div>Hydrated (after 5s): ${isHydrated ? '✅ Yes' : '❌ No'}</div>
+      `;
+    }, 5000);
+  } else {
+    componentInfo.innerHTML = `
+      <div>astro-island: ❌ Not Found</div>
+      <div>This page does not use React components</div>
+    `;
+  }
+  
+  // Error Detection
+  const errorInfo = document.getElementById('error-info');
+  const errors = [];
+  
+  // Capture console errors
+  const originalError = console.error;
+  console.error = function(...args) {
+    errors.push(args.join(' '));
+    originalError.apply(console, args);
+    updateErrorInfo();
+  };
+  
+  // Capture uncaught errors
+  window.addEventListener('error', (event) => {
+    errors.push(`${event.message} at ${event.filename}:${event.lineno}`);
+    updateErrorInfo();
+  });
+  
+  function updateErrorInfo() {
+    if (errors.length > 0) {
+      errorInfo.innerHTML = errors.map(err => 
+        `<div class="text-red-400">❌ ${err}</div>`
+      ).join('');
+    } else {
+      errorInfo.innerHTML = `<div class="text-green-400">✅ No errors detected</div>`;
+    }
+  }
+  
+  // Initial update
+  setTimeout(updateErrorInfo, 1000);
+  
+  // Auto-refresh every 5 seconds
+  setInterval(() => {
+    console.log('Diagnostic refresh...');
+  }, 5000);
+</script>
