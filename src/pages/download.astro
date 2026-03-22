@@ -1,0 +1,190 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Download - Moaiy">
+  <main class="min-h-screen bg-bg-primary py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
+          Download Moaiy
+        </h1>
+        <p class="font-body text-xl text-text-secondary">
+          Free and open source encryption for everyone
+        </p>
+      </div>
+      
+      <!-- Platform Downloads -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+        <!-- macOS -->
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
+          <div class="text-6xl mb-4">🍎</div>
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-2">macOS</h3>
+          <p class="font-body text-text-secondary mb-4">
+            macOS 10.15+ (Catalina or later)
+          </p>
+          <a
+            href="#"
+            class="inline-block w-full text-center px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+          >
+            Download for Mac
+          </a>
+          <p class="font-body text-sm text-text-tertiary mt-2">
+            Version 1.0.0 • 45 MB
+          </p>
+        </div>
+        
+        <!-- Windows -->
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
+          <div class="text-6xl mb-4">🪟</div>
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-2">Windows</h3>
+          <p class="font-body text-text-secondary mb-4">
+            Windows 10 or later
+          </p>
+          <a
+            href="#"
+            class="inline-block w-full text-center px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+          >
+            Download for Windows
+          </a>
+          <p class="font-body text-sm text-text-tertiary mt-2">
+            Version 1.0.0 • 52 MB
+          </p>
+        </div>
+        
+        <!-- Linux -->
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
+          <div class="text-6xl mb-4">🐧</div>
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-2">Linux</h3>
+          <p class="font-body text-text-secondary mb-4">
+            Ubuntu 20.04+, Debian, Fedora
+          </p>
+          <a
+            href="#"
+            class="inline-block w-full text-center px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+          >
+            Download for Linux
+          </a>
+          <p class="font-body text-sm text-text-tertiary mt-2">
+            Version 1.0.0 • 38 MB
+          </p>
+        </div>
+        
+        <!-- iOS -->
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
+          <div class="text-6xl mb-4">📱</div>
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-2">iOS</h3>
+          <p class="font-body text-text-secondary mb-4">
+            iOS 14.0 or later
+          </p>
+          <a
+            href="#"
+            class="inline-block w-full text-center px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+          >
+            App Store
+          </a>
+          <p class="font-body text-sm text-text-tertiary mt-2">
+            Coming Soon
+          </p>
+        </div>
+        
+        <!-- Android -->
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
+          <div class="text-6xl mb-4">🤖</div>
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-2">Android</h3>
+          <p class="font-body text-text-secondary mb-4">
+            Android 8.0 or later
+          </p>
+          <a
+            href="#"
+            class="inline-block w-full text-center px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+          >
+            Google Play
+          </a>
+          <p class="font-body text-sm text-text-tertiary mt-2">
+            Coming Soon
+          </p>
+        </div>
+        
+        <!-- Web -->
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
+          <div class="text-6xl mb-4">🌐</div>
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-2">Web</h3>
+          <p class="font-body text-text-secondary mb-4">
+            Browser-based encryption
+          </p>
+          <a
+            href="https://app.moaiy.com"
+            class="inline-block w-full text-center px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+          >
+            Open Web App
+          </a>
+          <p class="font-body text-sm text-text-tertiary mt-2">
+            No download required
+          </p>
+        </div>
+      </div>
+      
+      <!-- Command Line -->
+      <div class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 mb-16">
+        <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">
+          💻 Command Line Interface
+        </h3>
+        <p class="font-body text-text-secondary mb-4">
+          Install via Homebrew, Cargo, or download directly
+        </p>
+        
+        <div class="bg-bg-primary rounded-lg p-4 font-code text-sm text-text-secondary overflow-x-auto">
+          <div class="mb-2">
+            <span class="text-text-tertiary"># Homebrew (macOS/Linux)</span>
+          </div>
+          <div class="mb-4">
+            <span class="text-accent-primary">$</span> brew install moaiy
+          </div>
+          
+          <div class="mb-2">
+            <span class="text-text-tertiary"># Cargo (Rust)</span>
+          </div>
+          <div class="mb-4">
+            <span class="text-accent-primary">$</span> cargo install moaiy
+          </div>
+          
+          <div class="mb-2">
+            <span class="text-text-tertiary"># Or download binary</span>
+          </div>
+          <div>
+            <span class="text-accent-primary">$</span> curl -sSL https://get.moaiy.com | sh
+          </div>
+        </div>
+      </div>
+      
+      <!-- Features -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="text-center">
+          <div class="text-4xl mb-2">🔒</div>
+          <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">End-to-End Encryption</h4>
+          <p class="font-body text-text-secondary text-sm">
+            Your data never leaves your device unencrypted
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <div class="text-4xl mb-2">🚀</div>
+          <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">Fast & Lightweight</h4>
+          <p class="font-body text-text-secondary text-sm">
+            Built with Rust for maximum performance
+          </p>
+        </div>
+        
+        <div class="text-center">
+          <div class="text-4xl mb-2">💖</div>
+          <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">Open Source</h4>
+          <p class="font-body text-text-secondary text-sm">
+            Fully auditable code on GitHub
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

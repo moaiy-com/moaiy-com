@@ -17,7 +17,6 @@ export default function Moai() {
   const moaiRef = useRef();
   const glowRef = useRef();
   const smileRef = useRef();
-  const sunglassesRef = useRef();
   
   // Stone material for the statue body
   const stoneMaterial = useMemo(() => new THREE.MeshStandardMaterial({
@@ -87,42 +86,61 @@ export default function Moai() {
   
   return (
     <group ref={moaiRef} position={[0, 0, 0]}>
-      {/* Head */}
-      <mesh position={[0, 1.5, 0]} material={stoneMaterial}>
+      {/* Head - Elongated oval shape */}
+      <mesh position={[0, 1.8, 0]} material={stoneMaterial} scale={[0.85, 1.2, 0.75]}>
         <sphereGeometry args={[1, 32, 32]} />
-        <mesh scale={[0.85, 1.2, 0.75]} />
       </mesh>
       
-      {/* Body */}
-      <mesh position={[0, -0.6, 0]} material={stoneMaterial}>
-        <boxGeometry args={[1.3, 2.8, 0.7]} />
+      {/* Nose - Prominent feature of Moai */}
+      <mesh position={[0, 1.5, 0.6]} material={stoneMaterial}>
+        <boxGeometry args={[0.25, 0.5, 0.35]} />
+      </mesh>
+      
+      {/* Body - Tapered rectangular shape */}
+      <mesh position={[0, -0.3, 0]} material={stoneMaterial}>
+        <boxGeometry args={[1.2, 2.4, 0.6]} />
+      </mesh>
+      
+      {/* Shoulders/Upper body */}
+      <mesh position={[0, -1.3, 0]} material={stoneMaterial}>
+        <boxGeometry args={[1.4, 0.4, 0.55]} />
       </mesh>
       
       {/* Smile */}
-      <mesh ref={smileRef} position={[0, 1.4, 0]} material={smileMaterial}>
-        <tubeGeometry args={[smileCurve, 20, 0.02, 8, false]} />
+      <mesh ref={smileRef} position={[0, 1.55, 0.75]} material={smileMaterial}>
+        <tubeGeometry args={[smileCurve, 20, 0.025, 8, false]} />
       </mesh>
       
       {/* Sunglasses */}
-      <group ref={sunglassesRef} position={[0, 1.7, 0]}>
+      <group position={[0, 1.85, 0]}>
         {/* Left lens */}
-        <mesh position={[-0.32, 0, 0.72]} material={lensMaterial}>
+        <mesh position={[-0.32, 0, 0.65]} material={lensMaterial}>
           <boxGeometry args={[0.45, 0.35, 0.03]} />
         </mesh>
         
         {/* Right lens */}
-        <mesh position={[0.32, 0, 0.72]} material={lensMaterial}>
+        <mesh position={[0.32, 0, 0.65]} material={lensMaterial}>
           <boxGeometry args={[0.45, 0.35, 0.03]} />
         </mesh>
         
         {/* Top bar */}
-        <mesh position={[0, 0.2, 0.72]} material={frameMaterial}>
+        <mesh position={[0, 0.2, 0.65]} material={frameMaterial}>
           <boxGeometry args={[1.1, 0.04, 0.03]} />
         </mesh>
         
         {/* Nose bridge */}
-        <mesh position={[0, 0, 0.72]} material={frameMaterial}>
+        <mesh position={[0, 0, 0.65]} material={frameMaterial}>
           <boxGeometry args={[0.08, 0.08, 0.03]} />
+        </mesh>
+        
+        {/* Left temple */}
+        <mesh position={[-0.58, 0.1, 0.5]} material={frameMaterial} rotation={[0, 0, 0.3]}>
+          <boxGeometry args={[0.03, 0.15, 0.03]} />
+        </mesh>
+        
+        {/* Right temple */}
+        <mesh position={[0.58, 0.1, 0.5]} material={frameMaterial} rotation={[0, 0, -0.3]}>
+          <boxGeometry args={[0.03, 0.15, 0.03]} />
         </mesh>
       </group>
       
