@@ -32,7 +32,16 @@ export default function HeroScene() {
         onCreated={({ gl }) => {
           console.log('✅ WebGL context created');
           console.log('Canvas size:', gl.domElement.width, 'x', gl.domElement.height);
-          console.log('Drawing buffer:', gl.drawingBufferWidth, 'x', gl.drawingBufferHeight);
+          console.log('Renderer info:', gl.info);
+          
+          // Get WebGL context
+          const context = gl.getContext();
+          if (context) {
+            console.log('Drawing buffer:', context.drawingBufferWidth, 'x', context.drawingBufferHeight);
+          }
+          
+          // Force render
+          gl.render(gl.domElement, gl.domElement);
         }}
       >
         <Suspense fallback={null}>
