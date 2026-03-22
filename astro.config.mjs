@@ -19,4 +19,4 @@ export default defineConfig({
       noExternal: ['@react-three/fiber', '@react-three/drei', 'three']
     }
   }
-});
+});;
