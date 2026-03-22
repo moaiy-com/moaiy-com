@@ -1,11 +1,23 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense } from 'react';
-import Moai from './Moai.jsx';
-import WeatherSystem from './WeatherSystem.jsx';
+import { Suspense, useRef } from 'react';
 
 /**
- * Hero Scene Component
- * Main 3D canvas container for the Moai statue and weather system
+ * Simple test cube
+ */
+function TestCube() {
+  const meshRef = useRef();
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, 0]}>
+      <boxGeometry args={[2, 2, 2]} />
+      <meshStandardMaterial color="#4ECDC4" />
+    </mesh>
+  );
+}
+
+/**
+ * Hero Scene Component - TEST VERSION
+ * Uses minimal cube instead of Moai
  */
 export default function HeroScene() {
   return (
@@ -14,8 +26,7 @@ export default function HeroScene() {
       height: '100vh',
       position: 'fixed',
       top: 0,
-      left: 0,
-      pointerEvents: 'none'
+      left: 0
     }}>
       <Canvas
         camera={{ position: [0, 0, 5], fov: 75 }}
@@ -26,15 +37,13 @@ export default function HeroScene() {
         }}
         gl={{ 
           antialias: true,
-          alpha: false,
-          powerPreference: 'high-performance'
+          alpha: false
         }}
         onCreated={({ gl }) => {
           console.log('✅ WebGL context created');
           console.log('Canvas size:', gl.domElement.width, 'x', gl.domElement.height);
           console.log('Renderer info:', gl.info);
           
-          // Get WebGL context
           const context = gl.getContext();
           if (context) {
             console.log('Drawing buffer:', context.drawingBufferWidth, 'x', context.drawingBufferHeight);
@@ -42,16 +51,12 @@ export default function HeroScene() {
         }}
       >
         <Suspense fallback={null}>
-          {/* Lighting system */}
+          {/* Full intensity lights like test page */}
           <ambientLight intensity={1.0} />
           <directionalLight position={[10, 10, 5]} intensity={1.0} />
-          <pointLight position={[-10, -10, -5]} intensity={0.5} color="#4ECDC4" />
           
-          {/* Moai statue */}
-          <Moai />
-          
-          {/* Weather system */}
-          <WeatherSystem />
+          {/* Test cube instead of Moai */}
+          <TestCube />
         </Suspense>
       </Canvas>
     </div>
