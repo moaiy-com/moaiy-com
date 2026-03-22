@@ -4,6 +4,9 @@ import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
+  // For GitHub Pages deployment on subpath
+  // Remove 'base' when custom domain (moaiy.com) is active
+  base: '/moaiy-com/',
   site: 'https://moaiy.com',
   integrations: [
     react(),
