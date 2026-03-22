@@ -1,0 +1,544 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Documentation - Moaiy">
+  <main class="min-h-screen bg-bg-primary py-20 px-4">
+    <div class="max-w-6xl mx-auto">
+      <!-- Header -->
+      <div class="text-center mb-16">
+        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
+          Documentation
+        </h1>
+        <p class="font-body text-xl text-text-secondary">
+          Everything you need to know to get started with Moaiy
+        </p>
+      </div>
+      
+      <!-- Quick Start -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
+          <span>🚀</span>
+          <span>Quick Start</span>
+        </h2>
+        
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <div class="space-y-8">
+            <!-- Step 1 -->
+            <div>
+              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
+                Step 1: Install Moaiy
+              </h3>
+              
+              <div class="bg-bg-tertiary rounded-lg p-6">
+                <p class="font-body text-text-secondary mb-4">
+                  Choose your platform:
+                </p>
+                
+                <div class="space-y-3 font-code text-sm">
+                  <div>
+                    <span class="text-text-tertiary"># macOS (Homebrew)</span>
+                  </div>
+                  <div class="mb-4">
+                    <span class="text-accent-primary">$</span> brew install moaiy
+                  </div>
+                  
+                  <div>
+                    <span class="text-text-tertiary"># Windows (Scoop)</span>
+                  </div>
+                  <div class="mb-4">
+                    <span class="text-accent-primary">$</span> scoop install moaiy
+                  </div>
+                  
+                  <div>
+                    <span class="text-text-tertiary"># Linux (Cargo)</span>
+                  </div>
+                  <div class="mb-4">
+                    <span class="text-accent-primary">$</span> cargo install moaiy
+                  </div>
+                  
+                  <div>
+                    <span class="text-text-tertiary"># Or download from</span>
+                    <a href="/download" class="text-accent-primary hover:underline"> moaiy.com/download</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 2 -->
+            <div>
+              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
+                Step 2: Generate Your Keys
+              </h3>
+              
+              <div class="bg-bg-tertiary rounded-lg p-6">
+                <p class="font-body text-text-secondary mb-4">
+                  First time? Generate your encryption keys:
+                </p>
+                
+                <div class="font-code text-sm mb-4">
+                  <div class="mb-2">
+                    <span class="text-accent-primary">$</span> moaiy key generate
+                  </div>
+                  <div class="text-text-tertiary">
+                    <div>Generating RSA-4096 key pair...</div>
+                    <div>✓ Private key saved to ~/.moaiy/private.key</div>
+                    <div>✓ Public key saved to ~/.moaiy/public.key</div>
+                    <div>✓ Key ID: ABC123DEF456...</div>
+                  </div>
+                </div>
+                
+                <div class="bg-bg-primary rounded p-3 border-l-4 border-accent-primary">
+                  <p class="font-body text-text-secondary text-sm">
+                    <span class="text-accent-primary font-semibold">💡 Tip:</span>
+                    Your private key is like your password. Never share it!
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 3 -->
+            <div>
+              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
+                Step 3: Encrypt Your First File
+              </h3>
+              
+              <div class="bg-bg-tertiary rounded-lg p-6">
+                <p class="font-body text-text-secondary mb-4">
+                  Encrypt a file for someone (using their public key):
+                </p>
+                
+                <div class="font-code text-sm mb-4">
+                  <div class="mb-2">
+                    <span class="text-accent-primary">$</span> moaiy encrypt secret.txt --recipient alice@example.com
+                  </div>
+                  <div class="text-text-tertiary">
+                    <div>Encrypting for alice@example.com...</div>
+                    <div>✓ Encrypted file: secret.txt.gpg</div>
+                  </div>
+                </div>
+                
+                <p class="font-body text-text-secondary mb-4">
+                  Or encrypt with a password:
+                </p>
+                
+                <div class="font-code text-sm">
+                  <div class="mb-2">
+                    <span class="text-accent-primary">$</span> moaiy encrypt secret.txt --password
+                  </div>
+                  <div class="text-text-tertiary">
+                    <div>Enter password: ********</div>
+                    <div>✓ Encrypted file: secret.txt.gpg</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 4 -->
+            <div>
+              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
+                Step 4: Decrypt a File
+              </h3>
+              
+              <div class="bg-bg-tertiary rounded-lg p-6">
+                <p class="font-body text-text-secondary mb-4">
+                  Decrypt an encrypted file:
+                </p>
+                
+                <div class="font-code text-sm">
+                  <div class="mb-2">
+                    <span class="text-accent-primary">$</span> moaiy decrypt secret.txt.gpg
+                  </div>
+                  <div class="text-text-tertiary">
+                    <div>Decrypting...</div>
+                    <div>✓ Decrypted file: secret.txt</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- CLI Reference -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
+          <span>💻</span>
+          <span>CLI Reference</span>
+        </h2>
+        
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 overflow-x-auto">
+          <table class="w-full text-left">
+            <thead>
+              <tr class="border-b border-gray-700">
+                <th class="font-heading text-text-primary py-3 px-4">Command</th>
+                <th class="font-heading text-text-primary py-3 px-4">Description</th>
+                <th class="font-heading text-text-primary py-3 px-4">Example</th>
+              </tr>
+            </thead>
+            <tbody class="font-body text-text-secondary text-sm">
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy key generate</td>
+                <td class="py-3 px-4">Generate new key pair</td>
+                <td class="py-3 px-4 font-code">moaiy key generate --email you@example.com</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy key list</td>
+                <td class="py-3 px-4">List all keys</td>
+                <td class="py-3 px-4 font-code">moaiy key list</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy key export</td>
+                <td class="py-3 px-4">Export public key</td>
+                <td class="py-3 px-4 font-code">moaiy key export --output public.key</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy key import</td>
+                <td class="py-3 px-4">Import a public key</td>
+                <td class="py-3 px-4 font-code">moaiy key import alice.key</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy encrypt</td>
+                <td class="py-3 px-4">Encrypt a file</td>
+                <td class="py-3 px-4 font-code">moaiy encrypt file.txt -r alice@example.com</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy decrypt</td>
+                <td class="py-3 px-4">Decrypt a file</td>
+                <td class="py-3 px-4 font-code">moaiy decrypt file.txt.gpg</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy sign</td>
+                <td class="py-3 px-4">Sign a file</td>
+                <td class="py-3 px-4 font-code">moaiy sign file.txt</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-code text-accent-primary">moaiy verify</td>
+                <td class="py-3 px-4">Verify a signature</td>
+                <td class="py-3 px-4 font-code">moaiy verify file.txt.sig</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      
+      <!-- API Reference -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
+          <span>🔌</span>
+          <span>API Reference</span>
+        </h2>
+        
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <p class="font-body text-text-secondary mb-6">
+            Moaiy provides a REST API for programmatic access. Coming soon in v2.0.
+          </p>
+          
+          <div class="bg-bg-tertiary rounded-lg p-6 mb-6">
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-3">
+              Example: Encrypt via API
+            </h3>
+            <div class="font-code text-sm">
+              <div class="text-text-tertiary mb-2">POST /api/v1/encrypt</div>
+              <pre class="bg-bg-primary rounded p-4 overflow-x-auto">
+{
+  "data": "base64-encoded-data",
+  "recipients": ["alice@example.com"],
+  "options": {
+    "algorithm": "AES-256-GCM",
+    "compress": true
+  }
+}
+              </pre>
+            </div>
+          </div>
+          
+          <div class="text-center">
+            <p class="font-body text-text-secondary mb-4">
+              Full API documentation will be available at
+            </p>
+            <a href="#" class="font-body text-accent-primary hover:underline">
+              https://api.moaiy.com/docs
+            </a>
+          </div>
+        </div>
+      </section>
+      
+      <!-- Common Use Cases -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
+          <span>📚</span>
+          <span>Common Use Cases</span>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Use Case 1 -->
+          <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
+              📧 Encrypt Email Attachments
+            </h3>
+            <p class="font-body text-text-secondary mb-4 text-sm">
+              Securely send sensitive files via email
+            </p>
+            <div class="font-code text-xs bg-bg-tertiary rounded p-3">
+              <div class="mb-2">
+                <span class="text-accent-primary">$</span> moaiy encrypt report.pdf \
+              </div>
+              <div class="ml-4 text-text-tertiary">
+                -r bob@company.com
+              </div>
+            </div>
+          </div>
+          
+          <!-- Use Case 2 -->
+          <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
+              ☁️ Secure Cloud Storage
+            </h3>
+            <p class="font-body text-text-secondary mb-4 text-sm">
+              Encrypt before uploading to Dropbox, Google Drive, etc.
+            </p>
+            <div class="font-code text-xs bg-bg-tertiary rounded p-3">
+              <div class="mb-2">
+                <span class="text-accent-primary">$</span> moaiy encrypt *.docx --password
+              </div>
+              <div class="text-text-tertiary">
+                # Upload encrypted files to cloud
+              </div>
+            </div>
+          </div>
+          
+          <!-- Use Case 3 -->
+          <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
+              🔐 Password Sharing
+            </h3>
+            <p class="font-body text-text-secondary mb-4 text-sm">
+              Safely share passwords with team members
+            </p>
+            <div class="font-code text-xs bg-bg-tertiary rounded p-3">
+              <div class="mb-2">
+                <span class="text-accent-primary">$</span> echo "SecretPassword123" | \
+              </div>
+              <div class="ml-4 text-text-tertiary">
+                moaiy encrypt - -r teammate@company.com
+              </div>
+            </div>
+          </div>
+          
+          <!-- Use Case 4 -->
+          <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
+              💾 Backup Encryption
+            </h3>
+            <p class="font-body text-text-secondary mb-4 text-sm">
+              Encrypt backups before storing offsite
+            </p>
+            <div class="font-code text-xs bg-bg-tertiary rounded p-3">
+              <div class="mb-2">
+                <span class="text-accent-primary">$</span> tar czf - /important/data | \
+              </div>
+              <div class="ml-4 text-text-tertiary">
+                moaiy encrypt - --output backup.tar.gpg
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      <!-- FAQ -->
+      <section class="mb-20">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
+          <span>❓</span>
+          <span>Frequently Asked Questions</span>
+        </h2>
+        
+        <div class="space-y-4">
+          <!-- FAQ 1 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                What encryption algorithm does Moaiy use?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary">
+                Moaiy uses AES-256-GCM for symmetric encryption and RSA-4096 or Curve25519 for asymmetric encryption. 
+                All implementations follow the OpenPGP standard (RFC 4880) for maximum compatibility and security.
+              </p>
+            </div>
+          </details>
+          
+          <!-- FAQ 2 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                Is Moaiy really free?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary">
+                Yes! Moaiy is 100% free and open source (MIT license). There are no hidden fees, subscriptions, 
+                or premium tiers. All features are available to everyone.
+              </p>
+            </div>
+          </details>
+          
+          <!-- FAQ 3 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                Can I use Moaiy offline?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary">
+                Absolutely! Moaiy works completely offline. All encryption and decryption happens locally on your device. 
+                No internet connection required.
+              </p>
+            </div>
+          </details>
+          
+          <!-- FAQ 4 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                What if I forget my password?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary">
+                Unfortunately, there's no way to recover your data without your password or private key. This is by design - 
+                if we could recover your data, so could attackers. We strongly recommend backing up your keys and 
+                using a password manager.
+              </p>
+            </div>
+          </details>
+          
+          <!-- FAQ 5 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                Is Moaiy compatible with GPG?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary">
+                Yes! Moaiy uses the OpenPGP standard, so it's fully compatible with GPG, GPG Tools, and other 
+                OpenPGP implementations. You can encrypt with Moaiy and decrypt with GPG (and vice versa).
+              </p>
+            </div>
+          </details>
+          
+          <!-- FAQ 6 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                How do I share my public key?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary mb-3">
+                You can share your public key via:
+              </p>
+              <ul class="font-body text-text-secondary space-y-1">
+                <li class="flex items-start gap-2">
+                  <span class="text-accent-primary">•</span>
+                  <span>Email attachment</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-accent-primary">•</span>
+                  <span>Key server (keys.openpgp.org)</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-accent-primary">•</span>
+                  <span>Direct file transfer</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-accent-primary">•</span>
+                  <span>QR code (mobile)</span>
+                </li>
+              </ul>
+            </div>
+          </details>
+          
+          <!-- FAQ 7 -->
+          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
+            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">
+                Can I encrypt for multiple recipients?
+              </h3>
+              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
+            </summary>
+            <div class="px-6 pb-4">
+              <p class="font-body text-text-secondary">
+                Yes! You can encrypt a file for multiple recipients at once. Each recipient will be able to decrypt 
+                the file with their own private key. Use the <code class="text-accent-primary">-r</code> flag multiple times:
+              </p>
+              <div class="font-code text-sm bg-bg-tertiary rounded p-3 mt-3">
+                $ moaiy encrypt file.txt -r alice@example.com -r bob@example.com
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+      
+      <!-- Getting Help -->
+      <section>
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 flex items-center gap-3">
+          <span>💬</span>
+          <span>Need Help?</span>
+        </h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a
+            href="https://github.com/moaiy-com/moaiy-core/issues"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-all"
+          >
+            <div class="text-4xl mb-3">🐙</div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">
+              GitHub Issues
+            </h3>
+            <p class="font-body text-text-secondary text-sm">
+              Report bugs or request features
+            </p>
+          </a>
+          
+          <a
+            href="mailto:support@moaiy.com"
+            class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-all"
+          >
+            <div class="text-4xl mb-3">📧</div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">
+              Email Support
+            </h3>
+            <p class="font-body text-text-secondary text-sm">
+              support@moaiy.com
+            </p>
+          </a>
+          
+          <a
+            href="#"
+            class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-all"
+          >
+            <div class="text-4xl mb-3">💬</div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">
+              Discord Community
+            </h3>
+            <p class="font-body text-text-secondary text-sm">
+              Join the discussion
+            </p>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>
