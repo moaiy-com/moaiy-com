@@ -39,9 +39,6 @@ export default function HeroScene() {
           if (context) {
             console.log('Drawing buffer:', context.drawingBufferWidth, 'x', context.drawingBufferHeight);
           }
-          
-          // Force render
-          gl.render(gl.domElement, gl.domElement);
         }}
       >
         <Suspense fallback={null}>
