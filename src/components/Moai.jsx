@@ -64,21 +64,21 @@ export default function Moai() {
     new THREE.Vector3(0.25, -0.05, 0.76),
   ]), []);
   
-  // Animation loop
-  useFrame((state, delta) => {
+  const targetBreathY = useRef(0);
+  
+  useFrame((state) => {
     if (!moaiRef.current) return;
     
     const time = state.clock.elapsedTime;
+    const targetY = Math.sin(time * 0.5) * 0.02;
     
-    // Subtle breathing animation
-    moaiRef.current.position.y = Math.sin(time * 0.5) * 0.02;
+    targetBreathY.current += (targetY - targetBreathY.current) * 0.05;
+    moaiRef.current.position.y = targetBreathY.current;
     
-    // Pulsing glow effect
     if (glowRef.current) {
       glowRef.current.material.opacity = 0.06 + Math.sin(time * 2) * 0.02;
     }
     
-    // Smile glow animation
     if (smileRef.current) {
       smileRef.current.material.emissiveIntensity = 0.3 + Math.sin(time * 1.5) * 0.1;
     }

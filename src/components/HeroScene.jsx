@@ -1,24 +1,25 @@
 import { Canvas } from '@react-three/fiber';
-import { Suspense, useRef } from 'react';
+import { Suspense } from 'react';
+import Moai from './Moai.jsx';
+import WeatherSystem from './WeatherSystem.jsx';
 
-/**
- * Simple test cube
- */
-function TestCube() {
-  const meshRef = useRef();
-
+function SceneLighting() {
   return (
-    <mesh ref={meshRef} position={[0, 0, 0]}>
-      <boxGeometry args={[2, 2, 2]} />
-      <meshStandardMaterial color="#4ECDC4" />
-    </mesh>
+    <>
+      <ambientLight intensity={0.4} />
+      <directionalLight 
+        position={[10, 10, 5]} 
+        intensity={0.8} 
+      />
+      <pointLight 
+        position={[-10, -10, -5]} 
+        intensity={0.3} 
+        color="#4ECDC4" 
+      />
+    </>
   );
 }
 
-/**
- * Hero Scene Component - TEST VERSION
- * Uses minimal cube instead of Moai
- */
 export default function HeroScene() {
   return (
     <div style={{ 
@@ -39,24 +40,11 @@ export default function HeroScene() {
           antialias: true,
           alpha: false
         }}
-        onCreated={({ gl }) => {
-          console.log('✅ WebGL context created');
-          console.log('Canvas size:', gl.domElement.width, 'x', gl.domElement.height);
-          console.log('Renderer info:', gl.info);
-          
-          const context = gl.getContext();
-          if (context) {
-            console.log('Drawing buffer:', context.drawingBufferWidth, 'x', context.drawingBufferHeight);
-          }
-        }}
       >
         <Suspense fallback={null}>
-          {/* Full intensity lights like test page */}
-          <ambientLight intensity={1.0} />
-          <directionalLight position={[10, 10, 5]} intensity={1.0} />
-          
-          {/* Test cube instead of Moai */}
-          <TestCube />
+          <SceneLighting />
+          <WeatherSystem />
+          <Moai />
         </Suspense>
       </Canvas>
     </div>
