@@ -18,7 +18,7 @@ export default function HeroScene() {
       pointerEvents: 'none'
     }}>
       <Canvas
-        camera={{ position: [0, 0, 8], fov: 50 }}
+        camera={{ position: [0, 0, 5], fov: 75 }}
         style={{ 
           background: 'linear-gradient(180deg, #0A0E27 0%, #151B3B 50%, #1E2545 100%)',
           width: '100%',
@@ -43,9 +43,9 @@ export default function HeroScene() {
       >
         <Suspense fallback={null}>
           {/* Lighting system */}
-          <ambientLight intensity={0.6} />
-          <directionalLight position={[10, 10, 5]} intensity={0.8} />
-          <pointLight position={[-10, -10, -5]} intensity={0.4} color="#4ECDC4" />
+          <ambientLight intensity={1.0} />
+          <directionalLight position={[10, 10, 5]} intensity={1.0} />
+          <pointLight position={[-10, -10, -5]} intensity={0.5} color="#4ECDC4" />
           
           {/* Moai statue */}
           <Moai />
