@@ -2,7 +2,10 @@ import { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
-// 天气配置
+/**
+ * Weather Configuration
+ * 7 weather types, each lasting 10 seconds (70s total cycle)
+ */
 const WEATHERS = [
   { name: 'day', duration: 10000, bgGradient: ['#87CEEB', '#98D8C8', '#7CB342'] },
   { name: 'night', duration: 10000, bgGradient: ['#0A0E27', '#151B3B', '#1A1F3A'] },
@@ -13,6 +16,16 @@ const WEATHERS = [
   { name: 'tornado', duration: 10000, bgGradient: ['#374151', '#1F2937', '#111827'] },
 ];
 
+/**
+ * Weather System Component
+ * Manages weather transitions and particle effects
+ * 
+ * Features:
+ * - 7 weather types cycling automatically
+ * - 10 seconds per weather (70s total cycle)
+ * - Particle effects for rain, snow, wind, etc.
+ * - Smooth transitions between weathers
+ */
 export default function WeatherSystem() {
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
   const timerRef = useRef(0);
@@ -20,7 +33,7 @@ export default function WeatherSystem() {
   
   const currentWeather = WEATHERS[currentWeatherIndex];
   
-  // 天气切换
+  // Auto-switch weather based on duration
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWeatherIndex((prev) => (prev + 1) % WEATHERS.length);
@@ -29,7 +42,7 @@ export default function WeatherSystem() {
     return () => clearInterval(interval);
   }, [currentWeatherIndex, currentWeather.duration]);
   
-  // 创建粒子
+  // Create particle system
   const particles = useMemo(() => {
     const geometry = new THREE.BufferGeometry();
     const positions = [];
@@ -55,24 +68,24 @@ export default function WeatherSystem() {
     return new THREE.Points(geometry, material);
   }, []);
   
-  // 动画
+  // Animation loop
   useFrame((state, delta) => {
     if (!particlesRef.current) return;
     
     const positions = particlesRef.current.geometry.attributes.position;
     const weather = currentWeather.name;
     
-    // 根据天气类型更新粒子
+    // Update particles based on weather type
     if (weather === 'night') {
-      // 星星闪烁
+      // Twinkling stars
       particlesRef.current.material.opacity = 0.8;
       particlesRef.current.material.color.setHex(0xFFFFFF);
       
       for (let i = 0; i < positions.count; i++) {
-        positions.array[i * 3 + 1] += 0; // 静止
+        positions.array[i * 3 + 1] += 0; // Static
       }
     } else if (weather === 'rain') {
-      // 雨滴下落
+      // Falling raindrops
       particlesRef.current.material.opacity = 0.7;
       particlesRef.current.material.color.setHex(0x9CA3AF);
       
@@ -84,7 +97,7 @@ export default function WeatherSystem() {
         }
       }
     } else if (weather === 'snow') {
-      // 雪花飘落
+      // Falling snowflakes
       particlesRef.current.material.opacity = 0.9;
       particlesRef.current.material.color.setHex(0xFFFFFF);
       
@@ -97,7 +110,7 @@ export default function WeatherSystem() {
         }
       }
     } else if (weather === 'wind') {
-      // 风粒子
+      // Wind particles
       particlesRef.current.material.opacity = 0.6;
       particlesRef.current.material.color.setHex(0xD1D5DB);
       
@@ -109,7 +122,7 @@ export default function WeatherSystem() {
         }
       }
     } else {
-      // 其他天气：淡出粒子
+      // Other weather types: fade out particles
       particlesRef.current.material.opacity *= 0.95;
     }
     
@@ -118,13 +131,13 @@ export default function WeatherSystem() {
   
   return (
     <>
-      {/* 背景平面 */}
+      {/* Background plane */}
       <mesh position={[0, 0, -15]}>
         <planeGeometry args={[50, 30]} />
         <meshBasicMaterial color={currentWeather.bgGradient[1]} />
       </mesh>
       
-      {/* 粒子 */}
+      {/* Particles */}
       <primitive ref={particlesRef} object={particles} />
     </>
   );

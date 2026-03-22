@@ -5,14 +5,14 @@ export default {
     extend: {
       colors: {
         // Moaiy Brand Colors
-        'bg-primary': '#0A0E27',
-        'bg-secondary': '#151B3B',
-        'bg-tertiary': '#1E2545',
-        'accent-primary': '#4ECDC4',
-        'accent-secondary': '#45B7D1',
-        'text-primary': '#F9FAFB',
-        'text-secondary': '#D1D5DB',
-        'text-tertiary': '#9CA3AF',
+        'bg-primary': '#0A0E27',      // Deep space blue
+        'bg-secondary': '#151B3B',    // Midnight blue
+        'bg-tertiary': '#1E2545',     // Dark purple blue
+        'accent-primary': '#4ECDC4',  // Mint green ⭐
+        'accent-secondary': '#45B7D1', // Sky blue
+        'text-primary': '#F9FAFB',    // Almost white
+        'text-secondary': '#D1D5DB',  // Light gray
+        'text-tertiary': '#9CA3AF',   // Medium gray
       },
       fontFamily: {
         'heading': ['Space Grotesk', 'sans-serif'],

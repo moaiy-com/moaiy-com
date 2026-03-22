@@ -2,142 +2,142 @@
 
 > **Moaiy - Encryption Made Simple**
 >
-> 现代WEB4风格官方网站，配备3D动画摩埃石像和动态天气系统
+> Modern WEB4-style official website with 3D animated Moai statue and dynamic weather system
 
-## 🎨 特色
+## 🎨 Features
 
-- **🕶️ 戴墨镜的摩埃石像** - 简约现代 + 神秘感
-- **🌤️ 7种天气循环** - 70秒完整循环，自动播放
-- **⚡ 极致性能** - Astro静态生成 + Three.js优化
-- **📱 响应式设计** - 桌面60FPS / 移动30FPS
+- **🕶️ Sunglasses-Wearing Moai Statue** - Minimalist modern + mysterious
+- **🌤️ 7 Weather Cycles** - 70-second complete loop, auto-play
+- **⚡ Extreme Performance** - Astro static generation + Three.js optimization
+- **📱 Responsive Design** - 60 FPS desktop / 30 FPS mobile
 
-## 🛠️ 技术栈
+## 🛠️ Tech Stack
 
-- **框架**: [Astro 4.x](https://astro.build)
-- **样式**: [Tailwind CSS 3.x](https://tailwindcss.com)
+- **Framework**: [Astro 4.x](https://astro.build)
+- **Styling**: [Tailwind CSS 3.x](https://tailwindcss.com)
 - **3D**: [Three.js](https://threejs.org) + [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber)
-- **动画**: [GSAP](https://greensock.com/gsap/)
-- **部署**: GitHub Pages
+- **Animation**: [GSAP](https://greensock.com/gsap/)
+- **Deployment**: GitHub Pages
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 安装依赖
+### Install Dependencies
 
 \`\`\`bash
 pnpm install
 \`\`\`
 
-### 开发
+### Development
 
 \`\`\`bash
 pnpm dev
 \`\`\`
 
-访问 http://localhost:4321
+Visit http://localhost:4321
 
-### 构建
+### Build
 
 \`\`\`bash
 pnpm build
 \`\`\`
 
-### 预览
+### Preview
 
 \`\`\`bash
 pnpm preview
 \`\`\`
 
-## 📁 项目结构
+## 📁 Project Structure
 
 \`\`\`
 moaiy-com/
 ├── src/
 │   ├── components/
-│   │   ├── HeroScene.jsx      # 3D场景
-│   │   ├── Moai.jsx           # 摩埃石像
-│   │   └── WeatherSystem.jsx  # 天气系统
+│   │   ├── HeroScene.jsx      # 3D scene
+│   │   ├── Moai.jsx           # Moai statue
+│   │   └── WeatherSystem.jsx  # Weather system
 │   ├── layouts/
-│   │   └── BaseLayout.astro   # 基础布局
+│   │   └── BaseLayout.astro   # Base layout
 │   ├── pages/
-│   │   └── index.astro        # 首页
+│   │   └── index.astro        # Homepage
 │   └── styles/
-│       └── global.css         # 全局样式
-├── public/                    # 静态资源
-├── astro.config.mjs           # Astro配置
-├── tailwind.config.mjs        # Tailwind配置
+│       └── global.css         # Global styles
+├── public/                    # Static assets
+├── astro.config.mjs           # Astro config
+├── tailwind.config.mjs        # Tailwind config
 └── package.json
 \`\`\`
 
-## 🗿 摩埃石像设计
+## 🗿 Moai Statue Design
 
-### 外观特征
-- **风格**: 简约现代 + 略带卡通
-- **表情**: 轻微上扬的微笑
-- **配饰**: 时髦墨镜（薄荷绿渐变镜片）
-- **光晕**: 薄荷绿品牌色
+### Appearance
+- **Style**: Minimalist modern + slightly cartoonish
+- **Expression**: Slight upward smile
+- **Accessory**: Stylish sunglasses (mint green gradient lenses)
+- **Glow**: Mint green brand color
 
-### 墨镜设计
-- **款式**: 圆角方形（现代简约）
-- **镜片**: 薄荷绿渐变（呼应品牌色）
-- **效果**: 动态反光
-- **神秘感**: ⭐⭐⭐⭐⭐
+### Sunglasses Design
+- **Style**: Rounded square (modern minimalist)
+- **Lenses**: Mint green gradient (matches brand color)
+- **Effect**: Dynamic reflection
+- **Mystery Level**: ⭐⭐⭐⭐⭐
 
-## 🌤️ 天气系统（7x10秒）
+## 🌤️ Weather System (7×10s)
 
-1. **☀️ 白天** (0-10s) - 白云飘，绿草地
-2. **🌙 黑夜** (10-20s) - 星空闪烁
-3. **💨 刮风** (20-30s) - 强风粒子
-4. **🌧️ 下雨** (30-40s) - 雨滴落下
-5. **⛈️ 雷电** (40-50s) - 闪电雷鸣
-6. **❄️ 暴风雪** (50-60s) - 大雪纷飞
-7. **🌪️ 龙卷风** (60-70s) - 极端风暴
+1. **☀️ Day** (0-10s) - White clouds, green grass
+2. **🌙 Night** (10-20s) - Starry sky
+3. **💨 Wind** (20-30s) - Strong wind particles
+4. **🌧️ Rain** (30-40s) - Falling raindrops
+5. **⛈️ Lightning** (40-50s) - Thunder and lightning
+6. **❄️ Blizzard** (50-60s) - Heavy snowfall
+7. **🌪️ Tornado** (60-70s) - Extreme storm
 
-→ **自动循环，无限播放**
+→ **Auto-loop, infinite playback**
 
-## 🎨 品牌色
+## 🎨 Brand Colors
 
 \`\`\`css
-/* 主色调 */
---bg-primary: #0A0E27      /* 深空蓝 */
---bg-secondary: #151B3B    /* 午夜蓝 */
---bg-tertiary: #1E2545     /* 暗紫蓝 */
+/* Primary Colors */
+--bg-primary: #0A0E27      /* Deep space blue */
+--bg-secondary: #151B3B    /* Midnight blue */
+--bg-tertiary: #1E2545     /* Dark purple blue */
 
-/* 强调色 */
---accent-primary: #4ECDC4  /* 薄荷绿 ⭐ */
---accent-secondary: #45B7D1 /* 天空蓝 */
+/* Accent Colors */
+--accent-primary: #4ECDC4  /* Mint green ⭐ */
+--accent-secondary: #45B7D1 /* Sky blue */
 
-/* 文字色 */
---text-primary: #F9FAFB    /* 几乎白 */
---text-secondary: #D1D5DB  /* 浅灰 */
---text-tertiary: #9CA3AF   /* 中灰 */
+/* Text Colors */
+--text-primary: #F9FAFB    /* Almost white */
+--text-secondary: #D1D5DB  /* Light gray */
+--text-tertiary: #9CA3AF   /* Medium gray */
 \`\`\`
 
-## 📊 性能指标
+## 📊 Performance Metrics
 
-### 桌面端
+### Desktop
 - ✅ FPS: 60
-- ✅ 内存: < 80MB
+- ✅ Memory: < 80MB
 - ✅ GPU: < 40%
-- ✅ 加载时间: < 3秒
+- ✅ Load Time: < 3s
 
-### 移动端
+### Mobile
 - ✅ FPS: 30
-- ✅ 内存: < 40MB
+- ✅ Memory: < 40MB
 - ✅ GPU: < 25%
-- ✅ 加载时间: < 4秒
+- ✅ Load Time: < 4s
 
-## 📝 开发进度
+## 📝 Development Progress
 
-- [x] 项目初始化
-- [x] 基础布局
-- [x] 摩埃石像3D模型
-- [x] 天气系统框架
-- [ ] 7种天气完整实现
-- [ ] 移动端优化
-- [ ] 其他页面（Download, Docs等）
-- [ ] 部署上线
+- [x] Project initialization
+- [x] Base layout
+- [x] Moai statue 3D model
+- [x] Weather system framework
+- [ ] Complete 7 weather implementations
+- [ ] Mobile optimization
+- [ ] Other pages (Download, Docs, etc.)
+- [ ] Deployment
 
-## 🚀 部署
+## 🚀 Deployment
 
 ### GitHub Pages
 
@@ -145,14 +145,14 @@ moaiy-com/
 pnpm build
 \`\`\`
 
-将 \`dist/\` 目录部署到 GitHub Pages
+Deploy the \`dist/\` directory to GitHub Pages
 
-## 📄 许可证
+## 📄 License
 
 MIT © Moaiy
 
 ---
 
 **🌐 Website**: https://moaiy.com  
-**🐙 GitHub**: https://github.com/tau-gast/moaiy-com  
+**🐙 GitHub**: https://github.com/moaiy-com/moaiy-com  
 **📧 Contact**: support@moaiy.com

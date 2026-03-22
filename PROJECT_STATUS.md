@@ -1,22 +1,22 @@
-# 🗿 Moaiy官方网站 - 项目状态
+# 🗿 Moaiy Official Website - Project Status
 
-> **创建时间**: 2026-03-22 11:12  
-> **更新时间**: 2026-03-22 11:38  
-> **仓库**: https://github.com/moaiy-com/moaiy-com ✅ (已修正)  
-> **状态**: ✅ 项目初始化完成
+> **Created**: 2026-03-22 11:12  
+> **Updated**: 2026-03-22 11:43  
+> **Repository**: https://github.com/moaiy-com/moaiy-com ✅  
+> **Status**: ✅ Project initialized
 
 ---
 
-## ✅ 已完成
+## ✅ Completed
 
-### **1. 项目初始化**
+### **1. Project Initialization**
 ```
-✅ GitHub仓库创建
-   - 仓库: moaiy-com/moaiy-com ✅
-   - 组织: moaiy-com
-   - Git推送: 完成
+✅ GitHub repository created
+   - Repo: moaiy-com/moaiy-com ✅
+   - Organization: moaiy-com
+   - Git push: Complete
 
-✅ Astro项目配置
+✅ Astro project configured
    - package.json
    - astro.config.mjs
    - tailwind.config.mjs
@@ -24,81 +24,69 @@
    - .gitignore
 ```
 
-### **2. 基础结构**
+### **2. Basic Structure**
 ```
-✅ 目录结构
+✅ Directory structure
    src/
    ├── components/
-   │   ├── HeroScene.jsx       # 3D场景容器
-   │   ├── Moai.jsx            # 摩埃石像3D模型
-   │   └── WeatherSystem.jsx   # 天气系统
+   │   ├── HeroScene.jsx       # 3D scene container
+   │   ├── Moai.jsx            # Moai statue 3D model
+   │   └── WeatherSystem.jsx   # Weather system
    ├── layouts/
-   │   └── BaseLayout.astro    # 基础布局
+   │   └── BaseLayout.astro    # Base layout
    ├── pages/
-   │   └── index.astro         # 首页
+   │   └── index.astro         # Homepage
    └── styles/
-       └── global.css          # (待创建)
+       └── global.css          # (To be created)
 
-✅ 公共资源
+✅ Public assets
    public/
-   └── favicon.svg             # 网站图标
+   └── favicon.svg             # Website icon
 ```
 
-### **3. 核心组件**
+### **3. Core Components**
 ```
-✅ BaseLayout.astro
-   - 响应式HTML结构
-   - SEO meta标签
-   - Google Fonts集成
-   - 全局样式
-
-✅ index.astro (首页)
-   - Hero Section (3D场景占位)
-   - Features Section (3个核心价值)
-   - CTA Section (下载按钮)
-   - 响应式设计
-
 ✅ HeroScene.jsx
-   - Three.js Canvas
-   - 光照系统
-   - Suspense加载
+   - Three.js Canvas container
+   - Lighting system
+   - Suspense loading
 
-✅ Moai.jsx
-   - 摩埃石像3D模型
-   - 墨镜（薄荷绿渐变镜片）
-   - 微笑弧线
-   - 薄荷绿光晕
-   - 呼吸动画
+✅ Moai.jsx 🗿
+   - Moai statue 3D model
+   - Sunglasses (mint green gradient lenses) ⭐
+   - Smile curve
+   - Mint green glow
+   - Breathing animation
 
-✅ WeatherSystem.jsx
-   - 7种天气配置
-   - 自动切换逻辑（10秒/天气）
-   - 粒子系统框架
-   - 支持: night/rain/snow/wind
+✅ WeatherSystem.jsx 🌤️
+   - 7 weather configurations
+   - Auto-switch logic (10s/weather)
+   - Particle system framework
+   - Supports: night/rain/snow/wind
 ```
 
-### **4. 文档**
+### **4. Documentation**
 ```
 ✅ README.md
-   - 项目介绍
-   - 技术栈说明
-   - 快速开始指南
-   - 项目结构
-   - 品牌色定义
-   - 性能指标
+   - Project introduction
+   - Tech stack
+   - Quick start guide
+   - Project structure
+   - Brand colors
+   - Performance metrics
 ```
 
 ---
 
-## ⏳ 进行中
+## ⏳ In Progress
 
-### **1. 依赖安装** ✅
+### **1. Dependency Installation** ✅
 ```
-✅ 已完成: pnpm install
-✅ 安装时间: 26.4秒
-✅ 依赖包数: 459个
+✅ Complete: pnpm install
+✅ Install time: 26.4s
+✅ Packages: 459
 
-已安装核心依赖:
+Installed core dependencies:
    - astro@4.16.19
    - react@18.3.1
    - three@0.159.0
@@ -110,60 +98,59 @@
 
 ---
 
-## 📋 待办事项
+## 📋 TODO
 
-### **高优先级**
+### **High Priority**
 ```
-□ 安装依赖 (pnpm install)
-□ 本地测试 (pnpm dev)
-□ 修复可能的问题
-□ 完善3D场景
+□ Install dependencies (pnpm install) ✅
+□ Local testing (pnpm dev)
+□ Fix potential issues
+□ Improve 3D scene
 ```
 
-### **中优先级**
+### **Medium Priority**
 ```
-□ 完善天气系统
-   - 白天场景（太阳+云朵+草地）
-   - 雷电场景（闪电效果）
-   - 龙卷风场景（旋转粒子）
+□ Complete weather system
+   - Day scene (sun + clouds + grass)
+   - Lightning scene (flash effects)
+   - Tornado scene (rotating particles)
 
-□ 创建其他页面
+□ Create other pages
    - /download
    - /features
    - /security
    - /docs
    - /about
 
-□ 移动端优化
-   - 性能降级
-   - 触摸交互
+□ Mobile optimization
+   - Performance downgrade
+   - Touch interaction
 ```
 
-### **低优先级**
+### **Low Priority**
 ```
-□ SEO优化
-□ 性能优化
-□ 部署配置
-□ 迁移到Moaiy组织
+□ SEO optimization
+□ Performance tuning
+□ Deployment configuration
 ```
 
 ---
 
-## 🎨 设计确认
+## 🎨 Design Confirmed
 
-### **摩埃石像** ✅
-- 简约现代 + 略带卡通
-- 轻微微笑
-- 无眼睛
-- 戴时髦墨镜（薄荷绿渐变）
+### **Moai Statue** ✅
+- Minimalist modern + slightly cartoonish
+- Slight smile
+- No eyes
+- Stylish sunglasses (mint green gradient)
 
-### **天气循环** ✅
-- 7种天气
-- 每种10秒（共70秒）
-- 自动循环
-- 1秒过渡
+### **Weather Cycle** ✅
+- 7 weather types
+- 10s each (70s total)
+- Auto-loop
+- 1s transition
 
-### **技术栈** ✅
+### **Tech Stack** ✅
 - Astro 4.x
 - Tailwind CSS 3.x
 - Three.js + @react-three/fiber
@@ -171,66 +158,67 @@
 
 ---
 
-## 🐛 已知问题
+## 🐛 Known Issues
 
 ```
-1. Moai.jsx中的geometry定义有问题
-   - 位置: <mesh>组件内
-   - 问题: 缺少实际的geometry子元素
-   - 解决: 需要修复geometry定义
+1. Geometry definition issue in Moai.jsx
+   - Location: Inside <mesh> component
+   - Problem: Missing actual geometry child elements
+   - Solution: Need to fix geometry definition
 
-2. WeatherSystem.jsx需要优化
-   - 背景平面颜色需要动态渐变
-   - 粒子系统需要完善
+2. WeatherSystem.jsx needs optimization
+   - Background plane color needs dynamic gradient
+   - Particle system needs completion
 
-3. 缺少global.css文件
-   - 需要创建
-```
-
----
-
-## 📊 项目统计
-
-```
-文件总数: 12
-代码行数: ~500行
-组件数量: 3个
-页面数量: 1个
-
-完成度: 40%
+3. Missing global.css file
+   - Needs to be created
 ```
 
 ---
 
-## 🚀 下一步
+## 📊 Project Statistics
 
-### **立即执行**
 ```
-1. 安装依赖
+✅ Total files: 13
+✅ Lines of code: ~1000
+✅ Components: 3
+✅ Pages: 1
+✅ Dependencies: 459
+
+Completion: 40%
+```
+
+---
+
+## 🚀 Next Steps
+
+### **Immediate Actions**
+```
+1. Install dependencies
    cd /home/taugast/.openclaw/workspace-coding/moaiy-com
    pnpm install
 
-2. 修复Moai.jsx的geometry问题
+2. Fix Moai.jsx geometry issue
 
-3. 本地测试
+3. Local testing
    pnpm dev
 
-4. 完善天气系统
+4. Improve weather system
 
-5. Git提交
+5. Git commit
 ```
 
 ---
 
-## 💡 备注
+## 💡 Notes
 
 ```
-✅ 仓库位置已修正: moaiy-com/moaiy-com
-✅ Git推送完成
-⏳ 域名 moaiy.com 需要配置
-⏳ 需要准备实际的素材（Logo、图片等）
+✅ Repository location corrected: moaiy-com/moaiy-com
+✅ Git push complete
+⏳ Domain moaiy.com needs configuration
+⏳ Need to prepare actual assets (Logo, images, etc.)
 ```
 
 ---
 
-_更新时间: 2026-03-22 11:15 (Asia/Shanghai)_
+_Last updated: 2026-03-22 11:43 (Asia/Shanghai)_

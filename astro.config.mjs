@@ -15,6 +15,7 @@ export default defineConfig({
   },
   vite: {
     ssr: {
+      // Mark Three.js packages as noExternal for SSR compatibility
       noExternal: ['@react-three/fiber', '@react-three/drei', 'three']
     }
   }

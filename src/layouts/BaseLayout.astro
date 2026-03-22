@@ -4,11 +4,11 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Moaiy - Encryption Made Simple. 安全简单的加密工具，为每个人设计。" } = Astro.props;
+const { title, description = "Moaiy - Encryption Made Simple. Secure and easy-to-use encryption tool designed for everyone." } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -16,12 +16,12 @@ const { title, description = "Moaiy - Encryption Made Simple. 安全简单的加
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     
-    <!-- Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- SEO -->
+    <!-- SEO Meta Tags -->
     <title>{title}</title>
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -51,12 +51,12 @@ const { title, description = "Moaiy - Encryption Made Simple. 安全简单的加
     @apply min-h-screen;
   }
   
-  /* Selection */
+  /* Text Selection */
   ::selection {
     @apply bg-accent-primary text-bg-primary;
   }
   
-  /* Scrollbar */
+  /* Custom Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
