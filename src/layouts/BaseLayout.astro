@@ -31,6 +31,15 @@ const { title, description = "Moaiy - Encryption Made Simple. Secure and easy-to
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#0A0E27" />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-1EFMK5162Q"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-1EFMK5162Q');
+    </script>
   </head>
   <body class="bg-bg-primary text-text-primary font-body antialiased">
     <slot />
