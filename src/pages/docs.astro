@@ -240,16 +240,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             </h3>
             <div class="font-code text-sm">
               <div class="text-text-tertiary mb-2">POST /api/v1/encrypt</div>
-              <pre class="bg-bg-primary rounded p-4 overflow-x-auto">
-{
+              <pre class="bg-bg-primary rounded p-4 overflow-x-auto">{`{
   "data": "base64-encoded-data",
   "recipients": ["alice@example.com"],
   "options": {
     "algorithm": "AES-256-GCM",
     "compress": true
   }
-}
-              </pre>
+}`}</pre>
             </div>
           </div>
           
