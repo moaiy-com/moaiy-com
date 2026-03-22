@@ -12,14 +12,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <!-- Instructions -->
       <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800 mb-8">
         <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
-          📋 Diagnostic Instructions
+          📋 How to Use
         </h2>
-        <ol class="font-body text-text-secondary space-y-2">
-          <li>1. Open the homepage: <a href="https://moaiy.com" target="_blank" class="text-accent-primary hover:underline">https://moaiy.com</a></li>
-          <li>2. Open browser console (F12 or Cmd+Option+I)</li>
-          <li>3. Copy and paste the diagnostic script below</li>
-          <li>4. Press Enter to run</li>
-          <li>5. Share the results with us</li>
+        <ol class="font-body text-text-secondary space-y-2 list-decimal list-inside">
+          <li>Open the homepage: <a href="https://moaiy.com" class="text-accent-primary hover:underline">https://moaiy.com</a></li>
+          <li>Open browser console (F12)</li>
+          <li>Copy the diagnostic script below</li>
+          <li>Paste and press Enter</li>
+          <li>Share the output with us</li>
         </ol>
       </div>
       
@@ -28,138 +28,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
           📜 Diagnostic Script
         </h2>
-        <div class="relative">
-          <button
-            id="copy-button"
-            class="absolute top-2 right-2 px-4 py-2 bg-accent-primary text-white text-sm font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
-          >
-            Copy
-          </button>
-          <pre class="bg-bg-primary rounded-lg p-4 overflow-x-auto text-xs"><code id="diagnostic-script">// ========================================
-// Moaiy 3D Scene Diagnostic Script
-// ========================================
-
-console.log('🔍 Starting diagnostic...\n');
-
-const results = [];
-
-// 1. Browser Information
-results.push('=== BROWSER INFO ===');
-results.push(`User Agent: ${navigator.userAgent}`);
-results.push(`Platform: ${navigator.platform}`);
-results.push(`Cookies: ${navigator.cookieEnabled ? '✅ Enabled' : '❌ Disabled'}`);
-
-// 2. WebGL Support
-results.push('\n=== WEBGL SUPPORT ===');
-const testCanvas = document.createElement('canvas');
-const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
-if (gl) {
-  const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-  results.push('WebGL: ✅ Supported');
-  results.push(`Version: ${gl.getParameter(gl.VERSION)}`);
-  results.push(`Vendor: ${gl.getParameter(gl.VENDOR)}`);
-  if (debugInfo) {
-    results.push(`Renderer: ${gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)}`);
-  }
-  results.push(`Max Texture Size: ${gl.getParameter(gl.MAX_TEXTURE_SIZE)}`);
-} else {
-  results.push('WebGL: ❌ Not Supported');
-}
-
-// 3. Canvas Status
-results.push('\n=== CANVAS STATUS ===');
-const heroCanvas = document.querySelector('#hero-canvas');
-const canvas = document.querySelector('#hero-canvas canvas');
-
-if (heroCanvas) {
-  results.push('Container: ✅ Found');
-  if (canvas) {
-    results.push('Canvas: ✅ Found');
-    results.push(`Canvas Width: ${canvas.width}`);
-    results.push(`Canvas Height: ${canvas.height}`);
-    results.push(`Display: ${getComputedStyle(canvas).display}`);
-    results.push(`Visibility: ${getComputedStyle(canvas).visibility}`);
-    results.push(`Opacity: ${getComputedStyle(canvas).opacity}`);
-    results.push(`Z-Index: ${getComputedStyle(canvas).zIndex}`);
-    
-    // Check if canvas has content
-    try {
-      const ctx = canvas.getContext('webgl') || canvas.getContext('2d');
-      if (ctx) {
-        results.push('Context: ✅ Created');
-      } else {
-        results.push('Context: ❌ Failed');
-      }
-    } catch (e) {
-      results.push(`Context: ❌ Error - ${e.message}`);
-    }
-  } else {
-    results.push('Canvas: ❌ Not Found');
-    results.push('Container HTML (first 200 chars):');
-    results.push(heroCanvas.outerHTML.substring(0, 200));
-  }
-} else {
-  results.push('Container: ❌ Not Found');
-  results.push('This might not be the homepage');
-}
-
-// 4. Component Status
-results.push('\n=== COMPONENT STATUS ===');
-const island = document.querySelector('astro-island');
-if (island) {
-  results.push('astro-island: ✅ Found');
-  results.push(`UID: ${island.getAttribute('uid')}`);
-  results.push(`Component URL: ${island.getAttribute('component-url')}`);
-  results.push(`Renderer URL: ${island.getAttribute('renderer-url')}`);
-  results.push(`Client: ${island.getAttribute('client')}`);
-  results.push(`SSR: ${island.hasAttribute('ssr') ? 'Yes' : 'No'}`);
-  
-  // Check hydration after delay
-  setTimeout(() => {
-    const stillSSR = island.hasAttribute('ssr');
-    console.log(`\nHydration Status (after 5s): ${stillSSR ? '❌ Not Hydrated' : '✅ Hydrated'}`);
-  }, 5000);
-} else {
-  results.push('astro-island: ❌ Not Found');
-}
-
-// 5. Check React Root
-results.push('\n=== REACT STATUS ===');
-const reactRoot = document.querySelector('[data-reactroot]');
-results.push(`React Root: ${reactRoot ? '✅ Found' : '❌ Not Found'}`);
-
-// 6. Check Three.js
-results.push('\n=== THREE.JS STATUS ===');
-if (typeof THREE !== 'undefined') {
-  results.push('Three.js: ✅ Loaded');
-  results.push(`THREE.REVISION: ${THREE.REVISION}`);
-} else {
-  results.push('Three.js: ❌ Not Loaded');
-}
-
-// 7. Network Check
-results.push('\n=== NETWORK CHECK ===');
-results.push('Checking script loading status...');
-const scripts = Array.from(document.querySelectorAll('script[src*="HeroScene"], script[src*="client"]'));
-if (scripts.length > 0) {
-  results.push(`Found ${scripts.length} related script(s)`);
-  scripts.forEach(s => {
-    results.push(`  - ${s.src.split('/').pop()}`);
-  });
-} else {
-  results.push('No HeroScene or client scripts found');
-}
-
-// Print all results
-console.log(results.join('\n'));
-
-// Summary
-console.log('\n========================================');
-console.log('📊 DIAGNOSTIC COMPLETE');
-console.log('========================================');
-console.log('\n✅ If all checks passed, the 3D scene should be visible');
-console.log('❌ If any checks failed, share the output above');
-console.log('\n💡 Tip: If Canvas width/height is 0, try refreshing the page');</code></pre>
+        <button
+          id="copy-button"
+          class="mb-4 px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+        >
+          📋 Copy Script
+        </button>
+        <div class="bg-bg-primary rounded-lg p-4 font-mono text-xs text-text-secondary overflow-x-auto whitespace-pre-wrap break-all">
+          <div id="script-display"></div>
         </div>
       </div>
       
@@ -168,64 +44,18 @@ console.log('\n💡 Tip: If Canvas width/height is 0, try refreshing the page');
         <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
           ✅ Expected Results
         </h2>
-        <div class="font-code text-sm text-text-secondary space-y-2">
-          <div>✅ Container: Found</div>
-          <div>✅ Canvas: Found</div>
-          <div>✅ Canvas Width: {'>'} 0 (e.g., 1920)</div>
-          <div>✅ Canvas Height: {'>'} 0 (e.g., 1080)</div>
-          <div>✅ WebGL: Supported</div>
-          <div>✅ astro-island: Found</div>
-          <div>✅ Hydration: Complete (after 5s)</div>
-          <div>✅ Three.js: Loaded</div>
-        </div>
-      </div>
-      
-      <!-- Troubleshooting -->
-      <div class="bg-bg-secondary rounded-xl p-6 border border-gray-800">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">
-          🔧 Common Issues
-        </h2>
-        <div class="space-y-4">
-          <div>
-            <h3 class="font-heading text-lg font-semibold text-accent-primary mb-2">
-              Canvas Width/Height is 0
-            </h3>
-            <p class="font-body text-text-secondary text-sm">
-              Solution: The canvas hasn't initialized yet. Wait 5-10 seconds or refresh the page.
-            </p>
-          </div>
-          
-          <div>
-            <h3 class="font-heading text-lg font-semibold text-accent-primary mb-2">
-              WebGL Not Supported
-            </h3>
-            <p class="font-body text-text-secondary text-sm">
-              Solution: Update your browser or graphics driver. Try Chrome or Firefox.
-            </p>
-          </div>
-          
-          <div>
-            <h3 class="font-heading text-lg font-semibold text-accent-primary mb-2">
-              astro-island SSR: Yes (after 5s)
-            </h3>
-            <p class="font-body text-text-secondary text-sm">
-              Solution: JavaScript may not be loading. Check Network tab for failed scripts.
-            </p>
-          </div>
-          
-          <div>
-            <h3 class="font-heading text-lg font-semibold text-accent-primary mb-2">
-              Three.js Not Loaded
-            </h3>
-            <p class="font-body text-text-secondary text-sm">
-              Solution: Check Network tab. Look for HeroScene.*.js and client.*.js files.
-            </p>
-          </div>
-        </div>
+        <ul class="font-body text-text-secondary space-y-2">
+          <li>✅ Container: Found</li>
+          <li>✅ Canvas: Found</li>
+          <li>✅ Canvas Width: {'>'} 0</li>
+          <li>✅ Canvas Height: {'>'} 0</li>
+          <li>✅ WebGL: Supported</li>
+          <li>✅ Three.js: Loaded</li>
+        </ul>
       </div>
       
       <!-- Quick Links -->
-      <div class="mt-8 flex gap-4">
+      <div class="flex gap-4">
         <a
           href="https://moaiy.com"
           target="_blank"
@@ -245,27 +75,66 @@ console.log('\n💡 Tip: If Canvas width/height is 0, try refreshing the page');
   </main>
 </BaseLayout>
 
-<script is:inline>
-  // Copy button functionality
-  const copyButton = document.getElementById('copy-button');
-  const diagnosticScript = document.getElementById('diagnostic-script');
+<script define:vars={{ scriptText }}>
+  const diagnosticScript = `
+console.log('🔍 Moaiy 3D Diagnostic\\n');
+
+const results = [];
+
+// Browser Info
+results.push('=== BROWSER ===');
+results.push('UA: ' + navigator.userAgent);
+
+// WebGL
+results.push('\\n=== WEBGL ===');
+const canvas = document.createElement('canvas');
+const gl = canvas.getContext('webgl');
+results.push('WebGL: ' + (gl ? '✅ Supported' : '❌ Not Supported'));
+
+// Canvas Status
+results.push('\\n=== CANVAS ===');
+const heroCanvas = document.querySelector('#hero-canvas');
+const canvas3d = document.querySelector('#hero-canvas canvas');
+
+if (heroCanvas) {
+  results.push('Container: ✅ Found');
+  if (canvas3d) {
+    results.push('Canvas: ✅ Found');
+    results.push('Width: ' + canvas3d.width);
+    results.push('Height: ' + canvas3d.height);
+  } else {
+    results.push('Canvas: ❌ Not Found');
+  }
+} else {
+  results.push('Container: ❌ Not Found');
+}
+
+// Component Status
+results.push('\\n=== COMPONENTS ===');
+const island = document.querySelector('astro-island');
+results.push('astro-island: ' + (island ? '✅ Found' : '❌ Not Found'));
+
+console.log(results.join('\\n'));
+console.log('\\n✅ Diagnostic complete!');
+  `.trim();
   
+  // Display script
+  const scriptDisplay = document.getElementById('script-display');
+  scriptDisplay.textContent = diagnosticScript;
+  
+  // Copy button
+  const copyButton = document.getElementById('copy-button');
   copyButton.addEventListener('click', async () => {
     try {
-      await navigator.clipboard.writeText(diagnosticScript.textContent);
+      await navigator.clipboard.writeText(diagnosticScript);
       copyButton.textContent = '✅ Copied!';
-      copyButton.classList.add('bg-green-500');
-      
       setTimeout(() => {
-        copyButton.textContent = 'Copy';
-        copyButton.classList.remove('bg-green-500');
+        copyButton.textContent = '📋 Copy Script';
       }, 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
       copyButton.textContent = '❌ Failed';
-      
       setTimeout(() => {
-        copyButton.textContent = 'Copy';
+        copyButton.textContent = '📋 Copy Script';
       }, 2000);
     }
   });
