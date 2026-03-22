@@ -1,7 +1,8 @@
 # 🗿 Moaiy官方网站 - 项目状态
 
 > **创建时间**: 2026-03-22 11:12  
-> **仓库**: https://github.com/tau-gast/moaiy-com  
+> **更新时间**: 2026-03-22 11:38  
+> **仓库**: https://github.com/moaiy-com/moaiy-com ✅ (已修正)  
 > **状态**: ✅ 项目初始化完成
 
 ---
@@ -11,8 +12,9 @@
 ### **1. 项目初始化**
 ```
 ✅ GitHub仓库创建
-   - 仓库: tau-gast/moaiy-com (临时在个人账号下)
-   - 后续可迁移到Moaiy组织
+   - 仓库: moaiy-com/moaiy-com ✅
+   - 组织: moaiy-com
+   - Git推送: 完成
 
 ✅ Astro项目配置
    - package.json
@@ -90,18 +92,20 @@
 
 ## ⏳ 进行中
 
-### **1. 依赖安装**
+### **1. 依赖安装** ✅
 ```
-⏳ 需要运行: pnpm install
-⏳ 预计时间: 2-3分钟
-⏳ 依赖包括:
-   - astro@4.x
-   - react@18.x
-   - three@0.159.x
-   - @react-three/fiber
-   - @react-three/drei
-   - gsap
-   - tailwindcss
+✅ 已完成: pnpm install
+✅ 安装时间: 26.4秒
+✅ 依赖包数: 459个
+
+已安装核心依赖:
+   - astro@4.16.19
+   - react@18.3.1
+   - three@0.159.0
+   - @react-three/fiber@8.18.0
+   - @react-three/drei@9.122.0
+   - gsap@3.14.2
+   - tailwindcss@3.4.19
 ```
 
 ---
@@ -221,10 +225,10 @@
 ## 💡 备注
 
 ```
-- 仓库暂时在 tau-gast/moaiy-com
-- 后续需要创建Moaiy组织并迁移
-- 域名 moaiy.com 需要配置
-- 需要准备实际的素材（Logo、图片等）
+✅ 仓库位置已修正: moaiy-com/moaiy-com
+✅ Git推送完成
+⏳ 域名 moaiy.com 需要配置
+⏳ 需要准备实际的素材（Logo、图片等）
 ```
 
 ---
