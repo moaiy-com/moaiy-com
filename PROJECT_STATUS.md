@@ -102,27 +102,41 @@ Installed core dependencies:
 
 ### **High Priority**
 ```
-□ Install dependencies (pnpm install) ✅
-□ Local testing (pnpm dev)
-□ Fix potential issues
-□ Improve 3D scene
+✅ Install dependencies (pnpm install)
+⏳ Local testing (pnpm dev)
+⏳ Fix potential issues
+⏳ Improve 3D scene
+
+✅ Deployment configuration
+   - GitHub Actions workflow added
+   - CNAME file created
+   - DEPLOYMENT_GUIDE.md created
 ```
 
 ### **Medium Priority**
 ```
-□ Complete weather system
+⏳ Configure GitHub Pages (DO THIS NOW)
+   1. Go to Settings → Pages
+   2. Change "Source" to "GitHub Actions"
+   3. Set custom domain to "moaiy.com"
+
+⏳ Configure DNS
+   - Add A records for moaiy.com
+   - Wait for propagation (15 min - 48 hours)
+
+⏳ Complete weather system
    - Day scene (sun + clouds + grass)
    - Lightning scene (flash effects)
    - Tornado scene (rotating particles)
 
-□ Create other pages
+⏳ Create other pages
    - /download
    - /features
    - /security
    - /docs
    - /about
 
-□ Mobile optimization
+⏳ Mobile optimization
    - Performance downgrade
    - Touch interaction
 ```
