@@ -1,0 +1,233 @@
+---
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Final Diagnostic</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0A0E27;
+      color: #4ECDC4;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    .section {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+    .success { color: #4ECDC4; }
+    .error { color: #FF6B6B; }
+    .warning { color: #FFD93D; }
+    h2 {
+      margin-top: 0;
+      border-bottom: 1px solid #4ECDC4;
+      padding-bottom: 10px;
+    }
+    code {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 2px 5px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔍 Moaiy 3D Scene Diagnostic</h1>
+  
+  <div class="section">
+    <h2>1. Test Results Summary</h2>
+    <div id="summary">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>2. Browser & System</h2>
+    <div id="browser">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>3. WebGL Support</h2>
+    <div id="webgl">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>4. Canvas Status</h2>
+    <div id="canvas">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>5. React Components</h2>
+    <div id="react">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>6. Three.js Status</h2>
+    <div id="threejs">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>7. Issues Found</h2>
+    <div id="issues">Loading...</div>
+  </div>
+
+  <div class="section">
+    <h2>8. Recommended Actions</h2>
+    <div id="actions">Loading...</div>
+  </div>
+
+  <script>
+    const issues = [];
+    const actions = [];
+
+    // 1. Summary
+    document.getElementById('summary').innerHTML = `
+      <div>Testing main page: <a href="https://moaiy.com" target="_blank">https://moaiy.com</a></div>
+      <div>Please run this diagnostic on the main page</div>
+    `;
+
+    // 2. Browser Info
+    document.getElementById('browser').innerHTML = `
+      <div>User Agent: ${navigator.userAgent}</div>
+      <div>Platform: ${navigator.platform}</div>
+      <div>Language: ${navigator.language}</div>
+      <div>Cookies: ${navigator.cookieEnabled ? '✅ Enabled' : '❌ Disabled'}</div>
+    `;
+
+    // 3. WebGL Support
+    const testCanvas = document.createElement('canvas');
+    const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+    
+    if (gl) {
+      const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+      document.getElementById('webgl').innerHTML = `
+        <div class="success">✅ WebGL Supported</div>
+        <div>Version: ${gl.getParameter(gl.VERSION)}</div>
+        <div>Vendor: ${gl.getParameter(gl.VENDOR)}</div>
+        ${debugInfo ? `<div>Renderer: ${gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)}</div>` : ''}
+        <div>Max Texture Size: ${gl.getParameter(gl.MAX_TEXTURE_SIZE)}</div>
+      `;
+    } else {
+      issues.push('WebGL not supported');
+      actions.push('Update browser or graphics driver');
+      document.getElementById('webgl').innerHTML = `
+        <div class="error">❌ WebGL Not Supported</div>
+        <div class="warning">This is a critical issue - 3D will not work</div>
+      `;
+    }
+
+    // 4. Canvas Status
+    // This will be populated when run on main page
+    document.getElementById('canvas').innerHTML = `
+      <div class="warning">⚠️ Run this on main page to check Canvas</div>
+      <div>Open <a href="https://moaiy.com" target="_blank">https://moaiy.com</a></div>
+      <div>Open console (F12) and run diagnostic script</div>
+    `;
+
+    // 5. React Components
+    document.getElementById('react').innerHTML = `
+      <div class="warning">⚠️ Run this on main page to check React</div>
+      <div>Looking for: astro-island element</div>
+    `;
+
+    // 6. Three.js Status
+    document.getElementById('threejs').innerHTML = `
+      <div class="warning">⚠️ Run this on main page to check Three.js</div>
+      <div>Looking for: Canvas with WebGL context</div>
+    `;
+
+    // Instructions
+    document.getElementById('issues').innerHTML = `
+      <div class="warning">Run diagnostic on main page:</div>
+      <div>1. Open <a href="https://moaiy.com" target="_blank">https://moaiy.com</a></div>
+      <div>2. Open console (F12)</div>
+      <div>3. Type: <code>allow pasting</code> and press Enter</div>
+      <div>4. Paste the diagnostic script below</div>
+    `;
+
+    document.getElementById('actions').innerHTML = `
+      <div><strong>Diagnostic Script:</strong></div>
+      <textarea id="script" style="width: 100%; height: 200px; background: rgba(0,0,0,0.3); color: #4ECDC4; border: 1px solid #4ECDC4; padding: 10px; font-family: monospace; font-size: 12px;">
+// Copy and paste this into moaiy.com console
+
+console.log('🔍 Starting diagnostic...');
+
+const results = [];
+
+// Check Canvas
+const canvas = document.querySelector('#hero-canvas canvas');
+if (canvas) {
+  results.push('✅ Canvas found');
+  results.push('Size: ' + canvas.width + ' x ' + canvas.height);
+  results.push('Display: ' + getComputedStyle(canvas).display);
+  results.push('Visibility: ' + getComputedStyle(canvas).visibility);
+  results.push('Opacity: ' + getComputedStyle(canvas).opacity);
+  results.push('Z-Index: ' + getComputedStyle(canvas).zIndex);
+  results.push('Position: ' + JSON.stringify(canvas.getBoundingClientRect()));
+} else {
+  results.push('❌ Canvas not found');
+}
+
+// Check Container
+const container = document.querySelector('#hero-canvas');
+if (container) {
+  results.push('\\n✅ Container found');
+  results.push('Z-Index: ' + getComputedStyle(container).zIndex);
+  results.push('Position: ' + getComputedStyle(container).position);
+  results.push('Size: ' + container.offsetWidth + ' x ' + container.offsetHeight);
+} else {
+  results.push('\\n❌ Container not found');
+}
+
+// Check React
+const island = document.querySelector('astro-island');
+if (island) {
+  results.push('\\n✅ astro-island found');
+  results.push('Component: ' + island.getAttribute('component-url'));
+  results.push('SSR: ' + island.hasAttribute('ssr'));
+} else {
+  results.push('\\n❌ astro-island not found');
+}
+
+// Check WebGL Context
+if (canvas) {
+  const ctx = canvas.getContext('webgl') || canvas.getContext('webgl2');
+  if (ctx) {
+    results.push('\\n✅ WebGL context exists');
+    results.push('Buffer: ' + ctx.drawingBufferWidth + ' x ' + ctx.drawingBufferHeight);
+    
+    // Read pixel
+    const pixels = new Uint8Array(4);
+    ctx.readPixels(
+      Math.floor(canvas.width/2), 
+      Math.floor(canvas.height/2), 
+      1, 1, 
+      ctx.RGBA, 
+      ctx.UNSIGNED_BYTE, 
+      pixels
+    );
+    results.push('Center pixel: ' + Array.from(pixels).join(', '));
+    results.push('Is black: ' + (pixels[0]===0 && pixels[1]===0 && pixels[2]===0));
+    results.push('Is transparent: ' + (pixels[3]===0));
+  } else {
+    results.push('\\n❌ No WebGL context');
+  }
+}
+
+console.log(results.join('\\n'));
+
+// Try to make Canvas visible
+if (canvas) {
+  canvas.style.border = '5px solid red';
+  canvas.parentElement.style.zIndex = '9999';
+  console.log('\\n✅ Added red border and high z-index');
+  console.log('👀 Can you see a red border now?');
+}
+      </textarea>
+    `;
+  </script>
+</body>
+</html>
