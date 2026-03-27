@@ -7,6 +7,8 @@ const Moai = lazy(() => import('./Moai.jsx'));
 const WeatherSystem = lazy(() => import('./WeatherSystem.jsx'));
 const GRASS_MODEL_PATH = '/models/moai/realistics_grass.glb';
 const GROUND_Y = -2.45;
+const GRASS_HEIGHT_RATIO = 0.28;
+const GRASS_SINK_Y = -0.22;
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -231,9 +233,9 @@ function ExternalGrassGround() {
 
   const patchLayout = useMemo(
     () => [
-      { key: 'grass-center', position: [0, 0, 0], rotationY: 0.16, scale: 0.88 },
-      { key: 'grass-front-left', position: [-2.7, 0, 1.75], rotationY: 1.98, scale: 0.72 },
-      { key: 'grass-front-right', position: [2.5, 0, 1.6], rotationY: 1.02, scale: 0.74 },
+      { key: 'grass-center', position: [0, GRASS_SINK_Y, 0], rotationY: 0.16, scale: 0.8 },
+      { key: 'grass-front-left', position: [-2.7, GRASS_SINK_Y, 1.75], rotationY: 1.98, scale: 0.66 },
+      { key: 'grass-front-right', position: [2.5, GRASS_SINK_Y, 1.6], rotationY: 1.02, scale: 0.68 },
     ],
     [],
   );
@@ -243,7 +245,7 @@ function ExternalGrassGround() {
       key={patch.key}
       position={patch.position}
       rotation={[0, patch.rotationY, 0]}
-      scale={[patch.scale, patch.scale * 0.62, patch.scale]}
+      scale={[patch.scale, patch.scale * GRASS_HEIGHT_RATIO, patch.scale]}
     >
       <Clone object={normalizedPatch} />
     </group>

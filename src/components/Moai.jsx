@@ -5,8 +5,8 @@ import { Box3, MeshStandardMaterial, Vector3 } from 'three';
 const MODEL_SCALE_RATIO = 0.7;
 const EXTERNAL_MODEL_PATH = '/models/moai/angelito-moai.glb';
 const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
-const EXTERNAL_BASELINE_Y = -2.45;
-const PROCEDURAL_MOAI_Y = -0.66;
+const EXTERNAL_BASELINE_Y = -2.29;
+const PROCEDURAL_MOAI_Y = -0.5;
 
 function removeBackHeadArtifact(root) {
   root.updateMatrixWorld(true);
