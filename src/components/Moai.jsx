@@ -1,179 +1,12 @@
 import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
-import {
-  Box3,
-  CatmullRomCurve3,
-  MeshBasicMaterial,
-  MeshPhysicalMaterial,
-  MeshStandardMaterial,
-  Vector3,
-} from 'three';
+import { Box3, MeshStandardMaterial, Vector3 } from 'three';
 
+const MODEL_SCALE_RATIO = 0.7;
 const EXTERNAL_MODEL_PATH = '/models/moai/angelito-moai.glb';
-const EXTERNAL_TARGET_HEIGHT = 4.6;
+const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
 const EXTERNAL_BASELINE_Y = -2.15;
-
-function MoaiAccessories({
-  eyeY,
-  faceZ,
-  lensWidth,
-  lensHeight,
-  lensGap,
-  smileY,
-  smileWidth,
-}) {
-  const glowRef = useRef();
-  const smileRef = useRef();
-  const glassesRef = useRef();
-
-  const smileMaterial = useMemo(
-    () =>
-      new MeshStandardMaterial({
-        color: 0x4ECDC4,
-        emissive: 0x4ECDC4,
-        emissiveIntensity: 0.35,
-        roughness: 0.25,
-        metalness: 0.12,
-      }),
-    [],
-  );
-
-  const lensMaterial = useMemo(
-    () =>
-      new MeshPhysicalMaterial({
-        color: 0x63E4D8,
-        roughness: 0.08,
-        metalness: 0.2,
-        transmission: 0.65,
-        thickness: 0.3,
-        transparent: true,
-        opacity: 0.78,
-      }),
-    [],
-  );
-
-  const frameMaterial = useMemo(
-    () =>
-      new MeshStandardMaterial({
-        color: 0x2B3345,
-        roughness: 0.28,
-        metalness: 0.65,
-      }),
-    [],
-  );
-
-  const glowMaterial = useMemo(
-    () =>
-      new MeshBasicMaterial({
-        color: 0x4ECDC4,
-        transparent: true,
-        opacity: 0.09,
-      }),
-    [],
-  );
-
-  const smileCurve = useMemo(
-    () =>
-      new CatmullRomCurve3([
-        new Vector3(-smileWidth, 0.07, 0),
-        new Vector3(-smileWidth * 0.52, -0.02, 0.012),
-        new Vector3(0, -0.06, 0.02),
-        new Vector3(smileWidth * 0.52, -0.02, 0.012),
-        new Vector3(smileWidth, 0.07, 0),
-      ]),
-    [smileWidth],
-  );
-
-  useFrame((state) => {
-    const time = state.clock.elapsedTime;
-
-    if (glassesRef.current) {
-      glassesRef.current.rotation.z = Math.sin(time * 0.4) * 0.012;
-    }
-
-    if (smileRef.current) {
-      smileRef.current.material.emissiveIntensity = 0.3 + Math.sin(time * 1.35) * 0.12;
-    }
-
-    if (glowRef.current) {
-      glowRef.current.material.opacity = 0.07 + Math.sin(time * 1.8) * 0.025;
-    }
-  });
-
-  useEffect(() => {
-    return () => {
-      smileMaterial.dispose();
-      lensMaterial.dispose();
-      frameMaterial.dispose();
-      glowMaterial.dispose();
-    };
-  }, [smileMaterial, lensMaterial, frameMaterial, glowMaterial]);
-
-  return (
-    <>
-      <mesh
-        castShadow
-        ref={smileRef}
-        position={[0, smileY, faceZ + 0.11]}
-        material={smileMaterial}
-      >
-        <tubeGeometry
-          args={[
-            smileCurve,
-            30,
-            Math.max(0.02, lensWidth * 0.06),
-            12,
-            false,
-          ]}
-        />
-      </mesh>
-
-      <group ref={glassesRef} position={[0, eyeY, 0]}>
-        <mesh
-          castShadow
-          position={[-lensGap, 0, faceZ]}
-          material={lensMaterial}
-        >
-          <boxGeometry args={[lensWidth, lensHeight, 0.05]} />
-        </mesh>
-
-        <mesh
-          castShadow
-          position={[lensGap, 0, faceZ]}
-          material={lensMaterial}
-        >
-          <boxGeometry args={[lensWidth, lensHeight, 0.05]} />
-        </mesh>
-
-        <mesh
-          castShadow
-          position={[0, lensHeight * 0.58, faceZ + 0.01]}
-          material={frameMaterial}
-        >
-          <boxGeometry args={[lensWidth * 2.25 + lensGap * 0.8, 0.06, 0.05]} />
-        </mesh>
-
-        <mesh
-          castShadow
-          position={[0, 0, faceZ + 0.01]}
-          material={frameMaterial}
-        >
-          <boxGeometry args={[Math.max(0.1, lensGap * 0.5), 0.1, 0.05]} />
-        </mesh>
-      </group>
-
-      <mesh
-        ref={glowRef}
-        position={[0, eyeY - lensHeight * 2.05, 0]}
-        rotation={[-Math.PI / 2, 0, 0]}
-        material={glowMaterial}
-      >
-        <ringGeometry args={[2.35, 4.55, 72]} />
-      </mesh>
-    </>
-  );
-}
 
 function ProceduralMoai() {
   const moaiRef = useRef();
@@ -215,7 +48,11 @@ function ProceduralMoai() {
   }, [stoneMaterial, stoneDetailMaterial]);
 
   return (
-    <group ref={moaiRef} position={[0, -0.35, 0]}>
+    <group
+      ref={moaiRef}
+      position={[0, -0.35, 0]}
+      scale={[MODEL_SCALE_RATIO, MODEL_SCALE_RATIO, MODEL_SCALE_RATIO]}
+    >
       <mesh
         castShadow
         position={[0, -2.15, 0]}
@@ -299,16 +136,6 @@ function ProceduralMoai() {
       >
         <boxGeometry args={[0.18, 0.62, 0.26]} />
       </mesh>
-
-      <MoaiAccessories
-        eyeY={2.03}
-        faceZ={0.67}
-        lensWidth={0.52}
-        lensHeight={0.36}
-        lensGap={0.35}
-        smileY={1.38}
-        smileWidth={0.28}
-      />
     </group>
   );
 }
@@ -317,7 +144,7 @@ function ExternalMoai() {
   const moaiRef = useRef();
   const { scene } = useGLTF(EXTERNAL_MODEL_PATH);
 
-  const { normalizedScene, accessoryLayout } = useMemo(() => {
+  const normalizedScene = useMemo(() => {
     const clone = scene.clone(true);
     const rawBox = new Box3().setFromObject(clone);
     const rawSize = new Vector3();
@@ -375,20 +202,7 @@ function ExternalMoai() {
       }
     });
 
-    const scaledSize = rawSize.clone().multiplyScalar(scale);
-
-    return {
-      normalizedScene: clone,
-      accessoryLayout: {
-        eyeY: EXTERNAL_BASELINE_Y + scaledSize.y * 0.67,
-        faceZ: Math.min(0.92, Math.max(0.45, scaledSize.z * 0.5)),
-        lensWidth: Math.min(0.58, Math.max(0.4, scaledSize.x * 0.27)),
-        lensHeight: Math.min(0.38, Math.max(0.26, scaledSize.y * 0.07)),
-        lensGap: Math.min(0.41, Math.max(0.27, scaledSize.x * 0.18)),
-        smileY: EXTERNAL_BASELINE_Y + scaledSize.y * 0.56,
-        smileWidth: Math.min(0.34, Math.max(0.24, scaledSize.x * 0.16)),
-      },
-    };
+    return clone;
   }, [scene]);
 
   useFrame((state) => {
@@ -403,7 +217,6 @@ function ExternalMoai() {
   return (
     <group ref={moaiRef}>
       <primitive object={normalizedScene} />
-      <MoaiAccessories {...accessoryLayout} />
     </group>
   );
 }
