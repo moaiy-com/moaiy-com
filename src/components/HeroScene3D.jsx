@@ -1,9 +1,12 @@
 import { Canvas } from '@react-three/fiber';
-import { Component, Suspense, lazy, useMemo } from 'react';
-import { ACESFilmicToneMapping } from 'three';
+import { Clone, useGLTF } from '@react-three/drei';
+import { Component, Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { ACESFilmicToneMapping, Box3, Vector3 } from 'three';
 
 const Moai = lazy(() => import('./Moai.jsx'));
 const WeatherSystem = lazy(() => import('./WeatherSystem.jsx'));
+const GRASS_MODEL_PATH = '/models/moai/realistics_grass.glb';
+const GROUND_Y = -2.45;
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -122,7 +125,7 @@ function Flower({ position, rotationY, scale, petalColor }) {
   );
 }
 
-function GrassGround() {
+function FlowerLayer() {
   const flowers = useMemo(() => {
     const flowerCount = 1 + Math.floor(Math.random() * 2);
     const petalPalette = ['#fff6da', '#f8f2ff', '#ffe5f0', '#f2f8ff'];
@@ -133,7 +136,7 @@ function GrassGround() {
 
       return {
         key: `flower-${index}`,
-        position: [Math.cos(angle) * radius, -2.44, Math.sin(angle) * radius],
+        position: [Math.cos(angle) * radius, GROUND_Y + 0.02, Math.sin(angle) * radius],
         rotationY: Math.random() * Math.PI * 2,
         scale: 0.9 + Math.random() * 0.35,
         petalColor: petalPalette[Math.floor(Math.random() * petalPalette.length)],
@@ -141,10 +144,22 @@ function GrassGround() {
     });
   }, []);
 
+  return flowers.map((flower) => (
+    <Flower
+      key={flower.key}
+      petalColor={flower.petalColor}
+      position={flower.position}
+      rotationY={flower.rotationY}
+      scale={flower.scale}
+    />
+  ));
+}
+
+function ProceduralGrassGround() {
   return (
-    <group>
+    <>
       <mesh
-        position={[0, -2.45, 0]}
+        position={[0, GROUND_Y, 0]}
         receiveShadow
         rotation={[-Math.PI / 2, 0, 0]}
       >
@@ -153,23 +168,138 @@ function GrassGround() {
       </mesh>
 
       <mesh
-        position={[0, -2.44, 0]}
+        position={[0, GROUND_Y + 0.01, 0]}
         receiveShadow
         rotation={[-Math.PI / 2, 0, 0]}
       >
         <circleGeometry args={[6.2, 96]} />
         <meshStandardMaterial color="#3f8c45" metalness={0.01} roughness={0.9} />
       </mesh>
+    </>
+  );
+}
 
-      {flowers.map((flower) => (
-        <Flower
-          key={flower.key}
-          petalColor={flower.petalColor}
-          position={flower.position}
-          rotationY={flower.rotationY}
-          scale={flower.scale}
-        />
-      ))}
+function ExternalGrassGround() {
+  const { scene } = useGLTF(GRASS_MODEL_PATH);
+
+  const normalizedPatch = useMemo(() => {
+    const clone = scene.clone(true);
+    const rawBox = new Box3().setFromObject(clone);
+    const rawSize = new Vector3();
+    const rawCenter = new Vector3();
+    rawBox.getSize(rawSize);
+    rawBox.getCenter(rawCenter);
+
+    const span = Math.max(rawSize.x, rawSize.z, 1);
+    const scale = 8.4 / span;
+    clone.scale.setScalar(scale);
+    clone.position.set(
+      -rawCenter.x * scale,
+      GROUND_Y - rawBox.min.y * scale,
+      -rawCenter.z * scale,
+    );
+
+    clone.traverse((child) => {
+      if (!child.isMesh) {
+        return;
+      }
+
+      child.castShadow = true;
+      child.receiveShadow = true;
+
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      for (const material of materials) {
+        if (!material) {
+          continue;
+        }
+
+        if ('roughness' in material && typeof material.roughness === 'number') {
+          material.roughness = Math.max(material.roughness, 0.78);
+        }
+
+        if ('metalness' in material && typeof material.metalness === 'number') {
+          material.metalness = Math.min(material.metalness, 0.08);
+        }
+      }
+    });
+
+    return clone;
+  }, [scene]);
+
+  const patchLayout = useMemo(
+    () => [
+      { key: 'grass-center', position: [0, 0, 0], rotationY: 0.1, scale: 1.06 },
+      { key: 'grass-ne', position: [3.1, 0, 2.2], rotationY: 1.2, scale: 0.9 },
+      { key: 'grass-nw', position: [-3.2, 0, 1.9], rotationY: 2.35, scale: 0.88 },
+      { key: 'grass-se', position: [2.8, 0, -2.4], rotationY: 2.95, scale: 0.85 },
+      { key: 'grass-sw', position: [-3, 0, -2.2], rotationY: 0.72, scale: 0.84 },
+    ],
+    [],
+  );
+
+  return patchLayout.map((patch) => (
+    <group
+      key={patch.key}
+      position={patch.position}
+      rotation={[0, patch.rotationY, 0]}
+      scale={[patch.scale, patch.scale, patch.scale]}
+    >
+      <Clone object={normalizedPatch} />
+    </group>
+  ));
+}
+
+async function hasModelAsset(path) {
+  try {
+    const headResponse = await fetch(path, { method: 'HEAD', cache: 'no-store' });
+    if (headResponse.ok) {
+      return true;
+    }
+  } catch {
+    // Continue to GET probing.
+  }
+
+  try {
+    const getResponse = await fetch(path, { method: 'GET', cache: 'no-store' });
+    return getResponse.ok;
+  } catch {
+    return false;
+  }
+}
+
+function GrassGround() {
+  const [isGrassModelEnabled, setIsGrassModelEnabled] = useState(false);
+  const [modelCheckFinished, setModelCheckFinished] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      const modelExists = await hasModelAsset(GRASS_MODEL_PATH);
+      if (cancelled) {
+        return;
+      }
+
+      setIsGrassModelEnabled(modelExists);
+      setModelCheckFinished(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  return (
+    <group>
+      {modelCheckFinished && isGrassModelEnabled ? (
+        <ExternalGrassGround />
+      ) : (
+        <ProceduralGrassGround />
+      )}
+      <FlowerLayer />
     </group>
   );
 }
