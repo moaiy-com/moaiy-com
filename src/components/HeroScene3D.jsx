@@ -231,11 +231,9 @@ function ExternalGrassGround() {
 
   const patchLayout = useMemo(
     () => [
-      { key: 'grass-center', position: [0, 0, 0], rotationY: 0.1, scale: 1.06 },
-      { key: 'grass-ne', position: [3.1, 0, 2.2], rotationY: 1.2, scale: 0.9 },
-      { key: 'grass-nw', position: [-3.2, 0, 1.9], rotationY: 2.35, scale: 0.88 },
-      { key: 'grass-se', position: [2.8, 0, -2.4], rotationY: 2.95, scale: 0.85 },
-      { key: 'grass-sw', position: [-3, 0, -2.2], rotationY: 0.72, scale: 0.84 },
+      { key: 'grass-center', position: [0, 0, 0], rotationY: 0.16, scale: 0.88 },
+      { key: 'grass-front-left', position: [-2.7, 0, 1.75], rotationY: 1.98, scale: 0.72 },
+      { key: 'grass-front-right', position: [2.5, 0, 1.6], rotationY: 1.02, scale: 0.74 },
     ],
     [],
   );
@@ -245,7 +243,7 @@ function ExternalGrassGround() {
       key={patch.key}
       position={patch.position}
       rotation={[0, patch.rotationY, 0]}
-      scale={[patch.scale, patch.scale, patch.scale]}
+      scale={[patch.scale, patch.scale * 0.62, patch.scale]}
     >
       <Clone object={normalizedPatch} />
     </group>
