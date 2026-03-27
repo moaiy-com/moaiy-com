@@ -1,6 +1,5 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { useFrame } from '@react-three/fiber';
 import { Box3, MeshStandardMaterial, Vector3 } from 'three';
 
 const MODEL_SCALE_RATIO = 0.7;
@@ -9,8 +8,6 @@ const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
 const EXTERNAL_BASELINE_Y = -2.15;
 
 function ProceduralMoai() {
-  const moaiRef = useRef();
-
   const stoneMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
@@ -31,15 +28,6 @@ function ProceduralMoai() {
     [],
   );
 
-  useFrame((state) => {
-    const time = state.clock.elapsedTime;
-
-    if (moaiRef.current) {
-      moaiRef.current.position.y = -0.35 + Math.sin(time * 0.52) * 0.05;
-      moaiRef.current.rotation.y = Math.sin(time * 0.24) * 0.08;
-    }
-  });
-
   useEffect(() => {
     return () => {
       stoneMaterial.dispose();
@@ -49,7 +37,6 @@ function ProceduralMoai() {
 
   return (
     <group
-      ref={moaiRef}
       position={[0, -0.35, 0]}
       scale={[MODEL_SCALE_RATIO, MODEL_SCALE_RATIO, MODEL_SCALE_RATIO]}
     >
@@ -141,7 +128,6 @@ function ProceduralMoai() {
 }
 
 function ExternalMoai() {
-  const moaiRef = useRef();
   const { scene } = useGLTF(EXTERNAL_MODEL_PATH);
 
   const normalizedScene = useMemo(() => {
@@ -205,17 +191,8 @@ function ExternalMoai() {
     return clone;
   }, [scene]);
 
-  useFrame((state) => {
-    const time = state.clock.elapsedTime;
-
-    if (moaiRef.current) {
-      moaiRef.current.position.y = Math.sin(time * 0.44) * 0.04;
-      moaiRef.current.rotation.y = Math.sin(time * 0.22) * 0.07;
-    }
-  });
-
   return (
-    <group ref={moaiRef}>
+    <group>
       <primitive object={normalizedScene} />
     </group>
   );
