@@ -1,142 +1,251 @@
-import { useRef, useMemo, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
-import {
-  CatmullRomCurve3,
-  MeshBasicMaterial,
-  MeshStandardMaterial,
-  Vector3,
-} from 'three';
+import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useGLTF } from '@react-three/drei';
+import { Box3, MeshStandardMaterial, Vector3 } from 'three';
 
-function Moai() {
-  const moaiRef = useRef();
-  const glowRef = useRef();
-  const smileRef = useRef();
-  
-  const stoneMaterial = useMemo(() => {
-    return new MeshStandardMaterial({
-      color: 0x9CA3AF,
-      roughness: 0.8,
-      metalness: 0.1,
-    });
-  }, []);
-  
-  const smileMaterial = useMemo(() => new MeshStandardMaterial({
-    color: 0x4ECDC4,
-    emissive: 0x4ECDC4,
-    emissiveIntensity: 0.3,
-  }), []);
-  
-  const lensMaterial = useMemo(() => new MeshStandardMaterial({
-    color: 0x4ECDC4,
-    transparent: true,
-    opacity: 0.85,
-    metalness: 0.3,
-    roughness: 0.2,
-  }), []);
-  
-  const frameMaterial = useMemo(() => new MeshStandardMaterial({
-    color: 0x374151,
-    metalness: 0.5,
-    roughness: 0.3,
-  }), []);
-  
-  const glowMaterial = useMemo(() => new MeshBasicMaterial({
-    color: 0x4ECDC4,
-    transparent: true,
-    opacity: 0.08,
-  }), []);
-  
-  const smileCurve = useMemo(() => new CatmullRomCurve3([
-    new Vector3(-0.25, -0.05, 0.76),
-    new Vector3(-0.1, -0.12, 0.76),
-    new Vector3(0, -0.15, 0.76),
-    new Vector3(0.1, -0.12, 0.76),
-    new Vector3(0.25, -0.05, 0.76),
-  ]), []);
-  
-  const targetBreathY = useRef(0);
-  
-  useFrame((state) => {
-    if (!moaiRef.current) return;
-    
-    const time = state.clock.elapsedTime;
-    const targetY = Math.sin(time * 0.5) * 0.02;
-    
-    targetBreathY.current += (targetY - targetBreathY.current) * 0.05;
-    moaiRef.current.position.y = targetBreathY.current;
-    
-    if (glowRef.current) {
-      glowRef.current.material.opacity = 0.06 + Math.sin(time * 2) * 0.02;
-    }
-    
-    if (smileRef.current) {
-      smileRef.current.material.emissiveIntensity = 0.3 + Math.sin(time * 1.5) * 0.1;
-    }
-  });
+const MODEL_SCALE_RATIO = 0.7;
+const EXTERNAL_MODEL_PATH = '/models/moai/angelito-moai.glb';
+const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
+const EXTERNAL_BASELINE_Y = -2.56;
+const PROCEDURAL_MOAI_Y = -0.78;
+
+function ProceduralMoai() {
+  const stoneMaterial = useMemo(
+    () =>
+      new MeshStandardMaterial({
+        color: 0x9099A7,
+        roughness: 0.9,
+        metalness: 0.03,
+      }),
+    [],
+  );
+
+  const stoneDetailMaterial = useMemo(
+    () =>
+      new MeshStandardMaterial({
+        color: 0x818B99,
+        roughness: 0.88,
+        metalness: 0.04,
+      }),
+    [],
+  );
 
   useEffect(() => {
     return () => {
       stoneMaterial.dispose();
-      smileMaterial.dispose();
-      lensMaterial.dispose();
-      frameMaterial.dispose();
-      glowMaterial.dispose();
+      stoneDetailMaterial.dispose();
     };
-  }, [stoneMaterial, smileMaterial, lensMaterial, frameMaterial, glowMaterial]);
+  }, [stoneMaterial, stoneDetailMaterial]);
 
   return (
-    <group ref={moaiRef} position={[0, 0, 0]}>
-      <mesh position={[0, 1.8, 0]} material={stoneMaterial} scale={[0.85, 1.2, 0.75]}>
-        <sphereGeometry args={[1, 32, 32]} />
+    <group
+      position={[0, PROCEDURAL_MOAI_Y, 0]}
+      scale={[MODEL_SCALE_RATIO, MODEL_SCALE_RATIO, MODEL_SCALE_RATIO]}
+    >
+      <mesh
+        castShadow
+        position={[0, -2.15, 0]}
+        receiveShadow
+        material={stoneDetailMaterial}
+      >
+        <cylinderGeometry args={[1.45, 1.7, 0.78, 56]} />
       </mesh>
-      
-      <mesh position={[0, 1.5, 0.6]} material={stoneMaterial}>
-        <boxGeometry args={[0.25, 0.5, 0.35]} />
+
+      <mesh
+        castShadow
+        position={[0, -0.64, 0]}
+        receiveShadow
+        material={stoneMaterial}
+      >
+        <cylinderGeometry args={[1.02, 1.25, 2.72, 56]} />
       </mesh>
-      
-      <mesh position={[0, -0.3, 0]} material={stoneMaterial}>
-        <boxGeometry args={[1.2, 2.4, 0.6]} />
+
+      <mesh
+        castShadow
+        position={[0, 0.88, 0]}
+        receiveShadow
+        material={stoneMaterial}
+      >
+        <cylinderGeometry args={[0.88, 1.02, 0.34, 44]} />
       </mesh>
-      
-      <mesh position={[0, -1.3, 0]} material={stoneMaterial}>
-        <boxGeometry args={[1.4, 0.4, 0.55]} />
+
+      <mesh
+        castShadow
+        position={[0, 2.02, 0]}
+        receiveShadow
+        scale={[1, 1.16, 0.94]}
+        material={stoneMaterial}
+      >
+        <capsuleGeometry args={[0.84, 1.36, 14, 24]} />
       </mesh>
-      
-      <mesh ref={smileRef} position={[0, 1.55, 0.75]} material={smileMaterial}>
-        <tubeGeometry args={[smileCurve, 20, 0.025, 8, false]} />
+
+      <mesh
+        castShadow
+        position={[0, 2.24, 0.58]}
+        receiveShadow
+        material={stoneDetailMaterial}
+      >
+        <boxGeometry args={[1.14, 0.18, 0.44]} />
       </mesh>
-      
-      <group position={[0, 1.85, 0]}>
-        <mesh position={[-0.32, 0, 0.65]} material={lensMaterial}>
-          <boxGeometry args={[0.45, 0.35, 0.03]} />
-        </mesh>
-        
-        <mesh position={[0.32, 0, 0.65]} material={lensMaterial}>
-          <boxGeometry args={[0.45, 0.35, 0.03]} />
-        </mesh>
-        
-        <mesh position={[0, 0.2, 0.65]} material={frameMaterial}>
-          <boxGeometry args={[1.1, 0.04, 0.03]} />
-        </mesh>
-        
-        <mesh position={[0, 0, 0.65]} material={frameMaterial}>
-          <boxGeometry args={[0.08, 0.08, 0.03]} />
-        </mesh>
-        
-        <mesh position={[-0.58, 0.1, 0.5]} material={frameMaterial} rotation={[0, 0, 0.3]}>
-          <boxGeometry args={[0.03, 0.15, 0.03]} />
-        </mesh>
-        
-        <mesh position={[0.58, 0.1, 0.5]} material={frameMaterial} rotation={[0, 0, -0.3]}>
-          <boxGeometry args={[0.03, 0.15, 0.03]} />
-        </mesh>
-      </group>
-      
-      <mesh ref={glowRef} position={[0, 0.5, 0]} material={glowMaterial}>
-        <sphereGeometry args={[2.5, 32, 32]} />
+
+      <mesh
+        castShadow
+        position={[0, 1.66, 0.67]}
+        receiveShadow
+        material={stoneDetailMaterial}
+      >
+        <boxGeometry args={[0.24, 0.6, 0.4]} />
+      </mesh>
+
+      <mesh
+        castShadow
+        position={[0, 1.28, 0.74]}
+        receiveShadow
+        material={stoneDetailMaterial}
+      >
+        <boxGeometry args={[0.3, 0.22, 0.45]} />
+      </mesh>
+
+      <mesh
+        castShadow
+        position={[-0.78, 1.96, 0.14]}
+        receiveShadow
+        material={stoneDetailMaterial}
+        rotation={[0.02, 0, 0.1]}
+      >
+        <boxGeometry args={[0.18, 0.62, 0.26]} />
+      </mesh>
+
+      <mesh
+        castShadow
+        position={[0.78, 1.96, 0.14]}
+        receiveShadow
+        material={stoneDetailMaterial}
+        rotation={[0.02, 0, -0.1]}
+      >
+        <boxGeometry args={[0.18, 0.62, 0.26]} />
       </mesh>
     </group>
   );
 }
 
-export default Moai;
+function ExternalMoai() {
+  const { scene } = useGLTF(EXTERNAL_MODEL_PATH);
+
+  const normalizedScene = useMemo(() => {
+    const clone = scene.clone(true);
+    const rawBox = new Box3().setFromObject(clone);
+    const rawSize = new Vector3();
+    const rawCenter = new Vector3();
+    rawBox.getSize(rawSize);
+    rawBox.getCenter(rawCenter);
+
+    const rawHeight = Math.max(rawSize.y, 1);
+    const scale = EXTERNAL_TARGET_HEIGHT / rawHeight;
+    clone.scale.setScalar(scale);
+
+    clone.position.set(
+      -rawCenter.x * scale,
+      EXTERNAL_BASELINE_Y - rawBox.min.y * scale,
+      -rawCenter.z * scale,
+    );
+
+    clone.traverse((child) => {
+      if (!child.isMesh) {
+        return;
+      }
+
+      child.castShadow = true;
+      child.receiveShadow = true;
+
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      for (const material of materials) {
+        if (!material) {
+          continue;
+        }
+
+        if (
+          'metalness' in material &&
+          typeof material.metalness === 'number'
+        ) {
+          material.metalness = Math.min(material.metalness, 0.08);
+        }
+
+        if (
+          'roughness' in material &&
+          typeof material.roughness === 'number'
+        ) {
+          material.roughness = Math.max(material.roughness, 0.74);
+        }
+
+        if (
+          'envMapIntensity' in material &&
+          typeof material.envMapIntensity === 'number'
+        ) {
+          material.envMapIntensity = Math.max(material.envMapIntensity, 0.42);
+        }
+      }
+    });
+
+    return clone;
+  }, [scene]);
+
+  return (
+    <group>
+      <primitive object={normalizedScene} />
+    </group>
+  );
+}
+
+async function hasModelAsset(path) {
+  try {
+    const headResponse = await fetch(path, { method: 'HEAD', cache: 'no-store' });
+    if (headResponse.ok) {
+      return true;
+    }
+  } catch {
+    // Fall through to GET probing for servers that do not support HEAD.
+  }
+
+  try {
+    const getResponse = await fetch(path, { method: 'GET', cache: 'no-store' });
+    return getResponse.ok;
+  } catch {
+    return false;
+  }
+}
+
+export default function Moai() {
+  const [isExternalModelEnabled, setIsExternalModelEnabled] = useState(false);
+  const [modelCheckFinished, setModelCheckFinished] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    (async () => {
+      const modelExists = await hasModelAsset(EXTERNAL_MODEL_PATH);
+      if (cancelled) {
+        return;
+      }
+
+      setIsExternalModelEnabled(modelExists);
+      setModelCheckFinished(true);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (modelCheckFinished && isExternalModelEnabled) {
+    return (
+      <Suspense fallback={<ProceduralMoai />}>
+        <ExternalMoai />
+      </Suspense>
+    );
+  }
+
+  return <ProceduralMoai />;
+}
