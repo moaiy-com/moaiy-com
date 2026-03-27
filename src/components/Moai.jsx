@@ -1,30 +1,32 @@
 import { useRef, useMemo, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import {
+  CatmullRomCurve3,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
+  Vector3,
+} from 'three';
 
 function Moai() {
-  console.log('Moai: Rendering');
-  
   const moaiRef = useRef();
   const glowRef = useRef();
   const smileRef = useRef();
   
   const stoneMaterial = useMemo(() => {
-    console.log('Moai: Creating stone material');
-    return new THREE.MeshStandardMaterial({
+    return new MeshStandardMaterial({
       color: 0x9CA3AF,
       roughness: 0.8,
       metalness: 0.1,
     });
   }, []);
   
-  const smileMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+  const smileMaterial = useMemo(() => new MeshStandardMaterial({
     color: 0x4ECDC4,
     emissive: 0x4ECDC4,
     emissiveIntensity: 0.3,
   }), []);
   
-  const lensMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+  const lensMaterial = useMemo(() => new MeshStandardMaterial({
     color: 0x4ECDC4,
     transparent: true,
     opacity: 0.85,
@@ -32,24 +34,24 @@ function Moai() {
     roughness: 0.2,
   }), []);
   
-  const frameMaterial = useMemo(() => new THREE.MeshStandardMaterial({
+  const frameMaterial = useMemo(() => new MeshStandardMaterial({
     color: 0x374151,
     metalness: 0.5,
     roughness: 0.3,
   }), []);
   
-  const glowMaterial = useMemo(() => new THREE.MeshBasicMaterial({
+  const glowMaterial = useMemo(() => new MeshBasicMaterial({
     color: 0x4ECDC4,
     transparent: true,
     opacity: 0.08,
   }), []);
   
-  const smileCurve = useMemo(() => new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-0.25, -0.05, 0.76),
-    new THREE.Vector3(-0.1, -0.12, 0.76),
-    new THREE.Vector3(0, -0.15, 0.76),
-    new THREE.Vector3(0.1, -0.12, 0.76),
-    new THREE.Vector3(0.25, -0.05, 0.76),
+  const smileCurve = useMemo(() => new CatmullRomCurve3([
+    new Vector3(-0.25, -0.05, 0.76),
+    new Vector3(-0.1, -0.12, 0.76),
+    new Vector3(0, -0.15, 0.76),
+    new Vector3(0.1, -0.12, 0.76),
+    new Vector3(0.25, -0.05, 0.76),
   ]), []);
   
   const targetBreathY = useRef(0);
@@ -73,7 +75,6 @@ function Moai() {
   });
 
   useEffect(() => {
-    console.log('Moai: Mounted, disposing on unmount');
     return () => {
       stoneMaterial.dispose();
       smileMaterial.dispose();
@@ -82,9 +83,7 @@ function Moai() {
       glowMaterial.dispose();
     };
   }, [stoneMaterial, smileMaterial, lensMaterial, frameMaterial, glowMaterial]);
-  
-  console.log('Moai: Rendering meshes');
-  
+
   return (
     <group ref={moaiRef} position={[0, 0, 0]}>
       <mesh position={[0, 1.8, 0]} material={stoneMaterial} scale={[0.85, 1.2, 0.75]}>

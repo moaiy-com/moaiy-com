@@ -5,6 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "check": "node scripts/quality-gate.mjs",
+    "lint": "node scripts/quality-gate.mjs",
+    "test": "npm run check",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

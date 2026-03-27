@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
 
 const WEATHER_TYPES = [
   { name: 'day', bgColor: 0x87CEEB, speed: 0.5, particleCount: 200 },
@@ -12,56 +11,70 @@ const WEATHER_TYPES = [
   { name: 'tornado', bgColor: 0x374151, speed: 1.5, particleCount: 1000 },
 ];
 
+const MAX_PARTICLE_COUNT = WEATHER_TYPES.reduce(
+  (max, weather) => Math.max(max, weather.particleCount),
+  0,
+);
+
 function WeatherSystem() {
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
   const [lightningFlash, setLightningFlash] = useState(false);
   const pointsRef = useRef();
   
   const currentWeather = WEATHER_TYPES[currentWeatherIndex];
-  
-  console.log('WeatherSystem: Rendering, weather:', currentWeather.name);
-  
+
   const particleData = useMemo(() => {
-    console.log('WeatherSystem: Creating particles');
-    const count = 1500;
+    const count = MAX_PARTICLE_COUNT;
     const positions = new Float32Array(count * 3);
-    const velocities = new Float32Array(count * 3);
     const randoms = new Float32Array(count);
     
     for (let i = 0; i < count; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 40;
       positions[i * 3 + 1] = Math.random() * 20 - 10;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
-      velocities[i * 3] = 0;
-      velocities[i * 3 + 1] = 0;
-      velocities[i * 3 + 2] = 0;
       randoms[i] = Math.random();
     }
     
-    return { positions, velocities, randoms };
+    return { positions, randoms };
   }, []);
   
   useEffect(() => {
-    console.log('WeatherSystem: Setting up weather interval');
     const interval = setInterval(() => {
       setCurrentWeatherIndex((prev) => (prev + 1) % WEATHER_TYPES.length);
     }, 10000);
     
     return () => clearInterval(interval);
   }, []);
-  
+
   useEffect(() => {
     if (currentWeather.name === 'lightning') {
+      let flashTimeoutId;
       const flashInterval = setInterval(() => {
         if (Math.random() > 0.7) {
           setLightningFlash(true);
-          setTimeout(() => setLightningFlash(false), 100);
+          flashTimeoutId = setTimeout(() => setLightningFlash(false), 100);
         }
       }, 500);
       
-      return () => clearInterval(flashInterval);
+      return () => {
+        clearInterval(flashInterval);
+        if (flashTimeoutId) {
+          clearTimeout(flashTimeoutId);
+        }
+      };
     }
+
+    setLightningFlash(false);
   }, [currentWeather.name]);
+
+  useEffect(() => {
+    const geometry = pointsRef.current?.geometry;
+    if (!geometry) {
+      return;
+    }
+
+    geometry.setDrawRange(0, currentWeather.particleCount);
+  }, [currentWeather.particleCount]);
   
   useFrame((state, delta) => {
     if (!pointsRef.current) return;

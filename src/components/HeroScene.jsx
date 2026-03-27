@@ -1,119 +1,82 @@
-import { Canvas } from '@react-three/fiber';
-import { Suspense, Component } from 'react';
-import Moai from './Moai.jsx';
-import WeatherSystem from './WeatherSystem.jsx';
+import { lazy, Suspense, useEffect, useState } from 'react';
 
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+const HeroScene3D = lazy(() => import('./HeroScene3D.jsx'));
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('React Error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div style={{ 
-          width: '100vw', 
-          height: '100vh',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          background: '#0A0E27',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#4ECDC4',
-          fontFamily: 'monospace',
-          padding: '20px'
-        }}>
-          <div>
-            <h1 style={{color: '#ff6b6b'}}>Error Loading 3D Scene</h1>
-            <pre style={{fontSize: '12px', color: '#9CA3AF', maxWidth: '600px', overflow: 'auto'}}>
-              {this.state.error?.message || 'Unknown error'}
-            </pre>
-          </div>
-        </div>
-      );
-    }
-
-    return this.props.children;
-  }
-}
-
-function SceneLighting() {
+function StaticFallback() {
   return (
-    <>
-      <ambientLight intensity={0.4} />
-      <directionalLight 
-        position={[10, 10, 5]} 
-        intensity={0.8} 
-      />
-      <pointLight 
-        position={[-10, -10, -5]} 
-        intensity={0.3} 
-        color="#4ECDC4" 
-      />
-    </>
+    <div
+      aria-hidden="true"
+      style={{
+        position: 'absolute',
+        inset: 0,
+        background: [
+          'radial-gradient(circle at 15% 20%, rgba(78, 205, 196, 0.16), transparent 35%)',
+          'radial-gradient(circle at 80% 10%, rgba(69, 183, 209, 0.22), transparent 30%)',
+          'linear-gradient(180deg, #0A0E27 0%, #151B3B 55%, #1E2545 100%)',
+        ].join(','),
+      }}
+    />
   );
 }
 
-function HeroSceneContent() {
-  console.log('HeroScene: Rendering...');
-  
-  return (
-    <>
-      <SceneLighting />
-      <WeatherSystem />
-      <Moai />
-    </>
-  );
+function isLowPowerDevice() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return true;
+  }
+
+  if (window.innerWidth < 768) {
+    return true;
+  }
+
+  const connection =
+    navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (connection?.saveData) {
+    return true;
+  }
+
+  if (
+    typeof navigator.deviceMemory === 'number' &&
+    navigator.deviceMemory <= 4
+  ) {
+    return true;
+  }
+
+  if (
+    typeof navigator.hardwareConcurrency === 'number' &&
+    navigator.hardwareConcurrency <= 4
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+function supportsWebGL() {
+  try {
+    const canvas = document.createElement('canvas');
+    return Boolean(canvas.getContext('webgl2') || canvas.getContext('webgl'));
+  } catch {
+    return false;
+  }
 }
 
 export default function HeroScene() {
-  console.log('HeroScene: Component mounted');
-  
+  const [shouldLoad3D, setShouldLoad3D] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const canRender3D = !isLowPowerDevice() && supportsWebGL();
+    setShouldLoad3D(canRender3D);
+    setIsReady(true);
+  }, []);
+
+  if (!isReady || !shouldLoad3D) {
+    return <StaticFallback />;
+  }
+
   return (
-    <ErrorBoundary>
-      <div style={{ 
-        width: '100vw', 
-        height: '100vh',
-        position: 'fixed',
-        top: 0,
-        left: 0
-      }}>
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 75 }}
-          style={{ 
-            width: '100%',
-            height: '100%'
-          }}
-          gl={{ 
-            antialias: true,
-            alpha: true,
-            powerPreference: 'high-performance'
-          }}
-          onCreated={({ gl }) => {
-            console.log('HeroScene: Canvas created');
-            gl.setClearColor(0x0A0E27, 1);
-            console.log('HeroScene: Clear color set');
-          }}
-          onWebGLContextCreated={(gl) => {
-            console.log('HeroScene: WebGL context created');
-          }}
-        >
-          <Suspense fallback={null}>
-            <HeroSceneContent />
-          </Suspense>
-        </Canvas>
-      </div>
-    </ErrorBoundary>
+    <Suspense fallback={<StaticFallback />}>
+      <HeroScene3D />
+    </Suspense>
   );
 }
