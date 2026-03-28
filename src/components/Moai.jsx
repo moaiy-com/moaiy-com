@@ -1,131 +1,66 @@
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { Box3, MeshStandardMaterial, Vector3 } from 'three';
+import { Box3, Vector3 } from 'three';
 
 const MODEL_SCALE_RATIO = 0.7;
 const EXTERNAL_MODEL_PATH = '/models/moai/angelito-moai.glb';
 const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
-const EXTERNAL_BASELINE_Y = -2.56;
-const PROCEDURAL_MOAI_Y = -0.78;
+const EXTERNAL_BASELINE_Y = -2.12;
 
-function ProceduralMoai() {
-  const stoneMaterial = useMemo(
-    () =>
-      new MeshStandardMaterial({
-        color: 0x9099A7,
-        roughness: 0.9,
-        metalness: 0.03,
-      }),
-    [],
-  );
+function removeBackHeadArtifact(root) {
+  root.updateMatrixWorld(true);
 
-  const stoneDetailMaterial = useMemo(
-    () =>
-      new MeshStandardMaterial({
-        color: 0x818B99,
-        roughness: 0.88,
-        metalness: 0.04,
-      }),
-    [],
-  );
+  const box = new Box3().setFromObject(root);
+  const center = box.getCenter(new Vector3());
+  const size = box.getSize(new Vector3());
+  const yCut = box.min.y + size.y * 0.62;
+  const zCut = box.min.z + size.z * 0.22;
+  const xBand = size.x * 0.22;
 
-  useEffect(() => {
-    return () => {
-      stoneMaterial.dispose();
-      stoneDetailMaterial.dispose();
-    };
-  }, [stoneMaterial, stoneDetailMaterial]);
+  const v0 = new Vector3();
+  const v1 = new Vector3();
+  const v2 = new Vector3();
+  const triCenter = new Vector3();
 
-  return (
-    <group
-      position={[0, PROCEDURAL_MOAI_Y, 0]}
-      scale={[MODEL_SCALE_RATIO, MODEL_SCALE_RATIO, MODEL_SCALE_RATIO]}
-    >
-      <mesh
-        castShadow
-        position={[0, -2.15, 0]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <cylinderGeometry args={[1.45, 1.7, 0.78, 56]} />
-      </mesh>
+  root.traverse((child) => {
+    if (!child.isMesh || !child.geometry?.index || !child.geometry?.attributes?.position) {
+      return;
+    }
 
-      <mesh
-        castShadow
-        position={[0, -0.64, 0]}
-        receiveShadow
-        material={stoneMaterial}
-      >
-        <cylinderGeometry args={[1.02, 1.25, 2.72, 56]} />
-      </mesh>
+    const geometry = child.geometry.clone();
+    child.geometry = geometry;
 
-      <mesh
-        castShadow
-        position={[0, 0.88, 0]}
-        receiveShadow
-        material={stoneMaterial}
-      >
-        <cylinderGeometry args={[0.88, 1.02, 0.34, 44]} />
-      </mesh>
+    const positions = geometry.attributes.position;
+    const indexArray = geometry.index.array;
+    const keep = [];
 
-      <mesh
-        castShadow
-        position={[0, 2.02, 0]}
-        receiveShadow
-        scale={[1, 1.16, 0.94]}
-        material={stoneMaterial}
-      >
-        <capsuleGeometry args={[0.84, 1.36, 14, 24]} />
-      </mesh>
+    for (let i = 0; i < indexArray.length; i += 3) {
+      const a = indexArray[i];
+      const b = indexArray[i + 1];
+      const c = indexArray[i + 2];
 
-      <mesh
-        castShadow
-        position={[0, 2.24, 0.58]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <boxGeometry args={[1.14, 0.18, 0.44]} />
-      </mesh>
+      v0.fromBufferAttribute(positions, a).applyMatrix4(child.matrixWorld);
+      v1.fromBufferAttribute(positions, b).applyMatrix4(child.matrixWorld);
+      v2.fromBufferAttribute(positions, c).applyMatrix4(child.matrixWorld);
 
-      <mesh
-        castShadow
-        position={[0, 1.66, 0.67]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <boxGeometry args={[0.24, 0.6, 0.4]} />
-      </mesh>
+      triCenter.copy(v0).add(v1).add(v2).multiplyScalar(1 / 3);
 
-      <mesh
-        castShadow
-        position={[0, 1.28, 0.74]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <boxGeometry args={[0.3, 0.22, 0.45]} />
-      </mesh>
+      const isBackHeadArtifact =
+        triCenter.y >= yCut &&
+        triCenter.z <= zCut &&
+        Math.abs(triCenter.x - center.x) <= xBand;
 
-      <mesh
-        castShadow
-        position={[-0.78, 1.96, 0.14]}
-        receiveShadow
-        material={stoneDetailMaterial}
-        rotation={[0.02, 0, 0.1]}
-      >
-        <boxGeometry args={[0.18, 0.62, 0.26]} />
-      </mesh>
+      if (!isBackHeadArtifact) {
+        keep.push(a, b, c);
+      }
+    }
 
-      <mesh
-        castShadow
-        position={[0.78, 1.96, 0.14]}
-        receiveShadow
-        material={stoneDetailMaterial}
-        rotation={[0.02, 0, -0.1]}
-      >
-        <boxGeometry args={[0.18, 0.62, 0.26]} />
-      </mesh>
-    </group>
-  );
+    if (keep.length > 0 && keep.length < indexArray.length) {
+      geometry.setIndex(keep);
+      geometry.computeBoundingBox();
+      geometry.computeBoundingSphere();
+    }
+  });
 }
 
 function ExternalMoai() {
@@ -189,6 +124,8 @@ function ExternalMoai() {
       }
     });
 
+    removeBackHeadArtifact(clone);
+
     return clone;
   }, [scene]);
 
@@ -241,11 +178,11 @@ export default function Moai() {
 
   if (modelCheckFinished && isExternalModelEnabled) {
     return (
-      <Suspense fallback={<ProceduralMoai />}>
+      <Suspense fallback={null}>
         <ExternalMoai />
       </Suspense>
     );
   }
 
-  return <ProceduralMoai />;
+  return null;
 }

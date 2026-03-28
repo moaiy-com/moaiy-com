@@ -4,13 +4,14 @@ interface Props {
 }
 
 const { currentPage = '' } = Astro.props;
+const RELEASES_URL = 'https://github.com/moaiy-com/moaiy/releases';
 
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/features', label: 'Features' },
   { href: '/security', label: 'Security' },
   { href: '/docs', label: 'Docs' },
-  { href: '/download', label: 'Download' },
+  { href: RELEASES_URL, label: 'Download' },
   { href: '/about', label: 'About' },
 ];
 ---
@@ -29,6 +30,8 @@ const navItems = [
         {navItems.map((item) => (
           <a
             href={item.href}
+            target={item.href.startsWith('http') ? '_blank' : undefined}
+            rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}
             class={`font-body text-sm font-medium transition-colors ${
               currentPage === item.label.toLowerCase()
                 ? 'text-accent-primary'
@@ -42,12 +45,14 @@ const navItems = [
       
       <!-- CTA Button -->
       <div class="hidden md:block">
-        <button
-          disabled
-          class="px-4 py-2 bg-gray-600 text-white font-semibold text-sm rounded-lg cursor-not-allowed"
+        <a
+          href={RELEASES_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-4 py-2 bg-accent-primary text-white font-semibold text-sm rounded-lg hover:bg-accent-secondary transition-colors"
         >
-          Coming Soon
-        </button>
+          Download
+        </a>
       </div>
       
       <!-- Mobile Menu Button -->
@@ -78,7 +83,9 @@ const navItems = [
           </a>
         ))}
         <a
-          href="/download"
+          href={RELEASES_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           class="mt-2 px-4 py-2 bg-accent-primary text-white font-semibold text-sm rounded-lg hover:bg-accent-secondary transition-colors text-center"
         >
           Download

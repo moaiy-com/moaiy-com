@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { AdditiveBlending, BackSide, Color, MathUtils } from 'three';
+import { useFrame, useThree } from '@react-three/fiber';
+import {
+  AdditiveBlending,
+  CanvasTexture,
+  Color,
+  MathUtils,
+} from 'three';
 
 const WEATHER_TYPES = [
   {
@@ -8,6 +13,7 @@ const WEATHER_TYPES = [
     mode: 'drift',
     topColor: '#73c6ff',
     bottomColor: '#e8f7ff',
+    skyBrightness: 1.0,
     speed: 0.45,
     particleCount: 240,
     particleColor: '#ffffff',
@@ -19,6 +25,7 @@ const WEATHER_TYPES = [
     mode: 'stars',
     topColor: '#0a1028',
     bottomColor: '#111e42',
+    skyBrightness: 0.34,
     speed: 0.18,
     particleCount: 420,
     particleColor: '#d6e8ff',
@@ -30,6 +37,7 @@ const WEATHER_TYPES = [
     mode: 'wind',
     topColor: '#4f5f77',
     bottomColor: '#96a9c4',
+    skyBrightness: 0.74,
     speed: 1.5,
     particleCount: 470,
     particleColor: '#e7f4ff',
@@ -41,6 +49,7 @@ const WEATHER_TYPES = [
     mode: 'rain',
     topColor: '#2b3a5a',
     bottomColor: '#4e6488',
+    skyBrightness: 0.58,
     speed: 2.6,
     particleCount: 820,
     particleColor: '#b8d4ff',
@@ -52,6 +61,7 @@ const WEATHER_TYPES = [
     mode: 'rain',
     topColor: '#202a45',
     bottomColor: '#3b4f74',
+    skyBrightness: 0.5,
     speed: 2.8,
     particleCount: 860,
     particleColor: '#c3dbff',
@@ -63,6 +73,7 @@ const WEATHER_TYPES = [
     mode: 'snow',
     topColor: '#95b5d1',
     bottomColor: '#dcecff',
+    skyBrightness: 0.9,
     speed: 0.32,
     particleCount: 720,
     particleColor: '#ffffff',
@@ -74,6 +85,7 @@ const WEATHER_TYPES = [
     mode: 'tornado',
     topColor: '#30343f',
     bottomColor: '#626874',
+    skyBrightness: 0.46,
     speed: 1.2,
     particleCount: 980,
     particleColor: '#d3dee8',
@@ -87,35 +99,26 @@ const MAX_PARTICLE_COUNT = WEATHER_TYPES.reduce(
   0,
 );
 
-const SKY_VERTEX_SHADER = `
-  varying vec3 vWorldPosition;
-
-  void main() {
-    vec4 worldPosition = modelMatrix * vec4(position, 1.0);
-    vWorldPosition = worldPosition.xyz;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-  }
-`;
-
-const SKY_FRAGMENT_SHADER = `
-  uniform vec3 uTopColor;
-  uniform vec3 uBottomColor;
-  varying vec3 vWorldPosition;
-
-  void main() {
-    float h = normalize(vWorldPosition + vec3(0.0, 8.0, 0.0)).y;
-    float mixStrength = smoothstep(-0.35, 0.9, h);
-    vec3 finalColor = mix(uBottomColor, uTopColor, mixStrength);
-    gl_FragColor = vec4(finalColor, 1.0);
-  }
-`;
+function colorToCss(color) {
+  const r = Math.round(Math.min(1, Math.max(0, color.r)) * 255);
+  const g = Math.round(Math.min(1, Math.max(0, color.g)) * 255);
+  const b = Math.round(Math.min(1, Math.max(0, color.b)) * 255);
+  return `rgb(${r}, ${g}, ${b})`;
+}
 
 export default function WeatherSystem() {
+  const { scene } = useThree();
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
   const [lightningFlash, setLightningFlash] = useState(false);
+
   const pointsRef = useRef();
-  const skyMaterialRef = useRef();
+  const skyCanvasRef = useRef(null);
+  const skyContextRef = useRef(null);
+  const skyTextureRef = useRef(null);
+
   const flashStrengthRef = useRef(0);
+  const brightnessRef = useRef(WEATHER_TYPES[0].skyBrightness);
+  const brightnessTargetRef = useRef(WEATHER_TYPES[0].skyBrightness);
 
   const currentWeather = WEATHER_TYPES[currentWeatherIndex];
 
@@ -123,17 +126,51 @@ export default function WeatherSystem() {
   const bottomColorRef = useRef(new Color(WEATHER_TYPES[0].bottomColor));
   const topTargetRef = useRef(new Color(WEATHER_TYPES[0].topColor));
   const bottomTargetRef = useRef(new Color(WEATHER_TYPES[0].bottomColor));
+
   const whiteRef = useRef(new Color(0xFFFFFF));
   const topWorkRef = useRef(new Color(WEATHER_TYPES[0].topColor));
+  const midWorkRef = useRef(new Color(WEATHER_TYPES[0].bottomColor));
   const bottomWorkRef = useRef(new Color(WEATHER_TYPES[0].bottomColor));
+  const taglineColorRef = useRef(new Color('#EEF4FF'));
+  const taglineLightRef = useRef(new Color('#EEF4FF'));
+  const taglineDarkRef = useRef(new Color('#1D2740'));
+  const lastTaglineCssRef = useRef('');
 
-  const skyUniforms = useMemo(
-    () => ({
-      uTopColor: { value: new Color(WEATHER_TYPES[0].topColor) },
-      uBottomColor: { value: new Color(WEATHER_TYPES[0].bottomColor) },
-    }),
-    [],
-  );
+  const skyTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 32;
+    canvas.height = 512;
+
+    const context = canvas.getContext('2d');
+    skyCanvasRef.current = canvas;
+    skyContextRef.current = context;
+
+    const texture = new CanvasTexture(canvas);
+    texture.needsUpdate = true;
+
+    skyTextureRef.current = texture;
+    return texture;
+  }, []);
+
+  const particleTexture = useMemo(() => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+
+    const context = canvas.getContext('2d');
+    if (context) {
+      const gradient = context.createRadialGradient(32, 32, 3, 32, 32, 30);
+      gradient.addColorStop(0, 'rgba(255,255,255,1)');
+      gradient.addColorStop(0.42, 'rgba(255,255,255,0.82)');
+      gradient.addColorStop(1, 'rgba(255,255,255,0)');
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    const texture = new CanvasTexture(canvas);
+    texture.needsUpdate = true;
+    return texture;
+  }, []);
 
   const particleData = useMemo(() => {
     const positions = new Float32Array(MAX_PARTICLE_COUNT * 3);
@@ -150,6 +187,21 @@ export default function WeatherSystem() {
   }, []);
 
   useEffect(() => {
+    scene.background = skyTexture;
+    document.documentElement.style.setProperty('--hero-tagline-color', 'rgb(238, 244, 255)');
+    lastTaglineCssRef.current = 'rgb(238, 244, 255)';
+
+    return () => {
+      if (scene.background === skyTexture) {
+        scene.background = null;
+      }
+      document.documentElement.style.removeProperty('--hero-tagline-color');
+      skyTexture.dispose();
+      particleTexture.dispose();
+    };
+  }, [particleTexture, scene, skyTexture]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       setCurrentWeatherIndex((prev) => (prev + 1) % WEATHER_TYPES.length);
     }, 10000);
@@ -160,7 +212,8 @@ export default function WeatherSystem() {
   useEffect(() => {
     topTargetRef.current.set(currentWeather.topColor);
     bottomTargetRef.current.set(currentWeather.bottomColor);
-  }, [currentWeather.topColor, currentWeather.bottomColor]);
+    brightnessTargetRef.current = currentWeather.skyBrightness;
+  }, [currentWeather.topColor, currentWeather.bottomColor, currentWeather.skyBrightness]);
 
   useEffect(() => {
     if (currentWeather.name !== 'lightning') {
@@ -194,24 +247,66 @@ export default function WeatherSystem() {
   useFrame((state, delta) => {
     topColorRef.current.lerp(topTargetRef.current, 1 - Math.exp(-delta * 1.6));
     bottomColorRef.current.lerp(bottomTargetRef.current, 1 - Math.exp(-delta * 1.6));
+    brightnessRef.current = MathUtils.damp(
+      brightnessRef.current,
+      brightnessTargetRef.current,
+      2.2,
+      delta,
+    );
 
     flashStrengthRef.current = MathUtils.damp(
       flashStrengthRef.current,
-      lightningFlash ? 0.75 : 0,
+      lightningFlash ? 0.78 : 0,
       9,
       delta,
     );
 
-    if (skyMaterialRef.current) {
-      topWorkRef.current
-        .copy(topColorRef.current)
-        .lerp(whiteRef.current, flashStrengthRef.current);
-      bottomWorkRef.current
-        .copy(bottomColorRef.current)
-        .lerp(whiteRef.current, flashStrengthRef.current * 0.45);
+    const flashStrength = flashStrengthRef.current;
+    const brightness = brightnessRef.current * (1 + flashStrength * 0.5);
+    const textBlend = MathUtils.smoothstep(brightnessRef.current, 0.72, 1.05);
 
-      skyMaterialRef.current.uniforms.uTopColor.value.copy(topWorkRef.current);
-      skyMaterialRef.current.uniforms.uBottomColor.value.copy(bottomWorkRef.current);
+    taglineColorRef.current
+      .copy(taglineLightRef.current)
+      .lerp(taglineDarkRef.current, textBlend);
+    const taglineCss = colorToCss(taglineColorRef.current);
+    if (taglineCss !== lastTaglineCssRef.current) {
+      document.documentElement.style.setProperty('--hero-tagline-color', taglineCss);
+      lastTaglineCssRef.current = taglineCss;
+    }
+
+    topWorkRef.current
+      .copy(topColorRef.current)
+      .multiplyScalar(brightness)
+      .lerp(whiteRef.current, flashStrength * 0.4);
+
+    bottomWorkRef.current
+      .copy(bottomColorRef.current)
+      .multiplyScalar(brightness * 0.96)
+      .lerp(whiteRef.current, flashStrength * 0.22);
+
+    midWorkRef.current
+      .copy(topWorkRef.current)
+      .lerp(bottomWorkRef.current, 0.58);
+
+    const canvas = skyCanvasRef.current;
+    const context = skyContextRef.current;
+    if (canvas && context) {
+      const gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+      gradient.addColorStop(0, colorToCss(topWorkRef.current));
+      gradient.addColorStop(0.56, colorToCss(midWorkRef.current));
+      gradient.addColorStop(1, colorToCss(bottomWorkRef.current));
+
+      context.fillStyle = gradient;
+      context.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (flashStrength > 0.01) {
+        context.fillStyle = `rgba(255,255,255,${(flashStrength * 0.16).toFixed(3)})`;
+        context.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      if (skyTextureRef.current) {
+        skyTextureRef.current.needsUpdate = true;
+      }
     }
 
     const geometry = pointsRef.current?.geometry;
@@ -284,41 +379,25 @@ export default function WeatherSystem() {
   });
 
   return (
-    <>
-      <mesh position={[0, 0, -20]}>
-        <sphereGeometry args={[34, 48, 32]} />
-        <shaderMaterial
-          ref={skyMaterialRef}
-          depthWrite={false}
-          fragmentShader={SKY_FRAGMENT_SHADER}
-          side={BackSide}
-          uniforms={skyUniforms}
-          vertexShader={SKY_VERTEX_SHADER}
+    <points ref={pointsRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[particleData.positions, 3]}
         />
-      </mesh>
-
-      <mesh position={[0, -2.4, -3]} rotation={[-Math.PI / 2, 0, 0]}>
-        <ringGeometry args={[3.5, 13.5, 96]} />
-        <meshBasicMaterial color="#7EE8DF" opacity={0.06} transparent />
-      </mesh>
-
-      <points ref={pointsRef}>
-        <bufferGeometry>
-          <bufferAttribute
-            attach="attributes-position"
-            args={[particleData.positions, 3]}
-          />
-        </bufferGeometry>
-        <pointsMaterial
-          blending={AdditiveBlending}
-          color={currentWeather.particleColor}
-          depthWrite={false}
-          opacity={currentWeather.particleOpacity}
-          size={currentWeather.particleSize}
-          sizeAttenuation
-          transparent
-        />
-      </points>
-    </>
+      </bufferGeometry>
+      <pointsMaterial
+        alphaTest={0.02}
+        blending={AdditiveBlending}
+        color={currentWeather.particleColor}
+        depthTest={false}
+        depthWrite={false}
+        map={particleTexture}
+        opacity={currentWeather.particleOpacity}
+        size={currentWeather.particleSize}
+        sizeAttenuation
+        transparent
+      />
+    </points>
   );
 }

@@ -5,6 +5,8 @@ interface Props {
 }
 
 const { title, description = "Moaiy - Encryption Made Simple. Secure and easy-to-use encryption tool designed for everyone." } = Astro.props;
+const X_URL = 'https://x.com/moaiycom';
+const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
 ---
 
 <!doctype html>
@@ -43,6 +45,23 @@ const { title, description = "Moaiy - Encryption Made Simple. Secure and easy-to
   </head>
   <body class="bg-bg-primary text-text-primary font-body antialiased">
     <slot />
+    <footer class="border-t border-gray-800 bg-bg-primary/95">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+          <a
+            href={X_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-body text-text-secondary hover:text-accent-primary transition-colors"
+          >
+            X: @moaiycom
+          </a>
+          <p class="font-code text-xs text-text-tertiary break-all">
+            ETH Donation: <span class="text-text-secondary">{ETH_DONATION_ADDRESS}</span>
+          </p>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>
 
