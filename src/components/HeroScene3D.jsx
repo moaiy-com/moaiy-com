@@ -1,14 +1,17 @@
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { Clone, useGLTF } from '@react-three/drei';
-import { Component, Suspense, lazy, useEffect, useMemo, useState } from 'react';
+import { Component, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { ACESFilmicToneMapping, Box3, Vector3 } from 'three';
 
 const Moai = lazy(() => import('./Moai.jsx'));
 const WeatherSystem = lazy(() => import('./WeatherSystem.jsx'));
 const GRASS_MODEL_PATH = '/models/moai/realistics_grass.glb';
 const GROUND_Y = -2.45;
-const GRASS_HEIGHT_RATIO = 0.28;
-const GRASS_SINK_Y = -0.22;
+const GRASS_HEIGHT_RATIO = 0.18;
+const GRASS_SINK_Y = -1.5;
+const MOAI_OFFSET_X = 1.35;
+const SHOW_MOAI = true;
+const SHOW_WEATHER = true;
 
 class ErrorBoundary extends Component {
   constructor(props) {
@@ -129,18 +132,18 @@ function Flower({ position, rotationY, scale, petalColor }) {
 
 function FlowerLayer() {
   const flowers = useMemo(() => {
-    const flowerCount = 1 + Math.floor(Math.random() * 2);
-    const petalPalette = ['#fff6da', '#f8f2ff', '#ffe5f0', '#f2f8ff'];
+    const flowerCount = Math.random() > 0.5 ? 1 : 0;
+    const petalPalette = ['#f4e8cf', '#e9dfcb', '#f2e3d8'];
 
     return Array.from({ length: flowerCount }, (_, index) => {
       const angle = Math.random() * Math.PI * 2;
-      const radius = 2.3 + Math.random() * 2.8;
+      const radius = 3.4 + Math.random() * 2.2;
 
       return {
         key: `flower-${index}`,
         position: [Math.cos(angle) * radius, GROUND_Y + 0.02, Math.sin(angle) * radius],
         rotationY: Math.random() * Math.PI * 2,
-        scale: 0.9 + Math.random() * 0.35,
+        scale: 0.58 + Math.random() * 0.22,
         petalColor: petalPalette[Math.floor(Math.random() * petalPalette.length)],
       };
     });
@@ -183,6 +186,7 @@ function ProceduralGrassGround() {
 
 function ExternalGrassGround() {
   const { scene } = useGLTF(GRASS_MODEL_PATH);
+  const patchRefs = useRef([]);
 
   const normalizedPatch = useMemo(() => {
     const clone = scene.clone(true);
@@ -225,30 +229,247 @@ function ExternalGrassGround() {
         if ('metalness' in material && typeof material.metalness === 'number') {
           material.metalness = Math.min(material.metalness, 0.08);
         }
+
+        if (material.color) {
+          material.color.offsetHSL(0.01, -0.2, -0.12);
+        }
       }
     });
 
     return clone;
   }, [scene]);
 
+  const dryPatch = useMemo(() => {
+    const clone = normalizedPatch.clone(true);
+
+    clone.traverse((child) => {
+      if (!child.isMesh) {
+        return;
+      }
+
+      if (Array.isArray(child.material)) {
+        child.material = child.material.map((material) => material?.clone());
+      } else if (child.material) {
+        child.material = child.material.clone();
+      }
+
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      for (const material of materials) {
+        if (!material) {
+          continue;
+        }
+
+        if ('roughness' in material && typeof material.roughness === 'number') {
+          material.roughness = Math.max(material.roughness, 0.86);
+        }
+
+        if ('metalness' in material && typeof material.metalness === 'number') {
+          material.metalness = Math.min(material.metalness, 0.06);
+        }
+
+        if (material.color) {
+          material.color.offsetHSL(0.08, -0.42, -0.02);
+        }
+      }
+    });
+
+    return clone;
+  }, [normalizedPatch]);
+
   const patchLayout = useMemo(
     () => [
-      { key: 'grass-center', position: [0, GRASS_SINK_Y, 0], rotationY: 0.16, scale: 0.8 },
-      { key: 'grass-front-left', position: [-2.7, GRASS_SINK_Y, 1.75], rotationY: 1.98, scale: 0.66 },
-      { key: 'grass-front-right', position: [2.5, GRASS_SINK_Y, 1.6], rotationY: 1.02, scale: 0.68 },
+      {
+        key: 'grass-clump-a',
+        variant: 'lush',
+        position: [-0.75, GRASS_SINK_Y + 0.05, 0.92],
+        rotationY: 0.52,
+        scaleX: 0.76,
+        scaleZ: 0.49,
+        scaleY: 0.94,
+        swaySpeed: 0.58,
+        swayAmp: 0.045,
+        yawAmp: 0.03,
+        phase: 0.9,
+      },
+      {
+        key: 'grass-clump-b',
+        variant: 'lush',
+        position: [0.95, GRASS_SINK_Y + 0.03, 0.08],
+        rotationY: 1.34,
+        scaleX: 0.63,
+        scaleZ: 0.42,
+        scaleY: 0.86,
+        swaySpeed: 0.77,
+        swayAmp: 0.054,
+        yawAmp: 0.028,
+        phase: 2.3,
+      },
+      {
+        key: 'grass-clump-c',
+        variant: 'dry',
+        position: [0.22, GRASS_SINK_Y + 0.04, -0.96],
+        rotationY: 2.6,
+        scaleX: 0.58,
+        scaleZ: 0.38,
+        scaleY: 0.82,
+        swaySpeed: 0.68,
+        swayAmp: 0.05,
+        yawAmp: 0.026,
+        phase: 1.4,
+      },
+      {
+        key: 'grass-front-left',
+        variant: 'lush',
+        position: [-2.85, GRASS_SINK_Y - 0.06, 2.16],
+        rotationY: 1.98,
+        scaleX: 0.52,
+        scaleZ: 0.34,
+        scaleY: 0.78,
+        swaySpeed: 0.91,
+        swayAmp: 0.06,
+        yawAmp: 0.03,
+        phase: 3.6,
+      },
+      {
+        key: 'grass-front-right',
+        variant: 'lush',
+        position: [3.16, GRASS_SINK_Y - 0.07, 1.38],
+        rotationY: 1.02,
+        scaleX: 0.54,
+        scaleZ: 0.35,
+        scaleY: 0.8,
+        swaySpeed: 0.82,
+        swayAmp: 0.061,
+        yawAmp: 0.031,
+        phase: 4.2,
+      },
+      {
+        key: 'grass-back-left',
+        variant: 'dry',
+        position: [-2.32, GRASS_SINK_Y - 0.09, -2.05],
+        rotationY: 2.76,
+        scaleX: 0.5,
+        scaleZ: 0.32,
+        scaleY: 0.74,
+        swaySpeed: 0.66,
+        swayAmp: 0.05,
+        yawAmp: 0.028,
+        phase: 5.4,
+      },
+      {
+        key: 'grass-back-mid',
+        variant: 'dry',
+        position: [0.92, GRASS_SINK_Y - 0.1, -2.36],
+        rotationY: 0.48,
+        scaleX: 0.44,
+        scaleZ: 0.29,
+        scaleY: 0.7,
+        swaySpeed: 0.58,
+        swayAmp: 0.046,
+        yawAmp: 0.024,
+        phase: 0.3,
+      },
+      {
+        key: 'grass-side-right',
+        variant: 'dry',
+        position: [3.42, GRASS_SINK_Y - 0.08, -0.58],
+        rotationY: 1.64,
+        scaleX: 0.42,
+        scaleZ: 0.28,
+        scaleY: 0.68,
+        swaySpeed: 0.88,
+        swayAmp: 0.048,
+        yawAmp: 0.024,
+        phase: 2.95,
+      },
+      {
+        key: 'grass-side-left',
+        variant: 'dry',
+        position: [-3.52, GRASS_SINK_Y - 0.1, 0.25],
+        rotationY: 2.1,
+        scaleX: 0.4,
+        scaleZ: 0.26,
+        scaleY: 0.66,
+        swaySpeed: 0.94,
+        swayAmp: 0.044,
+        yawAmp: 0.022,
+        phase: 1.7,
+      },
     ],
     [],
   );
 
-  return patchLayout.map((patch) => (
+  useFrame((state) => {
+    const t = state.clock.elapsedTime;
+    const gust =
+      0.6 +
+      Math.sin(t * 0.19) * 0.2 +
+      Math.sin(t * 0.11 + 1.4) * 0.18 +
+      Math.sin(t * 0.07 + 2.1) * 0.12;
+
+    patchLayout.forEach((patch, index) => {
+      const patchGroup = patchRefs.current[index];
+      if (!patchGroup) {
+        return;
+      }
+
+      const swayFactor = patch.swayAmp * (0.85 + gust * 0.55);
+      patchGroup.rotation.y =
+        patch.rotationY + Math.sin(t * patch.swaySpeed + patch.phase) * patch.yawAmp;
+      patchGroup.rotation.x =
+        Math.sin(t * patch.swaySpeed * 1.24 + patch.phase * 1.9) * swayFactor;
+      patchGroup.rotation.z =
+        Math.cos(t * patch.swaySpeed * 1.08 + patch.phase * 1.3) * swayFactor * 0.78;
+    });
+  });
+
+  return patchLayout.map((patch, index) => (
     <group
       key={patch.key}
+      ref={(node) => {
+        if (node) {
+          patchRefs.current[index] = node;
+        }
+      }}
       position={patch.position}
       rotation={[0, patch.rotationY, 0]}
-      scale={[patch.scale, patch.scale * GRASS_HEIGHT_RATIO, patch.scale]}
+      scale={[
+        patch.scaleX,
+        patch.scaleY * GRASS_HEIGHT_RATIO,
+        patch.scaleZ,
+      ]}
     >
-      <Clone object={normalizedPatch} />
+      <Clone object={patch.variant === 'dry' ? dryPatch : normalizedPatch} />
     </group>
+  ));
+}
+
+function BareSoilLayer() {
+  const soilPatches = useMemo(
+    () => [
+      { key: 'soil-a', position: [-1.2, GROUND_Y - 0.002, 1.05], rotationY: 0.32, scaleX: 1.15, scaleZ: 0.82, color: '#385532' },
+      { key: 'soil-b', position: [1.46, GROUND_Y - 0.003, 0.18], rotationY: 1.18, scaleX: 0.94, scaleZ: 0.66, color: '#2f472a' },
+      { key: 'soil-c', position: [0.28, GROUND_Y - 0.004, -1.22], rotationY: 2.04, scaleX: 1.08, scaleZ: 0.71, color: '#3d5f37' },
+      { key: 'soil-d', position: [-2.36, GROUND_Y - 0.005, -0.88], rotationY: 2.62, scaleX: 0.88, scaleZ: 0.6, color: '#324c2d' },
+      { key: 'soil-e', position: [2.52, GROUND_Y - 0.006, -1.56], rotationY: 0.76, scaleX: 0.72, scaleZ: 0.5, color: '#2c4228' },
+    ],
+    [],
+  );
+
+  return soilPatches.map((patch) => (
+    <mesh
+      key={patch.key}
+      position={patch.position}
+      receiveShadow
+      rotation={[-Math.PI / 2, patch.rotationY, 0]}
+      scale={[patch.scaleX, 1, patch.scaleZ]}
+    >
+      <circleGeometry args={[1.12, 56]} />
+      <meshStandardMaterial color={patch.color} roughness={0.98} metalness={0.01} />
+    </mesh>
   ));
 }
 
@@ -299,6 +520,7 @@ function GrassGround() {
       ) : (
         <ProceduralGrassGround />
       )}
+      <BareSoilLayer />
       <FlowerLayer />
     </group>
   );
@@ -334,8 +556,12 @@ export default function HeroScene3D() {
           <Suspense fallback={null}>
             <SceneLighting />
             <GrassGround />
-            <WeatherSystem />
-            <Moai />
+            {SHOW_WEATHER ? <WeatherSystem /> : null}
+            {SHOW_MOAI ? (
+              <group position={[MOAI_OFFSET_X, 0, 0]}>
+                <Moai />
+              </group>
+            ) : null}
           </Suspense>
         </Canvas>
       </div>

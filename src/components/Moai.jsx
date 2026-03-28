@@ -1,12 +1,11 @@
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useGLTF } from '@react-three/drei';
-import { Box3, MeshStandardMaterial, Vector3 } from 'three';
+import { Box3, Vector3 } from 'three';
 
 const MODEL_SCALE_RATIO = 0.7;
 const EXTERNAL_MODEL_PATH = '/models/moai/angelito-moai.glb';
 const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
-const EXTERNAL_BASELINE_Y = -2.29;
-const PROCEDURAL_MOAI_Y = -0.5;
+const EXTERNAL_BASELINE_Y = -2.12;
 
 function removeBackHeadArtifact(root) {
   root.updateMatrixWorld(true);
@@ -14,7 +13,6 @@ function removeBackHeadArtifact(root) {
   const box = new Box3().setFromObject(root);
   const center = box.getCenter(new Vector3());
   const size = box.getSize(new Vector3());
-
   const yCut = box.min.y + size.y * 0.62;
   const zCut = box.min.z + size.z * 0.22;
   const xBand = size.x * 0.22;
@@ -63,126 +61,6 @@ function removeBackHeadArtifact(root) {
       geometry.computeBoundingSphere();
     }
   });
-}
-
-function ProceduralMoai() {
-  const stoneMaterial = useMemo(
-    () =>
-      new MeshStandardMaterial({
-        color: 0x9099A7,
-        roughness: 0.9,
-        metalness: 0.03,
-      }),
-    [],
-  );
-
-  const stoneDetailMaterial = useMemo(
-    () =>
-      new MeshStandardMaterial({
-        color: 0x818B99,
-        roughness: 0.88,
-        metalness: 0.04,
-      }),
-    [],
-  );
-
-  useEffect(() => {
-    return () => {
-      stoneMaterial.dispose();
-      stoneDetailMaterial.dispose();
-    };
-  }, [stoneMaterial, stoneDetailMaterial]);
-
-  return (
-    <group
-      position={[0, PROCEDURAL_MOAI_Y, 0]}
-      scale={[MODEL_SCALE_RATIO, MODEL_SCALE_RATIO, MODEL_SCALE_RATIO]}
-    >
-      <mesh
-        castShadow
-        position={[0, -2.15, 0]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <cylinderGeometry args={[1.45, 1.7, 0.78, 56]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0, -0.64, 0]}
-        receiveShadow
-        material={stoneMaterial}
-      >
-        <cylinderGeometry args={[1.02, 1.25, 2.72, 56]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0, 0.88, 0]}
-        receiveShadow
-        material={stoneMaterial}
-      >
-        <cylinderGeometry args={[0.88, 1.02, 0.34, 44]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0, 2.02, 0]}
-        receiveShadow
-        scale={[1, 1.16, 0.94]}
-        material={stoneMaterial}
-      >
-        <capsuleGeometry args={[0.84, 1.36, 14, 24]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0, 2.24, 0.58]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <boxGeometry args={[1.14, 0.18, 0.44]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0, 1.66, 0.67]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <boxGeometry args={[0.24, 0.6, 0.4]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0, 1.28, 0.74]}
-        receiveShadow
-        material={stoneDetailMaterial}
-      >
-        <boxGeometry args={[0.3, 0.22, 0.45]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[-0.78, 1.96, 0.14]}
-        receiveShadow
-        material={stoneDetailMaterial}
-        rotation={[0.02, 0, 0.1]}
-      >
-        <boxGeometry args={[0.18, 0.62, 0.26]} />
-      </mesh>
-
-      <mesh
-        castShadow
-        position={[0.78, 1.96, 0.14]}
-        receiveShadow
-        material={stoneDetailMaterial}
-        rotation={[0.02, 0, -0.1]}
-      >
-        <boxGeometry args={[0.18, 0.62, 0.26]} />
-      </mesh>
-    </group>
-  );
 }
 
 function ExternalMoai() {
@@ -300,11 +178,11 @@ export default function Moai() {
 
   if (modelCheckFinished && isExternalModelEnabled) {
     return (
-      <Suspense fallback={<ProceduralMoai />}>
+      <Suspense fallback={null}>
         <ExternalMoai />
       </Suspense>
     );
   }
 
-  return <ProceduralMoai />;
+  return null;
 }
