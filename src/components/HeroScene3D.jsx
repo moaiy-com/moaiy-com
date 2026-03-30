@@ -8,6 +8,7 @@ const WeatherSystem = lazy(() => import('./WeatherSystem.jsx'));
 const GRASS_MODEL_PATH = '/models/moai/realistics_grass.glb';
 const GROUND_Y = -2.45;
 const GRASS_HEIGHT_RATIO = 0.18;
+const GRASS_COVERAGE_XZ_RATIO = 1.26;
 const GRASS_SINK_Y = -1.5;
 const MOAI_OFFSET_X = 1.35;
 const SHOW_MOAI = true;
@@ -187,6 +188,7 @@ function ProceduralGrassGround() {
 function ExternalGrassGround() {
   const { scene } = useGLTF(GRASS_MODEL_PATH);
   const patchRefs = useRef([]);
+  const coverageRefs = useRef([]);
 
   const normalizedPatch = useMemo(() => {
     const clone = scene.clone(true);
@@ -402,6 +404,64 @@ function ExternalGrassGround() {
     [],
   );
 
+  const coverageLayout = useMemo(
+    () => [
+      {
+        key: 'coverage-core',
+        variant: 'lush',
+        position: [0.34, GRASS_SINK_Y - 0.18, -0.12],
+        rotationY: 0.42,
+        scaleX: 1.62,
+        scaleZ: 1.04,
+        scaleY: 0.48,
+        swaySpeed: 0.42,
+        swayAmp: 0.026,
+        yawAmp: 0.014,
+        phase: 1.1,
+      },
+      {
+        key: 'coverage-right',
+        variant: 'lush',
+        position: [2.42, GRASS_SINK_Y - 0.2, 0.44],
+        rotationY: 1.08,
+        scaleX: 1.18,
+        scaleZ: 0.82,
+        scaleY: 0.42,
+        swaySpeed: 0.51,
+        swayAmp: 0.028,
+        yawAmp: 0.015,
+        phase: 2.9,
+      },
+      {
+        key: 'coverage-left',
+        variant: 'lush',
+        position: [-2.54, GRASS_SINK_Y - 0.22, 0.22],
+        rotationY: 2.34,
+        scaleX: 1.12,
+        scaleZ: 0.8,
+        scaleY: 0.4,
+        swaySpeed: 0.47,
+        swayAmp: 0.027,
+        yawAmp: 0.014,
+        phase: 4.3,
+      },
+      {
+        key: 'coverage-back',
+        variant: 'dry',
+        position: [0.12, GRASS_SINK_Y - 0.22, -2.42],
+        rotationY: 2.76,
+        scaleX: 1.24,
+        scaleZ: 0.86,
+        scaleY: 0.4,
+        swaySpeed: 0.39,
+        swayAmp: 0.024,
+        yawAmp: 0.013,
+        phase: 0.4,
+      },
+    ],
+    [],
+  );
+
   useFrame((state) => {
     const t = state.clock.elapsedTime;
     const gust =
@@ -409,6 +469,21 @@ function ExternalGrassGround() {
       Math.sin(t * 0.19) * 0.2 +
       Math.sin(t * 0.11 + 1.4) * 0.18 +
       Math.sin(t * 0.07 + 2.1) * 0.12;
+
+    coverageLayout.forEach((patch, index) => {
+      const patchGroup = coverageRefs.current[index];
+      if (!patchGroup) {
+        return;
+      }
+
+      const swayFactor = patch.swayAmp * (0.8 + gust * 0.42);
+      patchGroup.rotation.y =
+        patch.rotationY + Math.sin(t * patch.swaySpeed + patch.phase) * patch.yawAmp;
+      patchGroup.rotation.x =
+        Math.sin(t * patch.swaySpeed * 1.18 + patch.phase * 1.7) * swayFactor;
+      patchGroup.rotation.z =
+        Math.cos(t * patch.swaySpeed * 1.04 + patch.phase * 1.2) * swayFactor * 0.76;
+    });
 
     patchLayout.forEach((patch, index) => {
       const patchGroup = patchRefs.current[index];
@@ -426,25 +501,49 @@ function ExternalGrassGround() {
     });
   });
 
-  return patchLayout.map((patch, index) => (
-    <group
-      key={patch.key}
-      ref={(node) => {
-        if (node) {
-          patchRefs.current[index] = node;
-        }
-      }}
-      position={patch.position}
-      rotation={[0, patch.rotationY, 0]}
-      scale={[
-        patch.scaleX,
-        patch.scaleY * GRASS_HEIGHT_RATIO,
-        patch.scaleZ,
-      ]}
-    >
-      <Clone object={patch.variant === 'dry' ? dryPatch : normalizedPatch} />
-    </group>
-  ));
+  return (
+    <>
+      {coverageLayout.map((patch, index) => (
+        <group
+          key={patch.key}
+          ref={(node) => {
+            if (node) {
+              coverageRefs.current[index] = node;
+            }
+          }}
+          position={patch.position}
+          rotation={[0, patch.rotationY, 0]}
+          scale={[
+            patch.scaleX * GRASS_COVERAGE_XZ_RATIO,
+            patch.scaleY * GRASS_HEIGHT_RATIO,
+            patch.scaleZ * GRASS_COVERAGE_XZ_RATIO,
+          ]}
+        >
+          <Clone object={patch.variant === 'dry' ? dryPatch : normalizedPatch} />
+        </group>
+      ))}
+
+      {patchLayout.map((patch, index) => (
+        <group
+          key={patch.key}
+          ref={(node) => {
+            if (node) {
+              patchRefs.current[index] = node;
+            }
+          }}
+          position={patch.position}
+          rotation={[0, patch.rotationY, 0]}
+          scale={[
+            patch.scaleX * GRASS_COVERAGE_XZ_RATIO,
+            patch.scaleY * GRASS_HEIGHT_RATIO,
+            patch.scaleZ * GRASS_COVERAGE_XZ_RATIO,
+          ]}
+        >
+          <Clone object={patch.variant === 'dry' ? dryPatch : normalizedPatch} />
+        </group>
+      ))}
+    </>
+  );
 }
 
 function BareSoilLayer() {
@@ -520,7 +619,7 @@ function GrassGround() {
       ) : (
         <ProceduralGrassGround />
       )}
-      <BareSoilLayer />
+      {modelCheckFinished && isGrassModelEnabled ? null : <BareSoilLayer />}
       <FlowerLayer />
     </group>
   );
