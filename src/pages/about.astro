@@ -1,193 +1,91 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.about;
 ---
 
-<BaseLayout title="About - Moaiy">
+<BaseLayout {...seo}>
   <main class="min-h-screen bg-bg-primary py-20 px-4">
     <div class="max-w-4xl mx-auto">
-      <!-- Header -->
-      <div class="text-center mb-16">
+      <header class="text-center mb-16">
         <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
           About Moaiy
         </h1>
         <p class="font-body text-xl text-text-secondary">
-          Making encryption accessible to everyone
+          Building practical encryption workflows with open-source transparency.
         </p>
-      </div>
-      
-      <!-- Mission -->
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">
-          🎯 Our Mission
-        </h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
-            Encryption shouldn't be complicated. Yet, most encryption tools today are built for 
-            security experts, not everyday users.
-          </p>
-          <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
-            <strong class="text-accent-primary">Moaiy</strong> changes that. We believe everyone 
-            deserves access to military-grade encryption without needing a computer science degree.
-          </p>
-          <p class="font-body text-text-secondary text-lg leading-relaxed">
-            Our goal: Make encryption as simple as sending an email.
-          </p>
+      </header>
+
+      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Mission</h2>
+        <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
+          Moaiy exists to make robust encryption workflows easier to execute without reducing operational rigor.
+        </p>
+        <p class="font-body text-text-secondary text-lg leading-relaxed">
+          The project emphasizes clear documentation, verifiable release channels, and realistic security claims.
+        </p>
+      </section>
+
+      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Open-source policy</h2>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a
+            href="https://github.com/moaiy-com/moaiy"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-analytics-event="github_click"
+            class="px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors text-center"
+          >
+            Core Repository
+          </a>
+          <a
+            href="https://github.com/moaiy-com/moaiy/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="px-6 py-3 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg hover:bg-accent-primary hover:text-white transition-colors text-center"
+          >
+            License
+          </a>
         </div>
       </section>
-      
-      <!-- Why Moaiy -->
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">
-          🗿 Why "Moaiy"?
-        </h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
-            The Moai statues of Easter Island have stood guard for centuries, protecting the 
-            island and its people. They represent:
-          </p>
-          <ul class="font-body text-text-secondary space-y-3 mb-4">
-            <li class="flex items-start gap-3">
-              <span class="text-accent-primary text-xl">🗿</span>
-              <div>
-                <strong class="text-text-primary">Stability</strong> - Unwavering through storms and time
-              </div>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-accent-primary text-xl">🔒</span>
-              <div>
-                <strong class="text-text-primary">Protection</strong> - Guardian of what matters most
-              </div>
-            </li>
-            <li class="flex items-start gap-3">
-              <span class="text-accent-primary text-xl">♾️</span>
-              <div>
-                <strong class="text-text-primary">Timelessness</strong> - Built to last forever
-              </div>
-            </li>
-          </ul>
-          <p class="font-body text-text-secondary text-lg leading-relaxed">
-            Just like the Moai, Moaiy stands guard over your data - reliable, unshakeable, and eternal.
-          </p>
+
+      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Project information architecture</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <a href="/security/" class="bg-bg-tertiary rounded-lg p-5 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Security policy</h3>
+            <p class="font-body text-sm text-text-secondary">Threat model scope, disclosure process, and assurance status.</p>
+          </a>
+          <a href="/release-notes/" class="bg-bg-tertiary rounded-lg p-5 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Release notes</h3>
+            <p class="font-body text-sm text-text-secondary">Version timeline and operational updates.</p>
+          </a>
+          <a href="/verification/" class="bg-bg-tertiary rounded-lg p-5 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Verification guide</h3>
+            <p class="font-body text-sm text-text-secondary">Checksum and signature validation workflow.</p>
+          </a>
+          <a href="/roadmap/" class="bg-bg-tertiary rounded-lg p-5 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Roadmap</h3>
+            <p class="font-body text-sm text-text-secondary">Planned features with explicit status labels.</p>
+          </a>
         </div>
       </section>
-      
-      <!-- Technology -->
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">
-          🦀 Built with Rust
-        </h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
-            Moaiy is built with <strong class="text-accent-primary">Rust</strong>, a systems programming 
-            language focused on safety, speed, and concurrency.
-          </p>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <div class="text-center">
-              <div class="text-4xl mb-2">⚡</div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-1">Fast</h4>
-              <p class="font-body text-text-secondary text-sm">
-                Blazingly fast performance
-              </p>
-            </div>
-            <div class="text-center">
-              <div class="text-4xl mb-2">🛡️</div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-1">Safe</h4>
-              <p class="font-body text-text-secondary text-sm">
-                Memory-safe by design
-              </p>
-            </div>
-            <div class="text-center">
-              <div class="text-4xl mb-2">🔒</div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-1">Secure</h4>
-              <p class="font-body text-text-secondary text-sm">
-                No buffer overflows or data races
-              </p>
-            </div>
+
+      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Contact</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">General</h3>
+            <a href="mailto:support@moaiy.com" class="font-body text-accent-primary hover:underline">support@moaiy.com</a>
           </div>
-        </div>
-      </section>
-      
-      <!-- Open Source -->
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">
-          📖 Open Source
-        </h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
-            Moaiy is 100% open source. We believe security tools must be transparent and auditable.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4">
-            <a
-              href="https://github.com/moaiy-com/moaiy"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors text-center"
-            >
-              View on GitHub
-            </a>
-            <a
-              href="https://github.com/moaiy-com/moaiy-core/blob/main/LICENSE"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-6 py-3 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg hover:bg-accent-primary hover:text-white transition-colors text-center"
-            >
-              MIT License
-            </a>
+          <div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">Security</h3>
+            <a href="mailto:security@moaiy.com" class="font-body text-accent-primary hover:underline">security@moaiy.com</a>
           </div>
-        </div>
-      </section>
-      
-      <!-- Team -->
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">
-          👥 The Team
-        </h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary text-lg leading-relaxed mb-4">
-            Moaiy is built by a small team of developers passionate about privacy and security.
-            We believe encryption is a fundamental right, not a privilege.
-          </p>
-          <p class="font-body text-text-secondary text-lg leading-relaxed">
-            Want to contribute? Check out our 
-            <a href="https://github.com/moaiy-com/moaiy" class="text-accent-primary hover:underline">
-              GitHub repository
-            </a> 
-            or join our community.
-          </p>
-        </div>
-      </section>
-      
-      <!-- Contact -->
-      <section>
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">
-          📬 Get in Touch
-        </h2>
-        <div class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">Email</h4>
-              <a href="mailto:support@moaiy.com" class="font-body text-accent-primary hover:underline">
-                support@moaiy.com
-              </a>
-            </div>
-            <div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">Twitter/X</h4>
-              <a href="https://x.com/moaiycom" target="_blank" rel="noopener noreferrer" class="font-body text-accent-primary hover:underline">
-                @moaiycom
-              </a>
-            </div>
-            <div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">GitHub</h4>
-              <a href="https://github.com/moaiy-com/moaiy" target="_blank" rel="noopener noreferrer" class="font-body text-accent-primary hover:underline">
-                github.com/moaiy-com/moaiy
-              </a>
-            </div>
-            <div>
-              <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">Discord</h4>
-              <span class="font-body text-text-tertiary">
-                Coming soon
-              </span>
-            </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary mb-2">X</h3>
+            <a href="https://x.com/moaiycom" target="_blank" rel="noopener noreferrer" class="font-body text-accent-primary hover:underline">@moaiycom</a>
           </div>
         </div>
       </section>

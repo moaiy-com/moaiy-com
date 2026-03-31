@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.encryptFilesOnMacos;
+---
+
+<BaseLayout {...seo}>
+  <main class="min-h-screen bg-bg-primary py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <header class="mb-12">
+        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
+          How to encrypt files on macOS with Moaiy
+        </h1>
+        <p class="font-body text-xl text-text-secondary">
+          A practical workflow for key generation, encryption, and secure sharing on macOS.
+        </p>
+      </header>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Step 1: Get a trusted build</h2>
+        <p class="font-body text-text-secondary mb-4">Download only from official release channels.</p>
+        <a href="https://github.com/moaiy-com/moaiy/releases" target="_blank" rel="noopener noreferrer" data-analytics-event="download_click" class="inline-block px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors">Open Releases</a>
+      </section>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Step 2: Generate a key pair</h2>
+        <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto">
+          <div><span class="text-accent-primary">$</span> moaiy key generate</div>
+        </div>
+      </section>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Step 3: Encrypt a file</h2>
+        <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto space-y-2">
+          <div><span class="text-accent-primary">$</span> moaiy encrypt contracts.zip --recipient partner@example.com</div>
+          <div><span class="text-accent-primary">$</span> moaiy encrypt contracts.zip --password</div>
+        </div>
+      </section>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Step 4: Verify and share</h2>
+        <p class="font-body text-text-secondary mb-3">Verify release checksums, then share encrypted artifacts through your preferred channel.</p>
+        <a href="/verification/" class="text-accent-primary hover:underline font-semibold">Read verification guide</a>
+      </section>
+
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <a href="/docs/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
+          <h2 class="font-heading text-xl text-text-primary mb-2">Full docs</h2>
+          <p class="font-body text-sm text-text-secondary">Expanded command patterns and FAQs.</p>
+        </a>
+        <a href="/gpg-tools-alternative/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
+          <h2 class="font-heading text-xl text-text-primary mb-2">Compare alternatives</h2>
+          <p class="font-body text-sm text-text-secondary">Evaluate workflow complexity versus classic GPG tools.</p>
+        </a>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

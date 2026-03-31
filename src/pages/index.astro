@@ -1,62 +1,56 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HeroScene from '../components/HeroScene.jsx';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.home;
 ---
 
-<BaseLayout title="Moaiy - Encryption Made Simple">
+<BaseLayout {...seo}>
   <main class="relative isolate min-h-screen overflow-hidden bg-bg-primary">
-    <!-- 3D Scene Background -->
     <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
       <HeroScene client:idle />
     </div>
-    
-    <!-- Content Overlay -->
+
     <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-      <div class="flex flex-col items-center md:-translate-x-14 lg:-translate-x-24 transition-transform duration-300">
-        <!-- Logo/Title -->
-        <div class="text-center mb-8">
-          <h1 class="font-heading text-6xl md:text-8xl font-bold text-text-primary mb-4 animate-fade-in-up">
-            Moaiy
-          </h1>
-          <p class="font-heading text-2xl md:text-4xl font-light text-accent-primary mb-2 animate-fade-in-up" style="animation-delay: 0.2s">
-            Encryption Made Simple
-          </p>
-          <p
-            class="hero-tagline font-body text-lg md:text-xl animate-fade-in-up"
-            style="animation-delay: 0.4s;"
-          >
-            Encryption for everyone · Secure · Simple · Free
-          </p>
-        </div>
-        
-        <!-- CTA Buttons -->
-        <div class="flex flex-col sm:flex-row gap-4 mt-8 animate-fade-in-up" style="animation-delay: 0.6s">
+      <div class="flex flex-col items-center md:-translate-x-14 lg:-translate-x-24 transition-transform duration-300 max-w-3xl text-center">
+        <h1 class="font-heading text-5xl md:text-7xl font-bold text-text-primary mb-4 animate-fade-in-up">
+          Open-Source Encryption Made Practical
+        </h1>
+        <p class="font-heading text-xl md:text-3xl font-light text-accent-primary mb-4 animate-fade-in-up" style="animation-delay: 0.2s">
+          Moaiy helps teams encrypt files with less friction.
+        </p>
+        <p class="hero-tagline font-body text-lg md:text-xl animate-fade-in-up" style="animation-delay: 0.4s;">
+          Transparent project · Local-first workflows · Security-focused docs
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 mt-10 animate-fade-in-up" style="animation-delay: 0.6s">
           <a
-            href="https://github.com/moaiy-com/moaiy/releases"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/download/"
+            data-analytics-event="download_click"
             class="px-8 py-4 bg-accent-primary text-white font-semibold rounded-lg transition-all duration-300 hover:bg-accent-secondary hover:-translate-y-1"
           >
-            Download
+            Download & Verify
           </a>
           <a
-            href="/docs"
+            href="/docs/"
+            data-analytics-event="docs_cta_click"
             class="px-8 py-4 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg transition-all duration-300 hover:bg-accent-primary hover:text-white"
           >
-            View Docs
+            Read Task Docs
           </a>
           <a
             href="https://github.com/moaiy-com/moaiy"
             target="_blank"
             rel="noopener noreferrer"
+            data-analytics-event="github_click"
             class="px-8 py-4 border-2 border-text-tertiary text-text-secondary font-semibold rounded-lg transition-all duration-300 hover:border-text-secondary hover:text-text-primary"
           >
-            GitHub
+            View Source
           </a>
         </div>
       </div>
-      
-      <!-- Scroll Indicator -->
+
       <div class="absolute bottom-8 animate-bounce">
         <svg class="w-6 h-6 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
@@ -64,87 +58,57 @@ import HeroScene from '../components/HeroScene.jsx';
       </div>
     </div>
   </main>
-  
-  <!-- Features Section -->
+
   <section class="bg-bg-secondary py-20 px-4">
     <div class="max-w-6xl mx-auto">
       <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary text-center mb-16">
-        Why Moaiy?
+        Why teams choose Moaiy
       </h2>
-      
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Feature 1 -->
-        <div class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
-          <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent-primary/10 text-accent-primary ring-1 ring-accent-primary/30">
-            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <circle cx="5" cy="6" r="1.25" stroke-width="1.8"></circle>
-              <circle cx="5" cy="12" r="1.25" stroke-width="1.8"></circle>
-              <circle cx="5" cy="18" r="1.25" stroke-width="1.8"></circle>
-              <path d="M9 6h10M9 12h10M9 18h10" stroke-linecap="round" stroke-width="1.8"></path>
-            </svg>
-          </div>
-          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Simple</h3>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>Clear, 3-step flow for encrypt, decrypt, and share.</li>
-            <li>No cryptography jargon in the daily workflow.</li>
-            <li>Sensible defaults, so you can start in minutes.</li>
-          </ul>
-        </div>
-        
-        <!-- Feature 2 -->
-        <div class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
-          <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent-primary/10 text-accent-primary ring-1 ring-accent-primary/30">
-            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M12 3l7 4v5c0 5-3.2 8-7 9-3.8-1-7-4-7-9V7l7-4z" stroke-linejoin="round" stroke-width="1.8"></path>
-              <path d="m9.4 12.6 1.8 1.8 3.4-3.4" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
-            </svg>
-          </div>
-          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Secure</h3>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>Open-source codebase that anyone can inspect and audit.</li>
-            <li>Rust core focused on memory safety and reliability.</li>
-            <li>Built on proven OpenPGP-compatible encryption workflows.</li>
-          </ul>
-        </div>
-        
-        <!-- Feature 3 -->
-        <div class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
-          <div class="mb-5 inline-flex h-14 w-14 items-center justify-center rounded-xl bg-accent-primary/10 text-accent-primary ring-1 ring-accent-primary/30">
-            <svg class="h-7 w-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8 8 4 12l4 4M16 8l4 4-4 4M13 6l-2 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path>
-            </svg>
-          </div>
-          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Free</h3>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>Free to use now, with no subscriptions or paywalls.</li>
-            <li>Open-source development with transparent roadmap.</li>
-            <li>No hidden feature locks or surprise pricing tiers.</li>
-          </ul>
-        </div>
+        <article class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Clear encryption flow</h3>
+          <p class="font-body text-text-secondary leading-relaxed">
+            Moaiy focuses on practical encrypt/decrypt workflows so teams can protect files without memorizing arcane command chains.
+          </p>
+        </article>
+
+        <article class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Open-source trust model</h3>
+          <p class="font-body text-text-secondary leading-relaxed">
+            Security claims are backed by a public repository, documented processes, and versioned release channels you can inspect.
+          </p>
+        </article>
+
+        <article class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
+          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Verification-first delivery</h3>
+          <p class="font-body text-text-secondary leading-relaxed">
+            Download guidance includes checksum and signature validation so users can reduce software supply-chain risk.
+          </p>
+        </article>
       </div>
     </div>
   </section>
-  
-  <!-- CTA Section -->
+
   <section class="bg-gradient-to-b from-bg-secondary to-bg-primary py-20 px-4">
-    <div class="max-w-4xl mx-auto text-center">
+    <div class="max-w-5xl mx-auto text-center">
       <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-8">
-        Start Protecting Your Data
+        Start with the exact workflow you need
       </h2>
-      <a
-        href="https://github.com/moaiy-com/moaiy/releases"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-block px-12 py-6 bg-gradient-to-r from-accent-primary to-accent-secondary text-white font-heading text-xl font-semibold rounded-lg transition-all duration-300 hover:shadow-2xl hover:shadow-accent-primary/30 hover:-translate-y-1"
-      >
-        Download Now - Free
-      </a>
-      <p class="font-body text-text-secondary mt-6">
-        Currently only macOS version is available
-      </p>
-      <p class="font-body text-text-tertiary mt-2 text-sm">
-        No signup required · No payment · Free forever
-      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+        <a href="/encrypt-files-on-macos/" class="bg-bg-tertiary rounded-lg p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
+          <h3 class="font-heading text-xl text-text-primary mb-2">Encrypt files on macOS</h3>
+          <p class="font-body text-sm text-text-secondary">Step-by-step guide for local file encryption and sharing.</p>
+        </a>
+        <a href="/openpgp-made-simple/" class="bg-bg-tertiary rounded-lg p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
+          <h3 class="font-heading text-xl text-text-primary mb-2">OpenPGP made simple</h3>
+          <p class="font-body text-sm text-text-secondary">Understand core concepts without losing technical control.</p>
+        </a>
+        <a href="/gpg-tools-alternative/" class="bg-bg-tertiary rounded-lg p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
+          <h3 class="font-heading text-xl text-text-primary mb-2">Evaluate GPG alternatives</h3>
+          <p class="font-body text-sm text-text-secondary">Compare workflow complexity and operational fit for your team.</p>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>

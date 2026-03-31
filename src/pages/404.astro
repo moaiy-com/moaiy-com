@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const seo = {
+  title: 'Page Not Found | Moaiy',
+  description: 'The requested Moaiy page was not found. Use the main navigation to continue.',
+  canonicalPath: '/404/',
+  robots: 'noindex, follow',
+  currentPage: '',
+  schema: [],
+};
+---
+
+<BaseLayout {...seo}>
+  <main class="min-h-[70vh] bg-bg-primary py-20 px-4 flex items-center">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="font-heading text-6xl font-bold text-text-primary mb-4">404</h1>
+      <p class="font-body text-xl text-text-secondary mb-8">This page does not exist or has moved.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="/" class="px-6 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors">Back to Home</a>
+        <a href="/docs/" class="px-6 py-3 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg hover:bg-accent-primary hover:text-white transition-colors">Go to Docs</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

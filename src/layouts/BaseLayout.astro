@@ -1,64 +1,164 @@
 ---
+import Navigation from '../components/Navigation.astro';
+import type { SeoSchema } from '../seo/page-config';
+
 interface Props {
   title: string;
-  description?: string;
+  description: string;
+  canonicalPath: string;
+  ogImage?: string;
+  robots?: string;
+  schema?: SeoSchema[];
+  currentPage?: string;
 }
 
-const { title, description = "Moaiy - Encryption Made Simple. Secure and easy-to-use encryption tool designed for everyone." } = Astro.props;
+const {
+  title,
+  description,
+  canonicalPath,
+  ogImage = '/og-image.svg',
+  robots = 'index, follow',
+  schema = [],
+  currentPage = '',
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL('https://moaiy.com');
+const normalizedPath =
+  canonicalPath === '/' ? '/' : canonicalPath.endsWith('/') ? canonicalPath : `${canonicalPath}/`;
+const canonicalUrl = new URL(normalizedPath, siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteUrl).toString();
+
 const X_URL = 'https://x.com/moaiycom';
-const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
+const GITHUB_URL = 'https://github.com/moaiy-com/moaiy';
+
+const footerLinks = [
+  { href: '/features/', label: 'Features' },
+  { href: '/security/', label: 'Security' },
+  { href: '/docs/', label: 'Docs' },
+  { href: '/download/', label: 'Download' },
+  { href: '/roadmap/', label: 'Roadmap' },
+  { href: '/release-notes/', label: 'Release Notes' },
+  { href: '/verification/', label: 'Verification' },
+];
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- SEO Meta Tags -->
+    <meta name="theme-color" content="#0A0E27" />
+
     <title>{title}</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Moaiy" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://moaiy.com" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:alt" content="Moaiy open-source encryption project" />
+
     <meta name="twitter:card" content="summary_large_image" />
-    
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#0A0E27" />
-    
+    <meta name="twitter:site" content="@moaiycom" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    {schema.map((entry) => (
+      <script type="application/ld+json" set:html={JSON.stringify(entry)} />
+    ))}
+
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1EFMK5162Q"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-1EFMK5162Q');
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      window.gtag = window.gtag || gtag;
+      window.gtag('js', new Date());
+      window.gtag('config', 'G-1EFMK5162Q');
+
+      document.addEventListener('click', (event) => {
+        const target = event.target instanceof Element ? event.target.closest('a[data-analytics-event]') : null;
+        if (!target || !(target instanceof HTMLAnchorElement)) {
+          return;
+        }
+
+        const eventName = target.dataset.analyticsEvent;
+        if (!eventName) {
+          return;
+        }
+
+        window.gtag('event', eventName, {
+          link_url: target.href,
+          link_text: (target.textContent || '').trim(),
+          page_path: window.location.pathname,
+        });
+      });
     </script>
   </head>
   <body class="bg-bg-primary text-text-primary font-body antialiased">
-    <slot />
+    <Navigation currentPage={currentPage} />
+    <div class="pt-16">
+      <slot />
+    </div>
     <footer class="border-t border-gray-800 bg-bg-primary/95">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <a
-            href={X_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="font-body text-text-secondary hover:text-accent-primary transition-colors"
-          >
-            X: @moaiycom
-          </a>
-          <p class="font-code text-xs text-text-tertiary break-all">
-            ETH Donation: <span class="text-text-secondary">{ETH_DONATION_ADDRESS}</span>
-          </p>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div>
+            <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Moaiy</h2>
+            <p class="font-body text-sm text-text-secondary">
+              Open-source encryption workflows for practical security operations.
+            </p>
+          </div>
+          <div>
+            <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Core Pages</h2>
+            <div class="flex flex-wrap gap-3">
+              {footerLinks.map((link) => (
+                <a href={link.href} class="font-body text-sm text-text-secondary hover:text-accent-primary transition-colors">
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Project Links</h2>
+            <div class="flex flex-col gap-2">
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-analytics-event="github_click"
+                class="font-body text-sm text-text-secondary hover:text-accent-primary transition-colors"
+              >
+                GitHub Repository
+              </a>
+              <a
+                href={X_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="font-body text-sm text-text-secondary hover:text-accent-primary transition-colors"
+              >
+                X: @moaiycom
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </footer>
@@ -69,35 +169,32 @@ const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
-  
-  /* Custom Global Styles */
+
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     @apply min-h-screen;
   }
-  
-  /* Text Selection */
+
   ::selection {
     @apply bg-accent-primary text-bg-primary;
   }
-  
-  /* Custom Scrollbar */
+
   ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
   }
-  
+
   ::-webkit-scrollbar-track {
     @apply bg-bg-secondary;
   }
-  
+
   ::-webkit-scrollbar-thumb {
     @apply bg-accent-primary rounded-full;
   }
-  
+
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-accent-secondary;
   }

@@ -44,6 +44,9 @@ jobs:
       
       - name: Build Astro site
         run: pnpm build
+
+      - name: Run SEO checks against built output
+        run: pnpm run check:seo
       
       - name: Upload artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'

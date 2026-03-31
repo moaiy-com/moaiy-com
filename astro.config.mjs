@@ -1,25 +1,23 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
+import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
 // https://astro.build/config
 export default defineConfig({
-  // Custom domain active - no base path needed
   site: 'https://moaiy.com',
-  integrations: [
-    react(),
-    tailwind()
-  ],
+  trailingSlash: 'always',
+  integrations: [react(), tailwind(), sitemap()],
   output: 'static',
   build: {
-    assets: 'assets'
+    assets: 'assets',
   },
   vite: {
     server: {
-      allowedHosts: ['.monkeycode-ai.online']
+      allowedHosts: ['.monkeycode-ai.online'],
     },
     ssr: {
-      noExternal: ['@react-three/fiber', '@react-three/drei', 'three']
-    }
-  }
+      noExternal: ['@react-three/fiber', '@react-three/drei', 'three'],
+    },
+  },
 });

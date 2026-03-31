@@ -1,438 +1,117 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.security;
 ---
 
-<BaseLayout title="Security - Moaiy">
+<BaseLayout {...seo}>
   <main class="min-h-screen bg-bg-primary py-20 px-4">
     <div class="max-w-6xl mx-auto">
-      <!-- Header -->
-      <div class="text-center mb-16">
+      <header class="text-center mb-16">
         <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
-          Security
+          Security model and disclosure policy
         </h1>
-        <p class="font-body text-xl text-text-secondary">
-          Built with security as the foundation, not an afterthought
+        <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
+          This page documents what is verifiable today, what is planned, and how to report vulnerabilities.
         </p>
-      </div>
-      
-      <!-- Core Security Principles -->
-      <section class="mb-20">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          🔐 Core Security Principles
-        </h2>
-        
+      </header>
+
+      <section class="mb-16">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">What is verifiable now</h2>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-            <div class="text-5xl mb-4">🛡️</div>
-            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
-              Zero-Knowledge
-            </h3>
-            <p class="font-body text-text-secondary">
-              Your data never leaves your device unencrypted. We can't access your data even if we wanted to.
+          <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">Open-source code</h3>
+            <p class="font-body text-text-secondary leading-relaxed">
+              Source code is publicly available in GitHub repositories, enabling independent review and issue reporting.
             </p>
+          </article>
+          <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">Local workflow emphasis</h3>
+            <p class="font-body text-text-secondary leading-relaxed">
+              Project documentation and examples center on local encryption and decryption operations.
+            </p>
+          </article>
+          <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">Verification guidance</h3>
+            <p class="font-body text-text-secondary leading-relaxed">
+              Official pages describe checksum/signature verification to reduce tampering and supply-chain risk.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="mb-16 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Responsible disclosure process</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div>
+            <h3 class="font-heading text-xl font-semibold text-accent-primary mb-3">How to report</h3>
+            <ul class="font-body text-text-secondary space-y-2">
+              <li>Email security reports to <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.</li>
+              <li>Include reproduction steps, impact estimate, and affected versions.</li>
+              <li>Do not disclose publicly before coordinated remediation.</li>
+            </ul>
           </div>
-          
-          <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-            <div class="text-5xl mb-4">🔓</div>
-            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
-              Open Source
-            </h3>
-            <p class="font-body text-text-secondary">
-              100% open source code. Every line can be audited by anyone. No hidden backdoors.
-            </p>
-          </div>
-          
-          <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-            <div class="text-5xl mb-4">🔑</div>
-            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">
-              Client-Side Encryption
-            </h3>
-            <p class="font-body text-text-secondary">
-              All encryption happens locally on your device. No server-side processing of plaintext.
-            </p>
+          <div>
+            <h3 class="font-heading text-xl font-semibold text-accent-primary mb-3">Response targets (SLA)</h3>
+            <ul class="font-body text-text-secondary space-y-2">
+              <li>Acknowledgement target: within 3 business days.</li>
+              <li>Triage target: within 7 business days when reproduction is possible.</li>
+              <li>Fix timeline depends on severity and release planning.</li>
+            </ul>
           </div>
         </div>
       </section>
-      
-      <!-- Encryption Technology -->
-      <section class="mb-20">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          🔬 Encryption Technology
-        </h2>
-        
+
+      <section class="mb-16">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">Audit and assurance status</h2>
         <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <!-- Left Column -->
-            <div>
-              <h3 class="font-heading text-2xl font-semibold text-text-primary mb-6">
-                Symmetric Encryption
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-accent-primary text-xl">🔒</span>
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">Algorithm</h4>
-                  </div>
-                  <p class="font-body text-text-secondary">
-                    AES-256-GCM (Advanced Encryption Standard with Galois/Counter Mode)
-                  </p>
-                </div>
-                
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-accent-primary text-xl">🔢</span>
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">Key Size</h4>
-                  </div>
-                  <p class="font-body text-text-secondary">
-                    256-bit keys (military-grade security)
-                  </p>
-                </div>
-                
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-accent-primary text-xl">✅</span>
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">Authenticated</h4>
-                  </div>
-                  <p class="font-body text-text-secondary">
-                    GCM mode provides both encryption and authentication
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Right Column -->
-            <div>
-              <h3 class="font-heading text-2xl font-semibold text-text-primary mb-6">
-                Asymmetric Encryption
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-accent-primary text-xl">🔑</span>
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">Algorithm</h4>
-                  </div>
-                  <p class="font-body text-text-secondary">
-                    RSA-4096 or Curve25519 (your choice)
-                  </p>
-                </div>
-                
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-accent-primary text-xl">📜</span>
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">Standard</h4>
-                  </div>
-                  <p class="font-body text-text-secondary">
-                    OpenPGP (RFC 4880) for maximum compatibility
-                  </p>
-                </div>
-                
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="text-accent-primary text-xl">🔄</span>
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">Perfect Forward Secrecy</h4>
-                  </div>
-                  <p class="font-body text-text-secondary">
-                    Ephemeral keys for each session
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left">
+              <thead>
+                <tr class="border-b border-gray-700">
+                  <th class="font-heading text-text-primary py-3 px-4">Area</th>
+                  <th class="font-heading text-text-primary py-3 px-4">Status</th>
+                  <th class="font-heading text-text-primary py-3 px-4">Evidence</th>
+                </tr>
+              </thead>
+              <tbody class="font-body text-text-secondary text-sm">
+                <tr class="border-b border-gray-800">
+                  <td class="py-3 px-4">Public source review</td>
+                  <td class="py-3 px-4 text-accent-primary">Available</td>
+                  <td class="py-3 px-4">Open GitHub repositories and issue trackers.</td>
+                </tr>
+                <tr class="border-b border-gray-800">
+                  <td class="py-3 px-4">Third-party security audit</td>
+                  <td class="py-3 px-4">Not published yet</td>
+                  <td class="py-3 px-4">No third-party report publicly posted as of March 31, 2026.</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4">Formal security whitepaper</td>
+                  <td class="py-3 px-4 text-accent-primary">Draft available</td>
+                  <td class="py-3 px-4"><a href="/security-whitepaper/" class="text-accent-primary hover:underline">Read draft whitepaper</a>.</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
-      
-      <!-- Security Architecture -->
-      <section class="mb-20">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          🏗️ Security Architecture
-        </h2>
-        
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <div class="space-y-8">
-            <!-- Layer 1 -->
-            <div>
-              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
-                Layer 1: Application Security
-              </h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Memory-safe Rust language
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> No buffer overflows
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> No data races
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Type-safe cryptography
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Layer 2 -->
-            <div>
-              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
-                Layer 2: Data Security
-              </h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Client-side encryption only
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> No plaintext transmission
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Secure key storage
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Encrypted local cache
-                  </p>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Layer 3 -->
-            <div>
-              <h3 class="font-heading text-xl font-semibold text-accent-primary mb-4">
-                Layer 3: Network Security
-              </h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> TLS 1.3 for all connections
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Certificate pinning
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> No metadata leakage
-                  </p>
-                </div>
-                <div class="bg-bg-tertiary rounded-lg p-4">
-                  <p class="font-body text-text-secondary">
-                    <span class="text-accent-primary">✓</span> Offline-first design
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Security Audit -->
-      <section class="mb-20">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          🔍 Security Audits
-        </h2>
-        
-        <div class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Completed Audits -->
-            <div>
-              <h3 class="font-heading text-xl font-semibold text-text-primary mb-4">
-                Completed Audits
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-bg-primary rounded-lg p-4 border border-gray-700">
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">
-                      Internal Security Review
-                    </h4>
-                    <span class="text-accent-primary text-sm">✓ Complete</span>
-                  </div>
-                  <p class="font-body text-text-secondary text-sm mb-2">
-                    Conducted by core team • March 2026
-                  </p>
-                  <span class="font-body text-text-tertiary text-sm">
-                    Report publication in progress
-                  </span>
-                </div>
-                
-                <div class="bg-bg-primary rounded-lg p-4 border border-gray-700">
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">
-                      Cryptographic Implementation Review
-                    </h4>
-                    <span class="text-accent-primary text-sm">✓ Complete</span>
-                  </div>
-                  <p class="font-body text-text-secondary text-sm mb-2">
-                    Conducted by core team • March 2026
-                  </p>
-                  <span class="font-body text-text-tertiary text-sm">
-                    Report publication in progress
-                  </span>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Planned Audits -->
-            <div>
-              <h3 class="font-heading text-xl font-semibold text-text-primary mb-4">
-                Planned Audits
-              </h3>
-              <div class="space-y-4">
-                <div class="bg-bg-primary rounded-lg p-4 border border-gray-700 opacity-75">
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">
-                      Third-Party Security Audit
-                    </h4>
-                    <span class="text-text-tertiary text-sm">⏳ Q2 2026</span>
-                  </div>
-                  <p class="font-body text-text-secondary text-sm">
-                    Independent security firm to conduct comprehensive audit
-                  </p>
-                </div>
-                
-                <div class="bg-bg-primary rounded-lg p-4 border border-gray-700 opacity-75">
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">
-                      Formal Verification
-                    </h4>
-                    <span class="text-text-tertiary text-sm">⏳ Q3 2026</span>
-                  </div>
-                  <p class="font-body text-text-secondary text-sm">
-                    Mathematical proof of cryptographic correctness
-                  </p>
-                </div>
-                
-                <div class="bg-bg-primary rounded-lg p-4 border border-gray-700 opacity-75">
-                  <div class="flex items-start justify-between mb-2">
-                    <h4 class="font-heading text-lg font-semibold text-text-primary">
-                      Penetration Testing
-                    </h4>
-                    <span class="text-text-tertiary text-sm">⏳ Q3 2026</span>
-                  </div>
-                  <p class="font-body text-text-secondary text-sm">
-                    External penetration testing by security researchers
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Bug Bounty -->
-      <section class="mb-20">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          🐛 Bug Bounty Program
-        </h2>
-        
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <div class="max-w-3xl mx-auto">
-            <p class="font-body text-text-secondary text-lg mb-6 text-center">
-              We take security seriously. If you discover a vulnerability, we want to hear from you.
-            </p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div class="text-center">
-                <div class="text-3xl mb-2">🥇</div>
-                <h4 class="font-heading text-lg font-semibold text-text-primary mb-1">Critical</h4>
-                <p class="font-body text-accent-primary font-semibold">$5,000+</p>
-              </div>
-              
-              <div class="text-center">
-                <div class="text-3xl mb-2">🥈</div>
-                <h4 class="font-heading text-lg font-semibold text-text-primary mb-1">High</h4>
-                <p class="font-body text-accent-primary font-semibold">$2,000+</p>
-              </div>
-              
-              <div class="text-center">
-                <div class="text-3xl mb-2">🥉</div>
-                <h4 class="font-heading text-lg font-semibold text-text-primary mb-1">Medium</h4>
-                <p class="font-body text-accent-primary font-semibold">$500+</p>
-              </div>
-            </div>
-            
-            <div class="text-center">
-              <a
-                href="mailto:security@moaiy.com"
-                class="inline-block px-8 py-4 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
-              >
-                Report a Vulnerability
-              </a>
-              <p class="font-body text-text-tertiary text-sm mt-3">
-                Email: security@moaiy.com • PGP Key: 0xABC123...
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-      
-      <!-- Security Best Practices -->
-      <section>
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          ✨ Security Best Practices
-        </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-3">
-              🔑 Protect Your Keys
-            </h4>
-            <ul class="font-body text-text-secondary space-y-2 text-sm">
-              <li>• Never share your private keys</li>
-              <li>• Use strong, unique passwords</li>
-              <li>• Enable two-factor authentication</li>
-              <li>• Backup your keys securely</li>
-            </ul>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-3">
-              🔄 Keep Updated
-            </h4>
-            <ul class="font-body text-text-secondary space-y-2 text-sm">
-              <li>• Always use the latest version</li>
-              <li>• Enable automatic updates</li>
-              <li>• Review security advisories</li>
-              <li>• Update your OS regularly</li>
-            </ul>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-3">
-              🔍 Verify Recipients
-            </h4>
-            <ul class="font-body text-text-secondary space-y-2 text-sm">
-              <li>• Always verify fingerprints</li>
-              <li>• Use trusted channels for key exchange</li>
-              <li>• Check digital signatures</li>
-              <li>• Be cautious of phishing</li>
-            </ul>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-3">
-              💻 Secure Your Device
-            </h4>
-            <ul class="font-body text-text-secondary space-y-2 text-sm">
-              <li>• Use device encryption</li>
-              <li>• Enable screen lock</li>
-              <li>• Use a password manager</li>
-              <li>• Avoid public WiFi for sensitive operations</li>
-            </ul>
-          </div>
+
+      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6 text-center">Security resources</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="/verification/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Verification guide</h3>
+            <p class="font-body text-sm text-text-secondary">Checksum and signature checks before installation.</p>
+          </a>
+          <a href="/release-notes/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Release notes</h3>
+            <p class="font-body text-sm text-text-secondary">Track version updates and security-related changes.</p>
+          </a>
+          <a href="/roadmap/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-lg text-text-primary mb-2">Roadmap status</h3>
+            <p class="font-body text-sm text-text-secondary">Separate planned items from currently available capabilities.</p>
+          </a>
         </div>
       </section>
     </div>
