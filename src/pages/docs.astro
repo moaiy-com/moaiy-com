@@ -13,16 +13,14 @@ const seo = pageSeo.docs;
           Task docs: install, encrypt, decrypt, verify
         </h1>
         <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
-          Use these steps for practical OpenPGP-style workflows with Moaiy.
+          Practical docs for current Moaiy workflows, with verification and source-build references.
         </p>
       </header>
 
       <section class="mb-16">
         <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">1. Install from official channels</h2>
         <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary mb-4">
-            Preferred source: official GitHub Releases.
-          </p>
+          <p class="font-body text-text-secondary mb-4">Preferred source: official GitHub Releases.</p>
           <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto mb-4">
             <div class="mb-2 text-text-tertiary"># Open official release channel</div>
             <div><span class="text-accent-primary">$</span> open https://github.com/moaiy-com/moaiy/releases</div>
@@ -73,40 +71,34 @@ const seo = pageSeo.docs;
         </article>
       </section>
 
+      <section class="mb-16 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Build from source (optional)</h2>
+        <p class="font-body text-text-secondary mb-4">If you prefer local builds, use the official repository:</p>
+        <div class="bg-bg-tertiary rounded-lg p-5 font-code text-sm text-text-secondary overflow-x-auto space-y-2">
+          <div>git clone https://github.com/moaiy-com/moaiy.git</div>
+          <div>cd moaiy</div>
+          <div>open Moaiy/Moaiy.xcodeproj</div>
+          <div>xcodebuild -project Moaiy/Moaiy.xcodeproj -scheme Moaiy -destination 'platform=macOS' build</div>
+        </div>
+      </section>
+
       <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">CLI reference snapshot</h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b border-gray-700">
-                <th class="font-heading text-text-primary py-3 px-4">Command</th>
-                <th class="font-heading text-text-primary py-3 px-4">Purpose</th>
-                <th class="font-heading text-text-primary py-3 px-4">Example</th>
-              </tr>
-            </thead>
-            <tbody class="font-body text-text-secondary text-sm">
-              <tr class="border-b border-gray-800">
-                <td class="py-3 px-4 font-code text-accent-primary">moaiy key generate</td>
-                <td class="py-3 px-4">Generate a key pair</td>
-                <td class="py-3 px-4 font-code">moaiy key generate</td>
-              </tr>
-              <tr class="border-b border-gray-800">
-                <td class="py-3 px-4 font-code text-accent-primary">moaiy key import</td>
-                <td class="py-3 px-4">Import recipient key</td>
-                <td class="py-3 px-4 font-code">moaiy key import alice.key</td>
-              </tr>
-              <tr class="border-b border-gray-800">
-                <td class="py-3 px-4 font-code text-accent-primary">moaiy encrypt</td>
-                <td class="py-3 px-4">Encrypt file or stream</td>
-                <td class="py-3 px-4 font-code">moaiy encrypt report.pdf --recipient team@example.com</td>
-              </tr>
-              <tr>
-                <td class="py-3 px-4 font-code text-accent-primary">moaiy decrypt</td>
-                <td class="py-3 px-4">Decrypt artifact</td>
-                <td class="py-3 px-4 font-code">moaiy decrypt report.pdf.gpg</td>
-              </tr>
-            </tbody>
-          </table>
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">Core docs links</h2>
+        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <ul class="font-body text-text-secondary space-y-3">
+            <li>
+              <a href="https://github.com/moaiy-com/moaiy/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">README</a>
+              <span> - product overview and setup.</span>
+            </li>
+            <li>
+              <a href="https://github.com/moaiy-com/moaiy/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">CONTRIBUTING</a>
+              <span> - contribution workflow and testing expectations.</span>
+            </li>
+            <li>
+              <a href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">SECURITY</a>
+              <span> - private vulnerability reporting process.</span>
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -119,9 +111,7 @@ const seo = pageSeo.docs;
               <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
             </summary>
             <div class="px-6 pb-4">
-              <p class="font-body text-text-secondary">
-                Moaiy is an open-source encryption project designed for practical OpenPGP-style workflows.
-              </p>
+              <p class="font-body text-text-secondary">Moaiy is an open-source encryption project designed for practical OpenPGP-style workflows.</p>
             </div>
           </details>
 
@@ -131,9 +121,7 @@ const seo = pageSeo.docs;
               <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
             </summary>
             <div class="px-6 pb-4">
-              <p class="font-body text-text-secondary">
-                Use official GitHub Releases and validate checksums before running binaries.
-              </p>
+              <p class="font-body text-text-secondary">Use official GitHub Releases and validate checksums before running binaries.</p>
             </div>
           </details>
 
@@ -143,9 +131,7 @@ const seo = pageSeo.docs;
               <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
             </summary>
             <div class="px-6 pb-4">
-              <p class="font-body text-text-secondary">
-                Documentation and usage flows are local-first. Review the security page for current security model details.
-              </p>
+              <p class="font-body text-text-secondary">Documentation and usage flows are local-first. Review the security page for current security model details.</p>
             </div>
           </details>
         </div>

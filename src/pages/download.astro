@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.download;
-
 const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
 ---
 
@@ -15,7 +14,7 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
           Download Moaiy from official channels
         </h1>
         <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
-          Use the official GitHub Releases channel and verify integrity before installation.
+          Official downloads currently focus on macOS. Always verify integrity before installation.
         </p>
       </header>
 
@@ -57,18 +56,18 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
             <tbody class="font-body text-text-secondary text-sm">
               <tr class="border-b border-gray-800">
                 <td class="py-3 px-4">macOS</td>
-                <td class="py-3 px-4">Check latest GitHub release artifacts</td>
+                <td class="py-3 px-4">Published release path available</td>
                 <td class="py-3 px-4">GitHub Releases</td>
               </tr>
               <tr class="border-b border-gray-800">
                 <td class="py-3 px-4">Windows</td>
-                <td class="py-3 px-4">Roadmap / release-dependent</td>
-                <td class="py-3 px-4">Follow roadmap and release notes</td>
+                <td class="py-3 px-4">Planned / release-dependent</td>
+                <td class="py-3 px-4">Roadmap + release notes</td>
               </tr>
               <tr class="border-b border-gray-800">
                 <td class="py-3 px-4">Linux</td>
-                <td class="py-3 px-4">Roadmap / release-dependent</td>
-                <td class="py-3 px-4">Follow roadmap and release notes</td>
+                <td class="py-3 px-4">Planned / release-dependent</td>
+                <td class="py-3 px-4">Roadmap + release notes</td>
               </tr>
               <tr class="border-b border-gray-800">
                 <td class="py-3 px-4">iOS / Android</td>
@@ -85,16 +84,14 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         </div>
       </section>
 
-      <section class="mb-12">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Command-line installation pattern</h2>
-        <div class="bg-bg-tertiary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary mb-4">Use package-manager commands only when they are documented in a published release.</p>
-          <div class="bg-bg-primary rounded-lg p-4 font-code text-sm text-text-secondary overflow-x-auto space-y-2">
-            <div class="text-text-tertiary"># Example workflow</div>
-            <div><span class="text-accent-primary">$</span> moaiy --help</div>
-            <div><span class="text-accent-primary">$</span> moaiy key generate</div>
-            <div><span class="text-accent-primary">$</span> moaiy encrypt file.txt --recipient alice@example.com</div>
-          </div>
+      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Build from source (optional)</h2>
+        <p class="font-body text-text-secondary mb-4">Prefer local builds? Use the official repository and Xcode workflow:</p>
+        <div class="bg-bg-tertiary rounded-lg p-5 font-code text-sm text-text-secondary overflow-x-auto space-y-2">
+          <div>git clone https://github.com/moaiy-com/moaiy.git</div>
+          <div>cd moaiy</div>
+          <div>open Moaiy/Moaiy.xcodeproj</div>
+          <div>xcodebuild -project Moaiy/Moaiy.xcodeproj -scheme Moaiy -destination 'platform=macOS' build</div>
         </div>
       </section>
 

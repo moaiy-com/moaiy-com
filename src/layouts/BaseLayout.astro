@@ -30,6 +30,7 @@ const ogImageUrl = new URL(ogImage, siteUrl).toString();
 
 const X_URL = 'https://x.com/moaiycom';
 const GITHUB_URL = 'https://github.com/moaiy-com/moaiy';
+const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
 
 const footerLinks = [
   { href: '/features/', label: 'Features' },
@@ -39,6 +40,8 @@ const footerLinks = [
   { href: '/roadmap/', label: 'Roadmap' },
   { href: '/release-notes/', label: 'Release Notes' },
   { href: '/verification/', label: 'Verification' },
+  { href: '/privacy/', label: 'Privacy' },
+  { href: '/terms/', label: 'Terms' },
 ];
 ---
 
@@ -71,7 +74,6 @@ const footerLinks = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -83,7 +85,6 @@ const footerLinks = [
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
     ))}
 
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1EFMK5162Q"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -125,6 +126,9 @@ const footerLinks = [
             <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Moaiy</h2>
             <p class="font-body text-sm text-text-secondary">
               Open-source encryption workflows for practical security operations.
+            </p>
+            <p class="font-code text-xs text-text-tertiary break-all mt-3">
+              ETH Donation: <span class="text-text-secondary">{ETH_DONATION_ADDRESS}</span>
             </p>
           </div>
           <div>

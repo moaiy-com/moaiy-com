@@ -1,18 +1,29 @@
-# 🗿 Moaiy Official Website
+# Moaiy Official Website
 
-> **Moaiy - Encryption Made Simple**
+Source code for https://moaiy.com.
 
-The official website for Moaiy, featuring a 3D animated Moai statue with dynamic weather effects.
+## Scope
 
----
+- Product website and landing pages
+- Download/docs/security/public policy pages
+- GitHub Pages deployment workflows
 
-## 🔗 Links
+## Project Links
 
-- **Website**: [moaiy.com](https://moaiy.com)
-- **GitHub**: [github.com/moaiy-com](https://github.com/moaiy-com)
-- **Twitter/X**: [@moaiycom](https://x.com/moaiycom)
-- **SEO Ops Runbook**: [SEO_OPERATIONS.md](./SEO_OPERATIONS.md)
+- Website: https://moaiy.com
+- App repository: https://github.com/moaiy-com/moaiy
+- Organization: https://github.com/moaiy-com
+- X: https://x.com/moaiycom
+- SEO Ops Runbook: ./SEO_OPERATIONS.md
 
----
+## Development
 
-*Built with ❤️ for everyone*
+```bash
+pnpm install
+pnpm run check
+pnpm run build
+```
+
+## License
+
+MIT
