@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://moaiy.com/sitemap.xml

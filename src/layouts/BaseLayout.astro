@@ -7,6 +7,7 @@ interface Props {
 const { title, description = "Moaiy - Encryption Made Simple. Secure and easy-to-use encryption tool designed for everyone." } = Astro.props;
 const X_URL = 'https://x.com/moaiycom';
 const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
+const canonicalUrl = Astro.url;
 ---
 
 <!doctype html>
@@ -25,11 +26,14 @@ const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
     
     <!-- SEO Meta Tags -->
     <title>{title}</title>
+    <link rel="canonical" href={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://moaiy.com" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     
     <!-- Theme Color -->
     <meta name="theme-color" content="#0A0E27" />
@@ -59,6 +63,14 @@ const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
           <p class="font-code text-xs text-text-tertiary break-all">
             ETH Donation: <span class="text-text-secondary">{ETH_DONATION_ADDRESS}</span>
           </p>
+          <div class="flex items-center gap-4 text-xs">
+            <a href="/privacy/" class="font-body text-text-secondary hover:text-accent-primary transition-colors">
+              Privacy
+            </a>
+            <a href="/terms/" class="font-body text-text-secondary hover:text-accent-primary transition-colors">
+              Terms
+            </a>
+          </div>
         </div>
       </div>
     </footer>

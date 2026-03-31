@@ -6,7 +6,7 @@ This repository (`moaiy-com/moaiy-com`) is actively supported only on the latest
 
 | Version | Supported |
 | --- | --- |
-| `main` (latest) | :white_check_mark: |
+| Default branch (currently `master`) | :white_check_mark: |
 | Older branches / historical commits | :x: |
 
 ## Reporting a Vulnerability
@@ -15,7 +15,7 @@ Please **do not** report security vulnerabilities in public GitHub issues.
 
 Report vulnerabilities privately by email:
 
-- **Email**: `support@moaiy.com`
+- **Email**: `security@moaiy.com`
 - **Subject**: `[SECURITY] <short title>`
 - **Include**:
   - Affected URL/page/component
