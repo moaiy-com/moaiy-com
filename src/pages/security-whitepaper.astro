@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.securityWhitepaper;
+---
+
+<BaseLayout {...seo}>
+  <main class="min-h-screen bg-bg-primary py-20 px-4">
+    <div class="max-w-4xl mx-auto">
+      <header class="mb-12">
+        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
+          Security whitepaper (draft)
+        </h1>
+        <p class="font-body text-xl text-text-secondary">
+          Draft snapshot for architecture, threat assumptions, and disclosure process.
+        </p>
+      </header>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">1. Threat model scope</h2>
+        <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
+          <li>Focus: confidentiality and integrity for locally handled data artifacts.</li>
+          <li>Primary risks: compromised binaries, key leakage, and operator mistakes.</li>
+          <li>Out of scope: full endpoint compromise and hostile operating systems.</li>
+        </ul>
+      </section>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">2. Security control priorities</h2>
+        <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
+          <li>Publish through auditable release channels with traceable version history.</li>
+          <li>Recommend checksum/signature verification before installation.</li>
+          <li>Maintain clear separation between shipped and planned capabilities.</li>
+        </ul>
+      </section>
+
+      <section class="mb-8 bg-bg-secondary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">3. Disclosure and response</h2>
+        <p class="font-body text-text-secondary leading-relaxed mb-4">
+          Vulnerabilities should be reported to <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a> with reproduction detail.
+          The project targets acknowledgement in 3 business days and triage in 7 business days when reproducible.
+        </p>
+      </section>
+
+      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Related resources</h2>
+        <div class="flex flex-wrap gap-4">
+          <a href="/security/" class="px-5 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors">Security policy</a>
+          <a href="/verification/" class="px-5 py-3 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg hover:bg-accent-primary hover:text-white transition-colors">Verification guide</a>
+          <a href="/release-notes/" class="px-5 py-3 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg hover:bg-accent-primary hover:text-white transition-colors">Release notes</a>
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

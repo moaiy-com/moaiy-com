@@ -1,297 +1,79 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.features;
 ---
 
-<BaseLayout title="Features - Moaiy">
+<BaseLayout {...seo}>
   <main class="min-h-screen bg-bg-primary py-20 px-4">
     <div class="max-w-6xl mx-auto">
-      <!-- Header -->
-      <div class="text-center mb-16">
+      <header class="text-center mb-16">
         <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
-          Why Moaiy?
+          Features built for practical encryption work
         </h1>
-        <p class="font-body text-xl text-text-secondary">
-          Encryption made simple, secure, and accessible for everyone
+        <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
+          Desktop-first encryption workflows with a current focus on native macOS availability.
         </p>
-      </div>
-      
-      <!-- Core Features -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-20">
-        <!-- Feature 1 -->
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-          <div class="flex items-start gap-6">
-            <div class="text-5xl">🎯</div>
-            <div>
-              <h3 class="font-heading text-2xl font-semibold text-text-primary mb-3">
-                Simple to Use
-              </h3>
-              <p class="font-body text-text-secondary mb-4">
-                No technical knowledge required. Encrypt files in just 3 clicks:
-              </p>
-              <ol class="font-body text-text-secondary space-y-2">
-                <li class="flex items-start gap-2">
-                  <span class="text-accent-primary font-semibold">1.</span>
-                  <span>Select file(s) or text</span>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-accent-primary font-semibold">2.</span>
-                  <span>Choose recipient or password</span>
-                </li>
-                <li class="flex items-start gap-2">
-                  <span class="text-accent-primary font-semibold">3.</span>
-                  <span>Click encrypt</span>
-                </li>
-              </ol>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Feature 2 -->
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-          <div class="flex items-start gap-6">
-            <div class="text-5xl">🔐</div>
-            <div>
-              <h3 class="font-heading text-2xl font-semibold text-text-primary mb-3">
-                Military-Grade Security
-              </h3>
-              <p class="font-body text-text-secondary mb-4">
-                Built on OpenPGP standard with:
-              </p>
-              <ul class="font-body text-text-secondary space-y-2">
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>AES-256 encryption</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>RSA-4096 key pairs</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Perfect forward secrecy</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Zero-knowledge architecture</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Feature 3 -->
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-          <div class="flex items-start gap-6">
-            <div class="text-5xl">⚡</div>
-            <div>
-              <h3 class="font-heading text-2xl font-semibold text-text-primary mb-3">
-                Blazingly Fast
-              </h3>
-              <p class="font-body text-text-secondary mb-4">
-                Powered by Rust for maximum performance:
-              </p>
-              <ul class="font-body text-text-secondary space-y-2">
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Encrypt 1GB file in &lt;5 seconds</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Native performance on all platforms</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Minimal memory footprint</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Feature 4 -->
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800 hover:border-accent-primary/50 transition-all">
-          <div class="flex items-start gap-6">
-            <div class="text-5xl">🌐</div>
-            <div>
-              <h3 class="font-heading text-2xl font-semibold text-text-primary mb-3">
-                Cross-Platform
-              </h3>
-              <p class="font-body text-text-secondary mb-4">
-                One tool for all your devices:
-              </p>
-              <ul class="font-body text-text-secondary space-y-2">
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>macOS, Windows, Linux</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>iOS, Android</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Web browser</span>
-                </li>
-                <li class="flex items-center gap-2">
-                  <span class="text-accent-primary">✓</span>
-                  <span>Command line</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Additional Features -->
-      <div class="mb-20">
-        <h2 class="font-heading text-3xl font-bold text-text-primary text-center mb-12">
-          More Features
+      </header>
+
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Local-first encryption workflow</h2>
+          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
+            <li>Encrypt files and text through command-based workflows documented in the public docs.</li>
+            <li>Manage key generation, import, and export without depending on a hosted dashboard.</li>
+            <li>Use repeatable commands suitable for personal and team operations.</li>
+          </ul>
+        </article>
+
+        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Open-source transparency</h2>
+          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
+            <li>Core implementation and website are publicly inspectable in GitHub repositories.</li>
+            <li>Release channels are centralized in official GitHub Releases for auditable distribution.</li>
+            <li>Security and verification guidance are published as first-class documentation pages.</li>
+          </ul>
+        </article>
+
+        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Operational safety controls</h2>
+          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
+            <li>Checksum and signature validation are part of the recommended install process.</li>
+            <li>Responsible disclosure channel is documented for vulnerability reporting.</li>
+            <li>Roadmap separates active capabilities from planned features to avoid false expectations.</li>
+          </ul>
+        </article>
+
+        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Current platform status</h2>
+          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
+            <li>macOS desktop release path is available via official GitHub Releases.</li>
+            <li>Windows/Linux/iOS/Android/Web are tracked as planned or in-progress items.</li>
+            <li>Release notes are the source of truth for shipped capability changes.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
+        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
+          Start from your goal
         </h2>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">🔑</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Key Management
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Easy key generation, import, and export
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">👥</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Multiple Recipients
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Encrypt for multiple people at once
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">📝</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Text Encryption
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Encrypt messages and passwords
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">📁</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              File Encryption
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Encrypt any file or folder
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">🔍</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Digital Signatures
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Verify authenticity and integrity
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">🛡️</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Password Protection
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Symmetric encryption with passwords
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">🔄</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Sync Across Devices
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Encrypted key sync (optional)
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">🖥️</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              CLI & GUI
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Both command line and graphical interface
-            </p>
-          </div>
-          
-          <div class="bg-bg-tertiary rounded-lg p-6">
-            <div class="text-3xl mb-3">🌍</div>
-            <h4 class="font-heading text-lg font-semibold text-text-primary mb-2">
-              Offline First
-            </h4>
-            <p class="font-body text-text-secondary text-sm">
-              Works without internet connection
-            </p>
-          </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <a href="/docs/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-xl text-text-primary mb-2">Run core commands</h3>
+            <p class="font-body text-sm text-text-secondary">Install, encrypt, decrypt, and manage keys with reproducible steps.</p>
+          </a>
+          <a href="/download/" data-analytics-event="download_click" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-xl text-text-primary mb-2">Get official builds</h3>
+            <p class="font-body text-sm text-text-secondary">Use official release channels and validate integrity before install.</p>
+          </a>
+          <a href="/security/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
+            <h3 class="font-heading text-xl text-text-primary mb-2">Review security model</h3>
+            <p class="font-body text-sm text-text-secondary">Understand threat assumptions, disclosure process, and evidence status.</p>
+          </a>
         </div>
-      </div>
-      
-      <!-- Comparison -->
-      <div class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary text-center mb-8">
-          Moaiy vs Others
-        </h2>
-        
-        <div class="overflow-x-auto">
-          <table class="w-full text-left">
-            <thead>
-              <tr class="border-b border-gray-700">
-                <th class="font-heading text-text-primary py-4 px-4">Feature</th>
-                <th class="font-heading text-accent-primary py-4 px-4 text-center">Moaiy</th>
-                <th class="font-heading text-text-secondary py-4 px-4 text-center">GPG Tools</th>
-                <th class="font-heading text-text-secondary py-4 px-4 text-center">Others</th>
-              </tr>
-            </thead>
-            <tbody class="font-body text-text-secondary">
-              <tr class="border-b border-gray-800">
-                <td class="py-4 px-4">Easy to Use</td>
-                <td class="py-4 px-4 text-center text-accent-primary">✓✓✓</td>
-                <td class="py-4 px-4 text-center">✓</td>
-                <td class="py-4 px-4 text-center">✓✓</td>
-              </tr>
-              <tr class="border-b border-gray-800">
-                <td class="py-4 px-4">Free & Open Source</td>
-                <td class="py-4 px-4 text-center text-accent-primary">✓✓✓</td>
-                <td class="py-4 px-4 text-center">✓✓</td>
-                <td class="py-4 px-4 text-center">✓</td>
-              </tr>
-              <tr class="border-b border-gray-800">
-                <td class="py-4 px-4">Cross-Platform</td>
-                <td class="py-4 px-4 text-center text-accent-primary">✓✓✓</td>
-                <td class="py-4 px-4 text-center">✓</td>
-                <td class="py-4 px-4 text-center">✓✓</td>
-              </tr>
-              <tr class="border-b border-gray-800">
-                <td class="py-4 px-4">Modern UI</td>
-                <td class="py-4 px-4 text-center text-accent-primary">✓✓✓</td>
-                <td class="py-4 px-4 text-center">✓</td>
-                <td class="py-4 px-4 text-center">✓✓</td>
-              </tr>
-              <tr>
-                <td class="py-4 px-4">Performance</td>
-                <td class="py-4 px-4 text-center text-accent-primary">✓✓✓</td>
-                <td class="py-4 px-4 text-center">✓✓</td>
-                <td class="py-4 px-4 text-center">✓</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      </section>
     </div>
   </main>
 </BaseLayout>

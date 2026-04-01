@@ -1,0 +1,43 @@
+name: SEO Monitor
+
+on:
+  schedule:
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seo-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build site
+        run: pnpm build
+
+      - name: Run local SEO checks
+        run: pnpm run check:seo
+
+      - name: Probe live SEO endpoints
+        run: |
+          curl -f -sS https://moaiy.com/robots.txt > /dev/null
+          curl -f -sS https://moaiy.com/sitemap.xml > /dev/null
+          curl -f -sS https://moaiy.com/sitemap-index.xml > /dev/null
+          curl -f -sS https://moaiy.com/download/ > /dev/null
