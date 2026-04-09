@@ -70,13 +70,6 @@ const footerLinks = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Scope+One&display=swap"
-      rel="stylesheet"
-    />
-
     {schema.map((entry) => (
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
     ))}
@@ -184,6 +177,14 @@ const footerLinks = [
 </html>
 
 <style is:global>
+  @font-face {
+    font-family: 'Scope One';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/ScopeOne-Regular.ttf') format('truetype');
+  }
+
   @tailwind base;
   @tailwind components;
   @tailwind utilities;
@@ -265,10 +266,24 @@ const footerLinks = [
   html {
     scroll-behavior: smooth;
     color-scheme: light;
+    font-synthesis: none;
   }
 
   body {
     @apply min-h-screen;
+  }
+
+  /* Scope One only ships regular weight; pin utility-weight combos to avoid fake bold rendering. */
+  .font-heading.font-medium,
+  .font-heading.font-semibold,
+  .font-heading.font-bold,
+  .font-body.font-medium,
+  .font-body.font-semibold,
+  .font-body.font-bold,
+  .font-code.font-medium,
+  .font-code.font-semibold,
+  .font-code.font-bold {
+    font-weight: 400;
   }
 
   ::selection {
