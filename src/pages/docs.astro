@@ -3,78 +3,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.docs;
+const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <header class="text-center mb-16">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
-          Task docs: install, encrypt, decrypt, verify
+  <main class="min-h-screen bg-bg-primary px-4 py-20">
+    <div class="mx-auto max-w-6xl">
+      <header class="mx-auto mb-14 max-w-3xl text-center">
+        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
+          Docs: install, encrypt, decrypt, verify
         </h1>
-        <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
-          Practical docs for current Moaiy workflows, with verification and source-build references.
+        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
+          Minimal command guide for the current Moaiy workflow on macOS.
         </p>
       </header>
 
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">1. Install from official channels</h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <p class="font-body text-text-secondary mb-4">Preferred source: official GitHub Releases.</p>
-          <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto mb-4">
-            <div class="mb-2 text-text-tertiary"># Open official release channel</div>
+      <section class="grid grid-cols-1 gap-5 lg:grid-cols-2">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Download from official channel</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">Use GitHub Releases as the source of truth.</p>
+          <div class="mt-4 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
             <div><span class="text-accent-primary">$</span> open https://github.com/moaiy-com/moaiy/releases</div>
           </div>
           <a
-            href="https://github.com/moaiy-com/moaiy/releases"
+            href={releaseUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-analytics-event="download_click"
-            class="inline-block px-5 py-3 bg-accent-primary text-white font-semibold rounded-lg hover:bg-accent-secondary transition-colors"
+            class="mt-4 inline-flex items-center rounded-lg bg-accent-primary px-4 py-2 text-sm font-semibold text-bg-primary transition-colors hover:bg-accent-secondary"
           >
-            Open GitHub Releases
+            Open Releases
           </a>
-        </div>
-      </section>
+        </article>
 
-      <section class="mb-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">2. Generate keys</h2>
-          <p class="font-body text-text-secondary mb-4">Create your key pair once before encryption workflows.</p>
-          <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Generate a key pair</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">Create keys once, then back up your private key offline.</p>
+          <div class="mt-4 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
             <div><span class="text-accent-primary">$</span> moaiy key generate</div>
-            <div class="text-text-tertiary mt-2"># Save private key securely and back it up offline.</div>
           </div>
         </article>
 
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">3. Encrypt data</h2>
-          <p class="font-body text-text-secondary mb-4">Choose recipient-key mode or password mode based on your use case.</p>
-          <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto space-y-2">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Encrypt data</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">Use recipient mode or password mode depending on your case.</p>
+          <div class="mt-4 space-y-2 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
             <div><span class="text-accent-primary">$</span> moaiy encrypt secret.txt --recipient alice@example.com</div>
             <div><span class="text-accent-primary">$</span> moaiy encrypt secret.txt --password</div>
           </div>
         </article>
 
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">4. Decrypt safely</h2>
-          <p class="font-body text-text-secondary mb-4">Validate the input source and decrypt only trusted artifacts.</p>
-          <div class="font-code text-sm bg-bg-tertiary rounded-lg p-4 overflow-x-auto">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Decrypt and verify</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">Decrypt trusted artifacts and verify checksums before install.</p>
+          <div class="mt-4 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
             <div><span class="text-accent-primary">$</span> moaiy decrypt secret.txt.gpg</div>
           </div>
-        </article>
-
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">5. Verify artifacts</h2>
-          <p class="font-body text-text-secondary mb-4">Always validate checksums/signatures for downloaded binaries.</p>
-          <a href="/verification/" class="inline-block text-accent-primary hover:underline font-semibold">Read verification guide</a>
+          <a href="/verification/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">Read verification guide</a>
         </article>
       </section>
 
-      <section class="mb-16 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Build from source (optional)</h2>
-        <p class="font-body text-text-secondary mb-4">If you prefer local builds, use the official repository:</p>
-        <div class="bg-bg-tertiary rounded-lg p-5 font-code text-sm text-text-secondary overflow-x-auto space-y-2">
+      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Build from source (optional)</h2>
+        <div class="mt-5 space-y-2 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
           <div>git clone https://github.com/moaiy-com/moaiy.git</div>
           <div>cd moaiy</div>
           <div>open Moaiy/Moaiy.xcodeproj</div>
@@ -82,77 +73,34 @@ const seo = pageSeo.docs;
         </div>
       </section>
 
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">Core docs links</h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <ul class="font-body text-text-secondary space-y-3">
-            <li>
-              <a href="https://github.com/moaiy-com/moaiy/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">README</a>
-              <span> - product overview and setup.</span>
-            </li>
-            <li>
-              <a href="https://github.com/moaiy-com/moaiy/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">CONTRIBUTING</a>
-              <span> - contribution workflow and testing expectations.</span>
-            </li>
-            <li>
-              <a href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">SECURITY</a>
-              <span> - private vulnerability reporting process.</span>
-            </li>
-          </ul>
-        </div>
+      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <a href="https://github.com/moaiy-com/moaiy/blob/main/README.md" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">README</h2>
+          <p class="mt-2 text-sm text-text-secondary">Overview and setup details.</p>
+        </a>
+        <a href="https://github.com/moaiy-com/moaiy/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">CONTRIBUTING</h2>
+          <p class="mt-2 text-sm text-text-secondary">Contribution workflow and checks.</p>
+        </a>
+        <a href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">SECURITY</h2>
+          <p class="mt-2 text-sm text-text-secondary">Private vulnerability reporting path.</p>
+        </a>
       </section>
 
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8">Frequently asked questions</h2>
-        <div class="space-y-4">
-          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
-            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
-              <h3 class="font-heading text-lg font-semibold text-text-primary">What is Moaiy?</h3>
-              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
-            </summary>
-            <div class="px-6 pb-4">
-              <p class="font-body text-text-secondary">Moaiy is an open-source encryption project designed for practical OpenPGP-style workflows.</p>
-            </div>
-          </details>
-
-          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
-            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
-              <h3 class="font-heading text-lg font-semibold text-text-primary">How can I download Moaiy safely?</h3>
-              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
-            </summary>
-            <div class="px-6 pb-4">
-              <p class="font-body text-text-secondary">Use official GitHub Releases and validate checksums before running binaries.</p>
-            </div>
-          </details>
-
-          <details class="bg-bg-secondary rounded-xl border border-gray-800 group">
-            <summary class="px-6 py-4 cursor-pointer flex items-center justify-between">
-              <h3 class="font-heading text-lg font-semibold text-text-primary">Does Moaiy process plaintext on remote servers?</h3>
-              <span class="text-accent-primary text-2xl group-open:rotate-180 transition-transform">+</span>
-            </summary>
-            <div class="px-6 pb-4">
-              <p class="font-body text-text-secondary">Documentation and usage flows are local-first. Review the security page for current security model details.</p>
-            </div>
-          </details>
-        </div>
-      </section>
-
-      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6 text-center">Need a specific workflow?</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <a href="/encrypt-files-on-macos/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-lg text-text-primary mb-2">Encrypt files on macOS</h3>
-            <p class="font-body text-sm text-text-secondary">Hands-on macOS guide for file protection.</p>
-          </a>
-          <a href="/openpgp-made-simple/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-lg text-text-primary mb-2">OpenPGP made simple</h3>
-            <p class="font-body text-sm text-text-secondary">Concept guide for onboarding users.</p>
-          </a>
-          <a href="/gpg-tools-alternative/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-lg text-text-primary mb-2">GPG alternative view</h3>
-            <p class="font-body text-sm text-text-secondary">Compare workflow complexity and fit.</p>
-          </a>
-        </div>
+      <section class="mt-12 space-y-3">
+        <details class="rounded-lg border border-gray-800 bg-bg-secondary/65">
+          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">What is Moaiy?</summary>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Moaiy is an open-source encryption project focused on practical OpenPGP workflows.</p>
+        </details>
+        <details class="rounded-lg border border-gray-800 bg-bg-secondary/65">
+          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">How do I download safely?</summary>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Use official GitHub Releases and verify checksums before running binaries.</p>
+        </details>
+        <details class="rounded-lg border border-gray-800 bg-bg-secondary/65">
+          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">Does Moaiy upload plaintext?</summary>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Published workflows are local-first. See the security page for current model details.</p>
+        </details>
       </section>
     </div>
   </main>

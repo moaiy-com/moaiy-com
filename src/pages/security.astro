@@ -6,137 +6,105 @@ const seo = pageSeo.security;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <header class="text-center mb-16">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
+  <main class="min-h-screen bg-bg-primary px-4 py-20">
+    <div class="mx-auto max-w-6xl">
+      <header class="mx-auto mb-14 max-w-3xl text-center">
+        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
           Security model and disclosure policy
         </h1>
-        <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
-          This page documents what is verifiable today, what is planned, and how to report vulnerabilities.
+        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
+          This page separates verifiable facts from planned work and explains how to report vulnerabilities.
         </p>
       </header>
 
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">What is verifiable now</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">Open-source code</h3>
-            <p class="font-body text-text-secondary leading-relaxed">
-              Source code is publicly available in GitHub repositories, enabling independent review and issue reporting.
-            </p>
-          </article>
-          <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">OpenPGP workflow focus</h3>
-            <p class="font-body text-text-secondary leading-relaxed">
-              Project documentation and examples center on local encryption and decryption operations.
-            </p>
-          </article>
-          <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-            <h3 class="font-heading text-xl font-semibold text-text-primary mb-3">Verification guidance</h3>
-            <p class="font-body text-text-secondary leading-relaxed">
-              Official pages describe checksum/signature verification to reduce tampering and supply-chain risk.
-            </p>
-          </article>
+      <section class="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-xl font-semibold text-text-primary">Public codebase</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Source and issue tracking stay visible in the public GitHub repository.
+          </p>
+        </article>
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-xl font-semibold text-text-primary">Local-first workflow</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Current guides focus on local encryption and decryption operations.
+          </p>
+        </article>
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-xl font-semibold text-text-primary">Verification guidance</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Official docs include checksum and signature validation before install.
+          </p>
+        </article>
+      </section>
+
+      <section class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">How to report</h2>
+          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary">
+            <li>
+              Send reports to
+              <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.
+            </li>
+            <li>Include reproduction steps, affected version, and impact estimate.</li>
+            <li>Avoid public disclosure before coordinated remediation.</li>
+          </ul>
+        </article>
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">Response targets</h2>
+          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary">
+            <li>Acknowledgement target: within 3 business days.</li>
+            <li>Triage target: within 7 business days when reproducible.</li>
+            <li>Fix timeline depends on severity and release scheduling.</li>
+          </ul>
+        </article>
+      </section>
+
+      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Current assurance status</h2>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[560px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-gray-700 text-text-primary">
+                <th class="py-3 pr-4 font-heading">Area</th>
+                <th class="px-4 py-3 font-heading">Status</th>
+                <th class="px-4 py-3 font-heading">Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 pr-4">Public source review</td>
+                <td class="px-4 py-3 text-accent-primary">Available</td>
+                <td class="px-4 py-3">Repository, commits, and issue history.</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 pr-4">Third-party audit report</td>
+                <td class="px-4 py-3">Not published yet</td>
+                <td class="px-4 py-3">No public report as of April 9, 2026.</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4">Security whitepaper</td>
+                <td class="px-4 py-3 text-accent-primary">Draft available</td>
+                <td class="px-4 py-3"><a href="/security-whitepaper/" class="text-accent-primary hover:underline">Read draft</a></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </section>
 
-      <section class="mb-16 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Responsible disclosure process</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h3 class="font-heading text-xl font-semibold text-accent-primary mb-3">How to report</h3>
-            <ul class="font-body text-text-secondary space-y-2">
-              <li>Email security reports to <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.</li>
-              <li>Include reproduction steps, impact estimate, and affected versions.</li>
-              <li>Do not disclose publicly before coordinated remediation.</li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="font-heading text-xl font-semibold text-accent-primary mb-3">Response targets (SLA)</h3>
-            <ul class="font-body text-text-secondary space-y-2">
-              <li>Acknowledgement target: within 3 business days.</li>
-              <li>Triage target: within 7 business days when reproduction is possible.</li>
-              <li>Fix timeline depends on severity and release planning.</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      <section class="mb-16 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Current security references</h2>
-        <ul class="font-body text-text-secondary space-y-3">
-          <li>
-            <a href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">
-              moaiy/SECURITY.md
-            </a>
-            <span> - vulnerability reporting and response timeline.</span>
-          </li>
-          <li>
-            <a href="https://github.com/moaiy-com/moaiy/blob/main/DISCLAIMER.md" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">
-              moaiy/DISCLAIMER.md
-            </a>
-            <span> - risk boundaries and responsibility notes.</span>
-          </li>
-          <li>
-            <a href="https://github.com/moaiy-com/moaiy/releases" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">
-              GitHub Releases
-            </a>
-            <span> - release artifacts and checksum notes.</span>
-          </li>
-        </ul>
-      </section>
-
-      <section class="mb-16">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">Audit and assurance status</h2>
-        <div class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <div class="overflow-x-auto">
-            <table class="w-full text-left">
-              <thead>
-                <tr class="border-b border-gray-700">
-                  <th class="font-heading text-text-primary py-3 px-4">Area</th>
-                  <th class="font-heading text-text-primary py-3 px-4">Status</th>
-                  <th class="font-heading text-text-primary py-3 px-4">Evidence</th>
-                </tr>
-              </thead>
-              <tbody class="font-body text-text-secondary text-sm">
-                <tr class="border-b border-gray-800">
-                  <td class="py-3 px-4">Public source review</td>
-                  <td class="py-3 px-4 text-accent-primary">Available</td>
-                  <td class="py-3 px-4">Open GitHub repositories and issue trackers.</td>
-                </tr>
-                <tr class="border-b border-gray-800">
-                  <td class="py-3 px-4">Third-party security audit</td>
-                  <td class="py-3 px-4">Not published yet</td>
-                  <td class="py-3 px-4">No third-party report publicly posted as of April 1, 2026.</td>
-                </tr>
-                <tr>
-                  <td class="py-3 px-4">Formal security whitepaper</td>
-                  <td class="py-3 px-4 text-accent-primary">Draft available</td>
-                  <td class="py-3 px-4"><a href="/security-whitepaper/" class="text-accent-primary hover:underline">Read draft whitepaper</a>.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6 text-center">Security resources</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <a href="/verification/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-lg text-text-primary mb-2">Verification guide</h3>
-            <p class="font-body text-sm text-text-secondary">Checksum and signature checks before installation.</p>
-          </a>
-          <a href="/release-notes/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-lg text-text-primary mb-2">Release notes</h3>
-            <p class="font-body text-sm text-text-secondary">Track version updates and security-related changes.</p>
-          </a>
-          <a href="/roadmap/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-lg text-text-primary mb-2">Roadmap status</h3>
-            <p class="font-body text-sm text-text-secondary">Separate planned items from currently available capabilities.</p>
-          </a>
-        </div>
+      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <a href="/verification/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Verification Guide</h2>
+          <p class="mt-2 text-sm text-text-secondary">Checksum and signature checks.</p>
+        </a>
+        <a href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">SECURITY.md</h2>
+          <p class="mt-2 text-sm text-text-secondary">Disclosure policy and response process.</p>
+        </a>
+        <a href="https://github.com/moaiy-com/moaiy/releases" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Release Artifacts</h2>
+          <p class="mt-2 text-sm text-text-secondary">Official build and checksum channel.</p>
+        </a>
       </section>
     </div>
   </main>

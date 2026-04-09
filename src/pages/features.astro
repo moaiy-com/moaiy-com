@@ -6,73 +6,73 @@ const seo = pageSeo.features;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <header class="text-center mb-16">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
-          Features built for practical encryption work
+  <main class="min-h-screen bg-bg-primary px-4 py-20">
+    <div class="mx-auto max-w-6xl">
+      <header class="mx-auto mb-14 max-w-3xl text-center">
+        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
+          Features for practical encryption work
         </h1>
-        <p class="font-body text-xl text-text-secondary max-w-3xl mx-auto">
-          Desktop-first encryption workflows with a current focus on native macOS availability.
+        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
+          Moaiy keeps encryption workflows clear, verifiable, and suitable for daily desktop operations.
         </p>
       </header>
 
-      <section class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Local-first encryption workflow</h2>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>Encrypt files and text through command-based workflows documented in the public docs.</li>
-            <li>Manage key generation, import, and export without depending on a hosted dashboard.</li>
-            <li>Use repeatable commands suitable for personal and team operations.</li>
-          </ul>
+      <section class="grid grid-cols-1 gap-5 md:grid-cols-3">
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-xl font-semibold text-text-primary">Local-first commands</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Encrypt, decrypt, and manage keys without relying on hosted dashboards.
+          </p>
         </article>
-
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Open-source transparency</h2>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>Core implementation and website are publicly inspectable in GitHub repositories.</li>
-            <li>Release channels are centralized in official GitHub Releases for auditable distribution.</li>
-            <li>Security and verification guidance are published as first-class documentation pages.</li>
-          </ul>
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-xl font-semibold text-text-primary">Open-source trust</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Core code and release channels stay public for inspection and independent review.
+          </p>
         </article>
-
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Operational safety controls</h2>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>Checksum and signature validation are part of the recommended install process.</li>
-            <li>Responsible disclosure channel is documented for vulnerability reporting.</li>
-            <li>Roadmap separates active capabilities from planned features to avoid false expectations.</li>
-          </ul>
-        </article>
-
-        <article class="bg-bg-secondary rounded-xl p-8 border border-gray-800">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-4">Current platform status</h2>
-          <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-            <li>macOS desktop release path is available via official GitHub Releases.</li>
-            <li>Windows/Linux/iOS/Android/Web are tracked as planned or in-progress items.</li>
-            <li>Release notes are the source of truth for shipped capability changes.</li>
-          </ul>
+        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+          <h2 class="font-heading text-xl font-semibold text-text-primary">Operational safety</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Verification docs and disclosure policies are first-class parts of the project.
+          </p>
         </article>
       </section>
 
-      <section class="bg-gradient-to-r from-bg-secondary to-bg-tertiary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-8 text-center">
-          Start from your goal
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <a href="/docs/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-xl text-text-primary mb-2">Run core commands</h3>
-            <p class="font-body text-sm text-text-secondary">Install, encrypt, decrypt, and manage keys with reproducible steps.</p>
-          </a>
-          <a href="/download/" data-analytics-event="download_click" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-xl text-text-primary mb-2">Get official builds</h3>
-            <p class="font-body text-sm text-text-secondary">Use official release channels and validate integrity before install.</p>
-          </a>
-          <a href="/security/" class="bg-bg-primary rounded-lg p-6 border border-gray-700 hover:border-accent-primary/50 transition-colors">
-            <h3 class="font-heading text-xl text-text-primary mb-2">Review security model</h3>
-            <p class="font-body text-sm text-text-secondary">Understand threat assumptions, disclosure process, and evidence status.</p>
-          </a>
-        </div>
+      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Workflow at a glance</h2>
+        <ol class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <li class="rounded-lg border border-gray-700 bg-bg-primary/50 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 1</p>
+            <p class="mt-1 text-sm text-text-secondary">Download from official GitHub Releases.</p>
+          </li>
+          <li class="rounded-lg border border-gray-700 bg-bg-primary/50 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 2</p>
+            <p class="mt-1 text-sm text-text-secondary">Verify checksums and signatures before install.</p>
+          </li>
+          <li class="rounded-lg border border-gray-700 bg-bg-primary/50 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 3</p>
+            <p class="mt-1 text-sm text-text-secondary">Generate and manage keys locally.</p>
+          </li>
+          <li class="rounded-lg border border-gray-700 bg-bg-primary/50 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 4</p>
+            <p class="mt-1 text-sm text-text-secondary">Run encryption tasks with documented commands.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <a href="/docs/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Read Docs</h2>
+          <p class="mt-2 text-sm text-text-secondary">Command workflows and examples.</p>
+        </a>
+        <a href="/download/" data-analytics-event="download_click" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Get Releases</h2>
+          <p class="mt-2 text-sm text-text-secondary">Official artifacts and install path.</p>
+        </a>
+        <a href="/security/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Security Model</h2>
+          <p class="mt-2 text-sm text-text-secondary">Disclosure policy and evidence status.</p>
+        </a>
       </section>
     </div>
   </main>
