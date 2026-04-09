@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,58 +9,46 @@ const seo = pageSeo.openpgpMadeSimple;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-4xl">
-      <header class="mx-auto mb-14 max-w-3xl">
-        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
-          OpenPGP made simple with Moaiy
-        </h1>
-        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
-          Understand the key model and run a workflow users can follow.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <PageHero
+        centered={false}
+        title="OpenPGP made simple with Moaiy"
+        subtitle="Understand the key model and run a workflow users can follow."
+      />
 
-      <section class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-7 md:p-8">
+      <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Core model</h2>
-        <ul class="mt-5 space-y-2 text-sm leading-relaxed text-text-secondary">
+        <ul class="list-compact">
           <li><span class="text-text-primary">Public key</span>: share with senders who encrypt files for you.</li>
           <li><span class="text-text-primary">Private key</span>: keep secret; it decrypts files addressed to you.</li>
           <li><span class="text-text-primary">Passphrase</span>: protects your private key on disk.</li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Workflow example</h2>
-        <div class="mt-5 space-y-2 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
+        <div class="code-block">
           <div><span class="text-accent-primary">$</span> moaiy key generate</div>
           <div><span class="text-accent-primary">$</span> moaiy key export --output my-public.key</div>
           <div><span class="text-accent-primary">$</span> moaiy encrypt payroll.csv --recipient finance@example.com</div>
           <div><span class="text-accent-primary">$</span> moaiy decrypt payroll.csv.gpg</div>
         </div>
-      </section>
+      </Panel>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Common mistakes</h2>
-        <ul class="mt-5 space-y-2 text-sm leading-relaxed text-text-secondary">
+        <ul class="list-compact">
           <li>Storing private keys in shared folders.</li>
           <li>Skipping checksum checks for new binaries.</li>
           <li>Reusing weak passphrases across systems.</li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <a href="/docs/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Task Docs</h2>
-          <p class="mt-2 text-sm text-text-secondary">Command references and usage patterns.</p>
-        </a>
-        <a href="/verification/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Verification</h2>
-          <p class="mt-2 text-sm text-text-secondary">Trusted installation checklist.</p>
-        </a>
-        <a href="/gpg-tools-alternative/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Alternative View</h2>
-          <p class="mt-2 text-sm text-text-secondary">Compare Moaiy and classic GPG UX.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/docs/" title="Task Docs" description="Command references and usage patterns." />
+        <LinkCard href="/verification/" title="Verification" description="Trusted installation checklist." />
+        <LinkCard href="/gpg-tools-alternative/" title="Alternative View" description="Compare Moaiy and classic GPG UX." />
       </section>
     </div>
   </main>

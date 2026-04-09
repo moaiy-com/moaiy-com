@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,59 +9,47 @@ const seo = pageSeo.securityWhitepaper;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-4xl">
-      <header class="mx-auto mb-14 max-w-3xl">
-        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
-          Security whitepaper (draft)
-        </h1>
-        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
-          Draft summary of threat assumptions, control priorities, and disclosure process.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <PageHero
+        centered={false}
+        title="Security whitepaper (draft)"
+        subtitle="Draft summary of threat assumptions, control priorities, and disclosure process."
+      />
 
       <section class="space-y-5">
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6 md:p-7">
+        <Panel as="article" tone="strong" class="p-6 md:p-7">
           <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Threat model scope</h2>
-          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary">
+          <ul class="list-compact">
             <li>Focus: confidentiality and integrity for locally handled artifacts.</li>
             <li>Primary risks: compromised binaries, key leakage, and operator mistakes.</li>
             <li>Out of scope: full endpoint compromise and hostile operating systems.</li>
           </ul>
-        </article>
+        </Panel>
 
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-6 md:p-7">
+        <Panel as="article" class="p-6 md:p-7">
           <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Control priorities</h2>
-          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary">
+          <ul class="list-compact">
             <li>Publish through auditable release channels with traceable history.</li>
             <li>Recommend checksum and signature verification before installation.</li>
             <li>Keep shipped and planned capabilities explicitly separated.</li>
           </ul>
-        </article>
+        </Panel>
 
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-6 md:p-7">
+        <Panel as="article" class="p-6 md:p-7">
           <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Disclosure and response</h2>
           <p class="mt-4 text-sm leading-relaxed text-text-secondary">
             Report vulnerabilities to
             <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>
             with reproduction details. Current targets are acknowledgement within 3 business days and triage within 7 business days when reproducible.
           </p>
-        </article>
+        </Panel>
       </section>
 
-      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <a href="/security/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Security Policy</h2>
-          <p class="mt-2 text-sm text-text-secondary">Current public security model.</p>
-        </a>
-        <a href="/verification/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Verification Guide</h2>
-          <p class="mt-2 text-sm text-text-secondary">Checksum and signature workflow.</p>
-        </a>
-        <a href="/release-notes/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Release Notes</h2>
-          <p class="mt-2 text-sm text-text-secondary">Version updates and timing.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/security/" title="Security Policy" description="Current public security model." />
+        <LinkCard href="/verification/" title="Verification Guide" description="Checksum and signature workflow." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Version updates and timing." />
       </section>
     </div>
   </main>

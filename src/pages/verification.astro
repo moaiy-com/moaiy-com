@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,18 +9,14 @@ const seo = pageSeo.verification;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-5xl">
-      <header class="mx-auto mb-14 max-w-3xl text-center">
-        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
-          Verification and checksum guide
-        </h1>
-        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
-          Validate every artifact before installation to reduce supply-chain risk.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-narrow">
+      <PageHero
+        title="Verification and checksum guide"
+        subtitle="Validate every artifact before installation to reduce supply-chain risk."
+      />
 
-      <section class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-7 md:p-8">
+      <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Verification checklist</h2>
         <ol class="mt-5 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
           <li>Download binaries from official GitHub Releases.</li>
@@ -25,21 +24,21 @@ const seo = pageSeo.verification;
           <li>Compute local checksum and compare exactly.</li>
           <li>Verify signature when signing keys are provided.</li>
         </ol>
-      </section>
+      </Panel>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Example commands</h2>
-        <div class="mt-5 space-y-2 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary">
+        <div class="code-block">
           <div class="text-text-tertiary"># macOS / Linux</div>
           <div><span class="text-accent-primary">$</span> shasum -a 256 moaiy.pkg</div>
           <div class="text-text-tertiary"># compare output with published SHA256 value</div>
           <div><span class="text-accent-primary">$</span> gpg --verify moaiy.pkg.sig moaiy.pkg</div>
         </div>
-      </section>
+      </Panel>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">If verification fails</h2>
-        <ul class="mt-5 space-y-2 text-sm leading-relaxed text-text-secondary">
+        <ul class="list-compact">
           <li>Do not execute the artifact.</li>
           <li>Redownload from official release pages.</li>
           <li>
@@ -47,21 +46,12 @@ const seo = pageSeo.verification;
             <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.
           </li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <a href="/download/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Download</h2>
-          <p class="mt-2 text-sm text-text-secondary">Official artifact channel.</p>
-        </a>
-        <a href="/security/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Security</h2>
-          <p class="mt-2 text-sm text-text-secondary">Disclosure flow and assurance status.</p>
-        </a>
-        <a href="/release-notes/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Release Notes</h2>
-          <p class="mt-2 text-sm text-text-secondary">Version-level changes and timing.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/download/" title="Download" description="Official artifact channel." />
+        <LinkCard href="/security/" title="Security" description="Disclosure flow and assurance status." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Version-level changes and timing." />
       </section>
     </div>
   </main>

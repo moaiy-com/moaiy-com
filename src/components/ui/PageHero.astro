@@ -1,0 +1,22 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  centered?: boolean;
+  class?: string;
+}
+
+const {
+  title,
+  subtitle = '',
+  centered = true,
+  class: className = '',
+} = Astro.props;
+
+const alignClass = centered ? 'mx-auto max-w-3xl text-center' : '';
+---
+
+<header class={`page-hero ${alignClass} ${className}`}>
+  <h1 class="page-title">{title}</h1>
+  {subtitle ? <p class="page-subtitle">{subtitle}</p> : null}
+</header>

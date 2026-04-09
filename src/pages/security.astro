@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,42 +9,38 @@ const seo = pageSeo.security;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-6xl">
-      <header class="mx-auto mb-14 max-w-3xl text-center">
-        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">
-          Security model and disclosure policy
-        </h1>
-        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
-          This page separates verifiable facts from planned work and explains how to report vulnerabilities.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container">
+      <PageHero
+        title="Security model and disclosure policy"
+        subtitle="This page separates verifiable facts from planned work and explains how to report vulnerabilities."
+      />
 
       <section class="grid grid-cols-1 gap-5 md:grid-cols-3">
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+        <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-xl font-semibold text-text-primary">Public codebase</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
             Source and issue tracking stay visible in the public GitHub repository.
           </p>
-        </article>
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+        </Panel>
+        <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-xl font-semibold text-text-primary">Local-first workflow</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
             Current guides focus on local encryption and decryption operations.
           </p>
-        </article>
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+        </Panel>
+        <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-xl font-semibold text-text-primary">Verification guidance</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
             Official docs include checksum and signature validation before install.
           </p>
-        </article>
+        </Panel>
       </section>
 
       <section class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-7">
+        <Panel as="article">
           <h2 class="font-heading text-2xl font-semibold text-text-primary">How to report</h2>
-          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary">
+          <ul class="list-compact">
             <li>
               Send reports to
               <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.
@@ -49,18 +48,18 @@ const seo = pageSeo.security;
             <li>Include reproduction steps, affected version, and impact estimate.</li>
             <li>Avoid public disclosure before coordinated remediation.</li>
           </ul>
-        </article>
-        <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-7">
+        </Panel>
+        <Panel as="article">
           <h2 class="font-heading text-2xl font-semibold text-text-primary">Response targets</h2>
-          <ul class="mt-4 space-y-2 text-sm leading-relaxed text-text-secondary">
+          <ul class="list-compact">
             <li>Acknowledgement target: within 3 business days.</li>
             <li>Triage target: within 7 business days when reproducible.</li>
             <li>Fix timeline depends on severity and release scheduling.</li>
           </ul>
-        </article>
+        </Panel>
       </section>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Current assurance status</h2>
         <div class="mt-6 overflow-x-auto">
           <table class="w-full min-w-[560px] text-left text-sm text-text-secondary">
@@ -90,21 +89,12 @@ const seo = pageSeo.security;
             </tbody>
           </table>
         </div>
-      </section>
+      </Panel>
 
-      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <a href="/verification/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Verification Guide</h2>
-          <p class="mt-2 text-sm text-text-secondary">Checksum and signature checks.</p>
-        </a>
-        <a href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">SECURITY.md</h2>
-          <p class="mt-2 text-sm text-text-secondary">Disclosure policy and response process.</p>
-        </a>
-        <a href="https://github.com/moaiy-com/moaiy/releases" target="_blank" rel="noopener noreferrer" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Release Artifacts</h2>
-          <p class="mt-2 text-sm text-text-secondary">Official build and checksum channel.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/verification/" title="Verification Guide" description="Checksum and signature checks." />
+        <LinkCard href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" title="SECURITY.md" description="Disclosure policy and response process." />
+        <LinkCard href="https://github.com/moaiy-com/moaiy/releases" target="_blank" title="Release Artifacts" description="Official build and checksum channel." />
       </section>
     </div>
   </main>

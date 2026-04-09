@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,80 +9,49 @@ const seo = pageSeo.about;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-5xl">
-      <header class="mx-auto mb-14 max-w-3xl text-center">
-        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">About Moaiy</h1>
-        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
-          Building practical encryption workflows with clear documentation and open-source transparency.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-narrow">
+      <PageHero
+        title="About Moaiy"
+        subtitle="Building practical encryption workflows with clear documentation and open-source transparency."
+      />
 
-      <section class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-7 md:p-8">
+      <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Mission</h2>
         <p class="mt-4 text-sm leading-relaxed text-text-secondary">
           Moaiy helps teams run robust encryption workflows without unnecessary complexity. The project prioritizes
           realistic security claims, verifiable release channels, and reproducible operational guidance.
         </p>
-      </section>
+      </Panel>
 
       <section class="mt-12">
         <h2 class="text-center font-heading text-2xl font-semibold text-text-primary md:text-3xl">Core principles</h2>
         <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
-          <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-6 text-center">
+          <Panel as="article" class="p-6 text-center">
             <div class="mx-auto flex h-9 w-9 items-center justify-center rounded-full border border-accent-primary/50 text-sm font-semibold text-accent-primary">1</div>
             <h3 class="mt-3 font-heading text-lg text-text-primary">Simple</h3>
             <p class="mt-2 text-sm text-text-secondary">Readable docs and repeatable command patterns.</p>
-          </article>
-          <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-6 text-center">
+          </Panel>
+          <Panel as="article" class="p-6 text-center">
             <div class="mx-auto flex h-9 w-9 items-center justify-center rounded-full border border-accent-primary/50 text-sm font-semibold text-accent-primary">2</div>
             <h3 class="mt-3 font-heading text-lg text-text-primary">Secure</h3>
             <p class="mt-2 text-sm text-text-secondary">Local-first workflows and documented verification checks.</p>
-          </article>
-          <article class="rounded-xl border border-gray-800 bg-bg-secondary/65 p-6 text-center">
+          </Panel>
+          <Panel as="article" class="p-6 text-center">
             <div class="mx-auto flex h-9 w-9 items-center justify-center rounded-full border border-accent-primary/50 text-sm font-semibold text-accent-primary">3</div>
             <h3 class="mt-3 font-heading text-lg text-text-primary">Open</h3>
             <p class="mt-2 text-sm text-text-secondary">Public repository, auditable history, and issue tracking.</p>
-          </article>
+          </Panel>
         </div>
       </section>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Project links</h2>
-        <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-          <a
-            href="https://github.com/moaiy-com/moaiy"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-analytics-event="github_click"
-            class="rounded-lg border border-gray-700 bg-bg-primary/45 p-4 transition-colors hover:border-accent-primary/50 hover:text-accent-primary"
-          >
-            <h3 class="font-heading text-lg text-text-primary">Repository</h3>
-            <p class="mt-1 text-sm text-text-secondary">Source code and issue tracker.</p>
-          </a>
-          <a
-            href="https://github.com/moaiy-com/moaiy/releases"
-            target="_blank"
-            rel="noopener noreferrer"
-            data-analytics-event="download_click"
-            class="rounded-lg border border-gray-700 bg-bg-primary/45 p-4 transition-colors hover:border-accent-primary/50 hover:text-accent-primary"
-          >
-            <h3 class="font-heading text-lg text-text-primary">Releases</h3>
-            <p class="mt-1 text-sm text-text-secondary">Official artifacts and changelog path.</p>
-          </a>
-          <a
-            href="https://github.com/moaiy-com/moaiy/blob/main/LICENSE"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="rounded-lg border border-gray-700 bg-bg-primary/45 p-4 transition-colors hover:border-accent-primary/50 hover:text-accent-primary"
-          >
-            <h3 class="font-heading text-lg text-text-primary">MIT License</h3>
-            <p class="mt-1 text-sm text-text-secondary">Open-source license terms.</p>
-          </a>
-        </div>
+      <section class="link-grid">
+        <LinkCard href="https://github.com/moaiy-com/moaiy" target="_blank" analyticsEvent="github_click" title="Repository" description="Source code and issue tracker." />
+        <LinkCard href="https://github.com/moaiy-com/moaiy/releases" target="_blank" analyticsEvent="download_click" title="Releases" description="Official artifacts and changelog path." />
+        <LinkCard href="https://github.com/moaiy-com/moaiy/blob/main/LICENSE" target="_blank" title="MIT License" description="Open-source license terms." />
       </section>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Contact</h2>
         <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
           <div class="rounded-lg border border-gray-700 bg-bg-primary/45 p-4">
@@ -95,7 +67,7 @@ const seo = pageSeo.about;
             <a href="https://x.com/moaiycom" target="_blank" rel="noopener noreferrer" class="mt-2 inline-flex text-sm text-accent-primary hover:underline">@moaiycom</a>
           </div>
         </div>
-      </section>
+      </Panel>
     </div>
   </main>
 </BaseLayout>

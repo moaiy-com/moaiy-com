@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,25 +9,23 @@ const seo = pageSeo.roadmap;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-5xl">
-      <header class="mx-auto mb-14 max-w-3xl text-center">
-        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">Moaiy roadmap</h1>
-        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
-          Planned work is listed separately from already published capabilities.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-narrow">
+      <PageHero
+        title="Moaiy roadmap"
+        subtitle="Planned work is listed separately from already published capabilities."
+      />
 
-      <section class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-7 md:p-8">
+      <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Status labels</h2>
-        <ul class="mt-5 space-y-2 text-sm leading-relaxed text-text-secondary">
+        <ul class="list-compact">
           <li><span class="font-semibold text-accent-primary">Published</span>: available in official release channels.</li>
           <li><span class="font-semibold text-accent-primary">In progress</span>: currently implemented or validated.</li>
           <li><span class="font-semibold text-accent-primary">Planned</span>: scoped but not released yet.</li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Milestones</h2>
         <div class="mt-6 overflow-x-auto">
           <table class="w-full min-w-[540px] text-left text-sm text-text-secondary">
@@ -59,21 +60,12 @@ const seo = pageSeo.roadmap;
             </tbody>
           </table>
         </div>
-      </section>
+      </Panel>
 
-      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
-        <a href="/download/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Download</h2>
-          <p class="mt-2 text-sm text-text-secondary">Current official artifact channel.</p>
-        </a>
-        <a href="/release-notes/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Release Notes</h2>
-          <p class="mt-2 text-sm text-text-secondary">Shipped changes and timeline.</p>
-        </a>
-        <a href="/security/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
-          <h2 class="font-heading text-lg text-text-primary">Security</h2>
-          <p class="mt-2 text-sm text-text-secondary">Current assurance and disclosure model.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/download/" title="Download" description="Current official artifact channel." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Shipped changes and timeline." />
+        <LinkCard href="/security/" title="Security" description="Current assurance and disclosure model." />
       </section>
     </div>
   </main>

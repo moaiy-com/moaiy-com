@@ -1,0 +1,25 @@
+---
+interface Props {
+  as?: 'section' | 'article' | 'div';
+  tone?: 'default' | 'strong' | 'soft';
+  class?: string;
+}
+
+const {
+  as: Tag = 'section',
+  tone = 'default',
+  class: className = '',
+} = Astro.props;
+
+const toneClassMap = {
+  default: 'surface-card',
+  strong: 'surface-card-strong',
+  soft: 'surface-card-soft',
+};
+
+const toneClass = toneClassMap[tone] ?? toneClassMap.default;
+---
+
+<Tag class={`${toneClass} ${className}`}>
+  <slot />
+</Tag>

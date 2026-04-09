@@ -1,0 +1,34 @@
+---
+interface Props {
+  href: string;
+  title: string;
+  description: string;
+  target?: '_blank' | '_self';
+  rel?: string;
+  analyticsEvent?: string;
+  class?: string;
+}
+
+const {
+  href,
+  title,
+  description,
+  target = '_self',
+  rel,
+  analyticsEvent,
+  class: className = '',
+} = Astro.props;
+
+const normalizedRel = target === '_blank' ? rel ?? 'noopener noreferrer' : rel;
+---
+
+<a
+  href={href}
+  target={target}
+  rel={normalizedRel}
+  data-analytics-event={analyticsEvent}
+  class={`link-card ${className}`}
+>
+  <span class="link-card-title">{title}</span>
+  <span class="link-card-description">{description}</span>
+</a>

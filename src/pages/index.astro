@@ -11,7 +11,7 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
 <BaseLayout {...seo}>
   <main class="relative isolate min-h-screen overflow-hidden bg-bg-primary">
     <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
-      <HeroScene client:idle />
+      <HeroScene client:media="(min-width: 768px)" />
     </div>
     <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/50 via-bg-primary/30 to-bg-primary/85"></div>
 

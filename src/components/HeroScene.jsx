@@ -1,6 +1,15 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 
-const HeroScene3D = lazy(() => import('./HeroScene3D.jsx'));
+let heroSceneModulePromise;
+
+function loadHeroScene3D() {
+  if (!heroSceneModulePromise) {
+    heroSceneModulePromise = import('./HeroScene3D.jsx');
+  }
+  return heroSceneModulePromise;
+}
+
+const HeroScene3D = lazy(loadHeroScene3D);
 
 function StaticFallback() {
   return (
@@ -30,8 +39,18 @@ function isLowPowerDevice() {
 
   const connection =
     navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
   if (connection?.saveData) {
     return true;
+  }
+
+  if (typeof connection?.effectiveType === 'string') {
+    const isSlowNetwork =
+      connection.effectiveType.includes('2g') ||
+      connection.effectiveType === '3g';
+    if (isSlowNetwork) {
+      return true;
+    }
   }
 
   if (
@@ -60,23 +79,87 @@ function supportsWebGL() {
   }
 }
 
+function runWhenIdle(callback, timeout = 1800) {
+  if (typeof window.requestIdleCallback === 'function') {
+    const idleId = window.requestIdleCallback(callback, { timeout });
+    return () => window.cancelIdleCallback(idleId);
+  }
+
+  const timerId = window.setTimeout(callback, 350);
+  return () => window.clearTimeout(timerId);
+}
+
 export default function HeroScene() {
-  const [shouldLoad3D, setShouldLoad3D] = useState(false);
+  const hostRef = useRef(null);
+
   const [isReady, setIsReady] = useState(false);
+  const [isEligible, setIsEligible] = useState(false);
+  const [isInView, setIsInView] = useState(false);
+  const [shouldRender3D, setShouldRender3D] = useState(false);
 
   useEffect(() => {
     const canRender3D = !isLowPowerDevice() && supportsWebGL();
-    setShouldLoad3D(canRender3D);
+    setIsEligible(canRender3D);
     setIsReady(true);
   }, []);
 
-  if (!isReady || !shouldLoad3D) {
-    return <StaticFallback />;
-  }
+  useEffect(() => {
+    if (!isEligible) {
+      return;
+    }
+
+    const node = hostRef.current;
+    if (!node || typeof window.IntersectionObserver !== 'function') {
+      setIsInView(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setIsInView(true);
+          observer.disconnect();
+        }
+      },
+      {
+        rootMargin: '120px 0px',
+        threshold: 0.15,
+      },
+    );
+
+    observer.observe(node);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [isEligible]);
+
+  useEffect(() => {
+    if (!isReady || !isEligible || !isInView || shouldRender3D) {
+      return;
+    }
+
+    return runWhenIdle(() => {
+      setShouldRender3D(true);
+      void loadHeroScene3D();
+    });
+  }, [isReady, isEligible, isInView, shouldRender3D]);
 
   return (
-    <Suspense fallback={<StaticFallback />}>
-      <HeroScene3D />
-    </Suspense>
+    <div
+      ref={hostRef}
+      style={{
+        position: 'absolute',
+        inset: 0,
+      }}
+    >
+      {!isReady || !shouldRender3D ? (
+        <StaticFallback />
+      ) : (
+        <Suspense fallback={<StaticFallback />}>
+          <HeroScene3D />
+        </Suspense>
+      )}
+    </div>
   );
 }
