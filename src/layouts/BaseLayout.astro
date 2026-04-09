@@ -31,17 +31,13 @@ const ogImageUrl = new URL(ogImage, siteUrl).toString();
 const X_URL = 'https://x.com/moaiycom';
 const GITHUB_URL = 'https://github.com/moaiy-com/moaiy';
 const ETH_DONATION_ADDRESS = '0x7945C89E6Dfc83A10894f1d5149c1650fBa4Aa9c';
+const RELEASES_URL = 'https://github.com/moaiy-com/moaiy/releases';
 
 const footerLinks = [
-  { href: '/features/', label: 'Features' },
-  { href: '/security/', label: 'Security' },
-  { href: '/docs/', label: 'Docs' },
   { href: '/download/', label: 'Download' },
-  { href: '/roadmap/', label: 'Roadmap' },
-  { href: '/release-notes/', label: 'Release Notes' },
-  { href: '/verification/', label: 'Verification' },
-  { href: '/privacy/', label: 'Privacy' },
-  { href: '/terms/', label: 'Terms' },
+  { href: '/docs/', label: 'Docs' },
+  { href: '/security/', label: 'Security' },
+  { href: '/features/', label: 'Features' },
 ];
 ---
 
@@ -77,7 +73,7 @@ const footerLinks = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Scope+One&display=swap"
       rel="stylesheet"
     />
 
@@ -115,51 +111,69 @@ const footerLinks = [
     </script>
   </head>
   <body class="bg-bg-primary text-text-primary font-body antialiased">
+    <a
+      href="#content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-bg-tertiary focus:px-4 focus:py-2 focus:text-sm focus:text-text-primary focus:shadow-lg"
+    >
+      Skip to content
+    </a>
     <Navigation currentPage={currentPage} />
-    <div class="pt-16">
+    <div id="content" class="pt-16">
       <slot />
     </div>
-    <footer class="border-t border-gray-800 bg-bg-primary/95">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <footer class="border-t border-gray-800/80 bg-bg-primary/90">
+      <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
-            <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Moaiy</h2>
-            <p class="font-body text-sm text-text-secondary">
+            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Moaiy</h2>
+            <p class="max-w-md text-sm text-text-secondary">
               Open-source encryption workflows for practical security operations.
             </p>
-            <p class="font-code text-xs text-text-tertiary break-all mt-3">
-              ETH Donation: <span class="text-text-secondary">{ETH_DONATION_ADDRESS}</span>
+            <p class="mt-3 break-all font-code text-xs text-text-tertiary">
+              Donation (ETH): <span class="text-text-secondary">{ETH_DONATION_ADDRESS}</span>
             </p>
           </div>
           <div>
-            <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Core Pages</h2>
-            <div class="flex flex-wrap gap-3">
+            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Core</h2>
+            <div class="flex flex-col gap-2">
               {footerLinks.map((link) => (
-                <a href={link.href} class="font-body text-sm text-text-secondary hover:text-accent-primary transition-colors">
+                <a
+                  href={link.href}
+                  class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+                >
                   {link.label}
                 </a>
               ))}
             </div>
           </div>
           <div>
-            <h2 class="font-heading text-lg font-semibold text-text-primary mb-3">Project Links</h2>
+            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Project</h2>
             <div class="flex flex-col gap-2">
+              <a
+                href={RELEASES_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-analytics-event="download_click"
+                class="text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              >
+                Releases
+              </a>
               <a
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-analytics-event="github_click"
-                class="font-body text-sm text-text-secondary hover:text-accent-primary transition-colors"
+                class="text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
               >
-                GitHub Repository
+                GitHub
               </a>
               <a
                 href={X_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="font-body text-sm text-text-secondary hover:text-accent-primary transition-colors"
+                class="text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
               >
-                X: @moaiycom
+                X (@moaiycom)
               </a>
             </div>
           </div>
@@ -176,6 +190,7 @@ const footerLinks = [
 
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
   }
 
   body {
@@ -184,6 +199,10 @@ const footerLinks = [
 
   ::selection {
     @apply bg-accent-primary text-bg-primary;
+  }
+
+  :where(a, button, summary, [role='button']):focus-visible {
+    @apply outline-none ring-2 ring-accent-primary/70 ring-offset-2 ring-offset-bg-primary;
   }
 
   ::-webkit-scrollbar {

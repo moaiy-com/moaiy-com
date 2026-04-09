@@ -15,9 +15,9 @@ export default {
         'text-tertiary': '#9CA3AF',   // Medium gray
       },
       fontFamily: {
-        'heading': ['Space Grotesk', 'sans-serif'],
-        'body': ['Inter', 'sans-serif'],
-        'code': ['JetBrains Mono', 'monospace'],
+        'heading': ['Scope One', 'serif'],
+        'body': ['Scope One', 'serif'],
+        'code': ['Scope One', 'serif'],
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease forwards',

@@ -4,6 +4,8 @@ import HeroScene from '../components/HeroScene.jsx';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.home;
+const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
+const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
 ---
 
 <BaseLayout {...seo}>
@@ -11,112 +13,155 @@ const seo = pageSeo.home;
     <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
       <HeroScene client:idle />
     </div>
+    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/50 via-bg-primary/30 to-bg-primary/85"></div>
 
-    <div class="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
-      <div class="flex flex-col items-center md:-translate-x-14 lg:-translate-x-24 transition-transform duration-300 max-w-3xl text-center">
-        <h1 class="font-heading text-5xl md:text-7xl font-bold text-text-primary mb-4 animate-fade-in-up">
-          Open-Source Encryption Made Practical
-        </h1>
-        <p class="font-heading text-xl md:text-3xl font-light text-accent-primary mb-4 animate-fade-in-up" style="animation-delay: 0.2s">
-          Moaiy helps teams encrypt files with less friction.
-        </p>
-        <p class="hero-tagline font-body text-lg md:text-xl animate-fade-in-up" style="animation-delay: 0.4s;">
-          Transparent project · Local-first workflows · Security-focused docs
-        </p>
+    <div class="relative z-10 flex min-h-screen items-center px-4 py-20">
+      <div class="mx-auto w-full max-w-6xl">
+        <div class="max-w-2xl text-center md:-translate-x-16 md:text-left lg:-translate-x-20">
+          <p class="mb-4 inline-flex items-center rounded-full border border-accent-primary/30 bg-bg-primary/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent-primary/90 backdrop-blur-sm">
+            Open-Source • Local First
+          </p>
+          <h1 class="text-balance font-heading text-4xl font-bold leading-tight text-text-primary md:text-6xl animate-fade-in-up">
+            Encrypt Files With Less Friction
+          </h1>
+          <p class="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl animate-fade-in-up" style="animation-delay: 0.12s;">
+            Moaiy is a native macOS app for practical OpenPGP workflows, with public code and verifiable releases.
+          </p>
+          <p class="hero-muted mt-4 text-sm font-medium uppercase tracking-[0.1em] animate-fade-in-up" style="animation-delay: 0.18s;">
+            Transparent repository · Verified release channel · Security-first docs
+          </p>
 
-        <div class="flex flex-col sm:flex-row gap-4 mt-10 animate-fade-in-up" style="animation-delay: 0.6s">
+          <div class="mt-9 flex flex-col gap-3 sm:flex-row animate-fade-in-up" style="animation-delay: 0.24s">
+            <a
+              href={releaseUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-analytics-event="download_click"
+              class="inline-flex items-center justify-center rounded-lg bg-accent-primary px-6 py-3 text-base font-semibold text-bg-primary transition-colors hover:bg-accent-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+            >
+              Download
+            </a>
+            <a
+              href="/docs/"
+              data-analytics-event="docs_cta_click"
+              class="inline-flex items-center justify-center rounded-lg border border-gray-500/70 px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+            >
+              Read Docs
+            </a>
+          </div>
           <a
-            href="/download/"
-            data-analytics-event="download_click"
-            class="px-8 py-4 bg-accent-primary text-white font-semibold rounded-lg transition-all duration-300 hover:bg-accent-secondary hover:-translate-y-1"
-          >
-            Download & Verify
-          </a>
-          <a
-            href="/docs/"
-            data-analytics-event="docs_cta_click"
-            class="px-8 py-4 border-2 border-accent-primary text-accent-primary font-semibold rounded-lg transition-all duration-300 hover:bg-accent-primary hover:text-white"
-          >
-            Read Task Docs
-          </a>
-          <a
-            href="https://github.com/moaiy-com/moaiy"
+            href={repositoryUrl}
             target="_blank"
             rel="noopener noreferrer"
             data-analytics-event="github_click"
-            class="px-8 py-4 border-2 border-text-tertiary text-text-secondary font-semibold rounded-lg transition-all duration-300 hover:border-text-secondary hover:text-text-primary"
+            class="mt-4 inline-flex items-center text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary animate-fade-in-up"
+            style="animation-delay: 0.3s;"
           >
-            View Source
+            View on GitHub
           </a>
+          <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 animate-fade-in-up" style="animation-delay: 0.36s;">
+            <div class="rounded-lg border border-gray-700/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Platform</p>
+              <p class="mt-1 text-sm font-semibold text-text-primary">macOS</p>
+            </div>
+            <div class="rounded-lg border border-gray-700/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">License</p>
+              <p class="mt-1 text-sm font-semibold text-text-primary">Open Source</p>
+            </div>
+            <div class="rounded-lg border border-gray-700/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Security</p>
+              <p class="mt-1 text-sm font-semibold text-text-primary">Public Verification</p>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div class="absolute bottom-8 animate-bounce">
-        <svg class="w-6 h-6 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-        </svg>
       </div>
     </div>
   </main>
 
-  <section class="bg-bg-secondary py-20 px-4">
-    <div class="max-w-6xl mx-auto">
-      <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary text-center mb-16">
+  <section class="bg-bg-secondary px-4 py-20">
+    <div class="mx-auto max-w-6xl">
+      <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
         Why teams choose Moaiy
       </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <article class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
-          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Clear encryption flow</h3>
-          <p class="font-body text-text-secondary leading-relaxed">
-            Moaiy focuses on practical encrypt/decrypt workflows so teams can protect files without memorizing complex command chains.
+      <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+        <article class="rounded-xl border border-gray-800 bg-bg-primary/45 p-6">
+          <h3 class="font-heading text-xl font-semibold text-text-primary">Simple workflow</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Encrypt, decrypt, and manage keys with clear steps instead of long, fragile command chains.
           </p>
         </article>
-
-        <article class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
-          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Open-source trust model</h3>
-          <p class="font-body text-text-secondary leading-relaxed">
-            Security claims are backed by a public repository, documented release channels, and auditable project history.
+        <article class="rounded-xl border border-gray-800 bg-bg-primary/45 p-6">
+          <h3 class="font-heading text-xl font-semibold text-text-primary">Security transparency</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Source code, release artifacts, and security policy are public and easy to inspect.
           </p>
         </article>
-
-        <article class="bg-bg-tertiary rounded-xl p-8 border border-gray-800 transition-all duration-300 hover:border-accent-primary/50 hover:-translate-y-2 hover:shadow-2xl">
-          <h3 class="font-heading text-2xl font-semibold text-text-primary mb-4">Native macOS availability</h3>
-          <p class="font-body text-text-secondary leading-relaxed">
-            Current release focus is macOS. Other platforms are tracked in roadmap and release notes rather than pre-announced as shipped.
+        <article class="rounded-xl border border-gray-800 bg-bg-primary/45 p-6">
+          <h3 class="font-heading text-xl font-semibold text-text-primary">Practical release path</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Current focus is macOS, with roadmap and release notes clearly separated from shipped features.
           </p>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="bg-gradient-to-b from-bg-secondary to-bg-primary py-20 px-4">
-    <div class="max-w-5xl mx-auto text-center">
-      <h2 class="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-8">
-        Start with the exact workflow you need
-      </h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-        <a href="/encrypt-files-on-macos/" class="bg-bg-tertiary rounded-lg p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h3 class="font-heading text-xl text-text-primary mb-2">Encrypt files on macOS</h3>
-          <p class="font-body text-sm text-text-secondary">Step-by-step guide for local file encryption and sharing.</p>
-        </a>
-        <a href="/openpgp-made-simple/" class="bg-bg-tertiary rounded-lg p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h3 class="font-heading text-xl text-text-primary mb-2">OpenPGP made simple</h3>
-          <p class="font-body text-sm text-text-secondary">Understand core concepts without losing technical control.</p>
-        </a>
-        <a href="/gpg-tools-alternative/" class="bg-bg-tertiary rounded-lg p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h3 class="font-heading text-xl text-text-primary mb-2">Evaluate GPG alternatives</h3>
-          <p class="font-body text-sm text-text-secondary">Compare workflow complexity and operational fit for your team.</p>
-        </a>
+  <section class="bg-bg-primary px-4 py-20">
+    <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+      <div>
+        <h2 class="text-balance font-heading text-3xl font-bold text-text-primary md:text-4xl">
+          Start in three steps
+        </h2>
+        <ol class="mt-6 space-y-4">
+          <li class="rounded-lg border border-gray-800 bg-bg-secondary/65 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">1. Download</p>
+            <p class="mt-1 text-sm text-text-secondary">Get the latest build from official GitHub Releases.</p>
+          </li>
+          <li class="rounded-lg border border-gray-800 bg-bg-secondary/65 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">2. Verify</p>
+            <p class="mt-1 text-sm text-text-secondary">Check checksums and signatures before installation.</p>
+          </li>
+          <li class="rounded-lg border border-gray-800 bg-bg-secondary/65 p-4">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">3. Encrypt</p>
+            <p class="mt-1 text-sm text-text-secondary">Follow docs for key generation and file encryption workflows.</p>
+          </li>
+        </ol>
+      </div>
+      <div class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+        <h3 class="font-heading text-2xl font-semibold text-text-primary">Useful links</h3>
+        <div class="mt-5 flex flex-col gap-3">
+          <a
+            href="/download/"
+            data-analytics-event="download_click"
+            class="inline-flex items-center justify-between rounded-lg border border-gray-700 bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+          >
+            Download Center
+            <span aria-hidden="true">→</span>
+          </a>
+          <a
+            href="/security/"
+            class="inline-flex items-center justify-between rounded-lg border border-gray-700 bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+          >
+            Security Model
+            <span aria-hidden="true">→</span>
+          </a>
+          <a
+            href="/docs/"
+            class="inline-flex items-center justify-between rounded-lg border border-gray-700 bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+          >
+            Task Docs
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .hero-tagline {
+  .hero-muted {
     color: var(--hero-tagline-color, rgba(249, 250, 251, 0.95));
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     transition: color 220ms ease;
   }
 </style>
