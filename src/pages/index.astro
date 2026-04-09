@@ -11,9 +11,9 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
 <BaseLayout {...seo}>
   <main class="relative isolate min-h-screen overflow-hidden bg-bg-primary">
     <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
-      <HeroScene client:media="(min-width: 768px)" />
+      <HeroScene client:load />
     </div>
-    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/65 via-bg-primary/45 to-bg-secondary/80"></div>
+    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/35 via-bg-primary/18 to-bg-secondary/42"></div>
 
     <div class="relative z-10 flex min-h-screen items-center px-4 py-20">
       <div class="mx-auto w-full max-w-6xl">
@@ -106,56 +106,6 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
     </div>
   </section>
 
-  <section class="bg-bg-primary px-4 py-20">
-    <div class="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
-      <div>
-        <h2 class="text-balance font-heading text-3xl font-bold text-text-primary md:text-4xl">
-          Start in three steps
-        </h2>
-        <ol class="mt-6 space-y-4">
-          <li class="rounded-lg border border-line-strong bg-bg-secondary/65 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">1. Download</p>
-            <p class="mt-1 text-sm text-text-secondary">Get the latest build from official GitHub Releases.</p>
-          </li>
-          <li class="rounded-lg border border-line-strong bg-bg-secondary/65 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">2. Verify</p>
-            <p class="mt-1 text-sm text-text-secondary">Check checksums and signatures before installation.</p>
-          </li>
-          <li class="rounded-lg border border-line-strong bg-bg-secondary/65 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">3. Encrypt</p>
-            <p class="mt-1 text-sm text-text-secondary">Follow docs for key generation and file encryption workflows.</p>
-          </li>
-        </ol>
-      </div>
-      <div class="rounded-xl border border-line-strong bg-bg-secondary/70 p-6">
-        <h3 class="font-heading text-2xl font-semibold text-text-primary">Useful links</h3>
-        <div class="mt-5 flex flex-col gap-3">
-          <a
-            href="/download/"
-            data-analytics-event="download_click"
-            class="inline-flex items-center justify-between rounded-lg border border-line-subtle bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
-          >
-            Download Center
-            <span aria-hidden="true">→</span>
-          </a>
-          <a
-            href="/security/"
-            class="inline-flex items-center justify-between rounded-lg border border-line-subtle bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
-          >
-            Security Model
-            <span aria-hidden="true">→</span>
-          </a>
-          <a
-            href="/docs/"
-            class="inline-flex items-center justify-between rounded-lg border border-line-subtle bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
-          >
-            Task Docs
-            <span aria-hidden="true">→</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
 </BaseLayout>
 
 <style>

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useState } from 'react';
 
 let heroSceneModulePromise;
 
@@ -28,15 +28,7 @@ function StaticFallback() {
   );
 }
 
-function isLowPowerDevice() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return true;
-  }
-
-  if (window.innerWidth < 768) {
-    return true;
-  }
-
+function shouldDisable3D() {
   const connection =
     navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 
@@ -51,20 +43,6 @@ function isLowPowerDevice() {
     if (isSlowNetwork) {
       return true;
     }
-  }
-
-  if (
-    typeof navigator.deviceMemory === 'number' &&
-    navigator.deviceMemory <= 4
-  ) {
-    return true;
-  }
-
-  if (
-    typeof navigator.hardwareConcurrency === 'number' &&
-    navigator.hardwareConcurrency <= 4
-  ) {
-    return true;
   }
 
   return false;
@@ -90,64 +68,50 @@ function runWhenIdle(callback, timeout = 1800) {
 }
 
 export default function HeroScene() {
-  const hostRef = useRef(null);
-
   const [isReady, setIsReady] = useState(false);
   const [isEligible, setIsEligible] = useState(false);
-  const [isInView, setIsInView] = useState(false);
   const [shouldRender3D, setShouldRender3D] = useState(false);
 
   useEffect(() => {
-    const canRender3D = !isLowPowerDevice() && supportsWebGL();
-    setIsEligible(canRender3D);
+    const evaluateEligibility = () => {
+      const canRender3D = !shouldDisable3D() && supportsWebGL();
+      setIsEligible(canRender3D);
+      if (!canRender3D) {
+        setShouldRender3D(false);
+      }
+    };
+
+    evaluateEligibility();
     setIsReady(true);
+
+    const connection =
+      navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const handleChange = () => evaluateEligibility();
+
+    if (connection && typeof connection.addEventListener === 'function') {
+      connection.addEventListener('change', handleChange);
+    }
+
+    return () => {
+      if (connection && typeof connection.removeEventListener === 'function') {
+        connection.removeEventListener('change', handleChange);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    if (!isEligible) {
-      return;
-    }
-
-    const node = hostRef.current;
-    if (!node || typeof window.IntersectionObserver !== 'function') {
-      setIsInView(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setIsInView(true);
-          observer.disconnect();
-        }
-      },
-      {
-        rootMargin: '120px 0px',
-        threshold: 0.15,
-      },
-    );
-
-    observer.observe(node);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [isEligible]);
-
-  useEffect(() => {
-    if (!isReady || !isEligible || !isInView || shouldRender3D) {
+    if (!isReady || !isEligible || shouldRender3D) {
       return;
     }
 
     return runWhenIdle(() => {
       setShouldRender3D(true);
       void loadHeroScene3D();
-    });
-  }, [isReady, isEligible, isInView, shouldRender3D]);
+    }, 900);
+  }, [isReady, isEligible, shouldRender3D]);
 
   return (
     <div
-      ref={hostRef}
       style={{
         position: 'absolute',
         inset: 0,
