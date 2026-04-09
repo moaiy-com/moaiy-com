@@ -9,6 +9,18 @@ import {
 
 const WEATHER_TYPES = [
   {
+    name: 'sunny',
+    mode: 'drift',
+    topColor: '#90d6ff',
+    bottomColor: '#f5fcff',
+    skyBrightness: 1.12,
+    speed: 0.36,
+    particleCount: 150,
+    particleColor: '#fff6df',
+    particleSize: 0.08,
+    particleOpacity: 0.42,
+  },
+  {
     name: 'day',
     mode: 'drift',
     topColor: '#73c6ff',
@@ -106,7 +118,7 @@ function colorToCss(color) {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-export default function WeatherSystem() {
+export default function WeatherSystem({ onWeatherChange }) {
   const { scene } = useThree();
   const [currentWeatherIndex, setCurrentWeatherIndex] = useState(0);
   const [lightningFlash, setLightningFlash] = useState(false);
@@ -214,6 +226,12 @@ export default function WeatherSystem() {
     bottomTargetRef.current.set(currentWeather.bottomColor);
     brightnessTargetRef.current = currentWeather.skyBrightness;
   }, [currentWeather.topColor, currentWeather.bottomColor, currentWeather.skyBrightness]);
+
+  useEffect(() => {
+    if (typeof onWeatherChange === 'function') {
+      onWeatherChange(currentWeather.name);
+    }
+  }, [currentWeather.name, onWeatherChange]);
 
   useEffect(() => {
     if (currentWeather.name !== 'lightning') {
