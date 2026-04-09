@@ -13,14 +13,14 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
   <main class="page-shell">
     <div class="page-container">
       <PageHero
-        title="Download from official channels"
-        subtitle="Current public release path focuses on macOS. Verify integrity before installation."
+        title="Download Moaiy for macOS"
+        subtitle="Use the official release page, then verify the file before installing."
       />
 
       <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Primary release source</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official download page</h2>
         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-secondary">
-          Moaiy artifacts are distributed through GitHub Releases. Treat release notes and checksums as part of install.
+          Moaiy is distributed through GitHub Releases. Always check release notes and checksums before installing.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <a
@@ -30,10 +30,10 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
             data-analytics-event="download_click"
             class="btn-primary"
           >
-            Open Releases
+            Open GitHub Releases
           </a>
           <a href="/verification/" class="btn-secondary">
-            Verify Checksums
+            Check Verification Guide
           </a>
         </div>
       </Panel>
@@ -42,20 +42,20 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Current availability</h2>
         <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">macOS</p>
-            <p class="mt-1 text-sm text-text-secondary">Published release path available via GitHub Releases.</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">macOS</p>
+            <p class="mt-1 text-sm text-text-secondary">Available now from GitHub Releases.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Windows / Linux</p>
-            <p class="mt-1 text-sm text-text-secondary">Planned and tracked in roadmap and release notes.</p>
+            <p class="mt-1 text-sm text-text-secondary">Planned. Follow progress in Roadmap and Release Notes.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">iOS / Android</p>
-            <p class="mt-1 text-sm text-text-secondary">Planned, not currently published.</p>
+            <p class="mt-1 text-sm text-text-secondary">Planned, not available yet.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Web / API</p>
-            <p class="mt-1 text-sm text-text-secondary">Planned, not publicly deployed.</p>
+            <p class="mt-1 text-sm text-text-secondary">Planned, not publicly available yet.</p>
           </div>
         </div>
       </Panel>
@@ -71,9 +71,9 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/verification/" title="Verification" description="Integrity checklist before install." />
-        <LinkCard href="/release-notes/" title="Release Notes" description="Published milestones and version changes." />
-        <LinkCard href="/roadmap/" title="Roadmap" description="Planned platform scope and progress." />
+        <LinkCard href="/verification/" title="Verification" description="Checklist to verify files before install." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="What changed in recent updates." />
+        <LinkCard href="/roadmap/" title="Roadmap" description="What is available now and what comes next." />
       </section>
     </div>
   </main>
