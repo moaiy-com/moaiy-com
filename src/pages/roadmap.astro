@@ -6,69 +6,73 @@ const seo = pageSeo.roadmap;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-5xl mx-auto">
-      <header class="text-center mb-14">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">Moaiy roadmap</h1>
-        <p class="font-body text-xl text-text-secondary">Planned work is listed separately from currently published capabilities.</p>
+  <main class="min-h-screen bg-bg-primary px-4 py-20">
+    <div class="mx-auto max-w-5xl">
+      <header class="mx-auto mb-14 max-w-3xl text-center">
+        <h1 class="text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl">Moaiy roadmap</h1>
+        <p class="mt-4 text-lg leading-relaxed text-text-secondary">
+          Planned work is listed separately from already published capabilities.
+        </p>
       </header>
 
-      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Status definitions</h2>
-        <ul class="font-body text-text-secondary space-y-2">
-          <li><span class="text-accent-primary font-semibold">Published</span>: available in official release channels.</li>
-          <li><span class="text-accent-primary font-semibold">In progress</span>: actively being implemented or validated.</li>
-          <li><span class="text-accent-primary font-semibold">Planned</span>: scoped but not yet released.</li>
+      <section class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-7 md:p-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Status labels</h2>
+        <ul class="mt-5 space-y-2 text-sm leading-relaxed text-text-secondary">
+          <li><span class="font-semibold text-accent-primary">Published</span>: available in official release channels.</li>
+          <li><span class="font-semibold text-accent-primary">In progress</span>: currently implemented or validated.</li>
+          <li><span class="font-semibold text-accent-primary">Planned</span>: scoped but not released yet.</li>
         </ul>
       </section>
 
-      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800 overflow-x-auto">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Milestone tracker</h2>
-        <table class="w-full text-left">
-          <thead>
-            <tr class="border-b border-gray-700">
-              <th class="font-heading text-text-primary py-3 px-4">Milestone</th>
-              <th class="font-heading text-text-primary py-3 px-4">Status</th>
-              <th class="font-heading text-text-primary py-3 px-4">Target window</th>
-            </tr>
-          </thead>
-          <tbody class="font-body text-text-secondary text-sm">
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Task-oriented docs and verification pages</td>
-              <td class="py-3 px-4 text-accent-primary">Published</td>
-              <td class="py-3 px-4">March 2026</td>
-            </tr>
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Release-note cadence standardization</td>
-              <td class="py-3 px-4">In progress</td>
-              <td class="py-3 px-4">Q2 2026</td>
-            </tr>
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Cross-platform distribution expansion</td>
-              <td class="py-3 px-4">Planned</td>
-              <td class="py-3 px-4">Q2-Q3 2026</td>
-            </tr>
-            <tr>
-              <td class="py-3 px-4">Public API documentation</td>
-              <td class="py-3 px-4">Planned</td>
-              <td class="py-3 px-4">After core release stabilization</td>
-            </tr>
-          </tbody>
-        </table>
+      <section class="mt-12 rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Milestones</h2>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[540px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-gray-700 text-text-primary">
+                <th class="py-3 pr-4 font-heading">Milestone</th>
+                <th class="px-4 py-3 font-heading">Status</th>
+                <th class="px-4 py-3 font-heading">Window</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 pr-4">Task docs and verification pages</td>
+                <td class="px-4 py-3 text-accent-primary">Published</td>
+                <td class="px-4 py-3">March 2026</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 pr-4">Release note cadence standardization</td>
+                <td class="px-4 py-3">In progress</td>
+                <td class="px-4 py-3">Q2 2026</td>
+              </tr>
+              <tr class="border-b border-gray-800">
+                <td class="py-3 pr-4">Cross-platform distribution expansion</td>
+                <td class="px-4 py-3">Planned</td>
+                <td class="px-4 py-3">Q2-Q3 2026</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4">Public API documentation</td>
+                <td class="px-4 py-3">Planned</td>
+                <td class="px-4 py-3">After core release stabilization</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <a href="/download/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Release channel</h2>
-          <p class="font-body text-sm text-text-secondary">Use official releases for current artifact availability.</p>
+      <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-3">
+        <a href="/download/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Download</h2>
+          <p class="mt-2 text-sm text-text-secondary">Current official artifact channel.</p>
         </a>
-        <a href="/release-notes/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Change history</h2>
-          <p class="font-body text-sm text-text-secondary">Track shipped changes and timing.</p>
+        <a href="/release-notes/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Release Notes</h2>
+          <p class="mt-2 text-sm text-text-secondary">Shipped changes and timeline.</p>
         </a>
-        <a href="/security/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Security status</h2>
-          <p class="font-body text-sm text-text-secondary">Review currently published assurance signals.</p>
+        <a href="/security/" class="rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary">
+          <h2 class="font-heading text-lg text-text-primary">Security</h2>
+          <p class="mt-2 text-sm text-text-secondary">Current assurance and disclosure model.</p>
         </a>
       </section>
     </div>
