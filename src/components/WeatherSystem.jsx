@@ -188,8 +188,8 @@ export default function WeatherSystem() {
 
   useEffect(() => {
     scene.background = skyTexture;
-    document.documentElement.style.setProperty('--hero-tagline-color', 'rgb(238, 244, 255)');
-    lastTaglineCssRef.current = 'rgb(238, 244, 255)';
+    document.documentElement.style.setProperty('--hero-tagline-color', 'rgb(29, 39, 64)');
+    lastTaglineCssRef.current = 'rgb(29, 39, 64)';
 
     return () => {
       if (scene.background === skyTexture) {

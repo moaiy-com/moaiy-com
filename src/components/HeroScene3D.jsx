@@ -31,23 +31,23 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div style={{ 
+      <div style={{ 
           width: '100vw', 
           height: '100vh',
           position: 'fixed',
           top: 0,
           left: 0,
-          background: '#0A0E27',
+          background: '#ffffff',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#4ECDC4',
+          color: '#1768ac',
           fontFamily: 'monospace',
           padding: '20px'
         }}>
           <div>
-            <h1 style={{color: '#ff6b6b'}}>Error Loading 3D Scene</h1>
-            <pre style={{fontSize: '12px', color: '#9CA3AF', maxWidth: '600px', overflow: 'auto'}}>
+            <h1 style={{color: '#03256c'}}>Error Loading 3D Scene</h1>
+            <pre style={{fontSize: '12px', color: '#2541b2', maxWidth: '600px', overflow: 'auto'}}>
               {this.state.error?.message || 'Unknown error'}
             </pre>
           </div>
@@ -62,8 +62,8 @@ class ErrorBoundary extends Component {
 function SceneLighting() {
   return (
     <>
-      <ambientLight intensity={0.32} />
-      <hemisphereLight args={['#95cffc', '#222f45', 0.5]} />
+      <ambientLight intensity={0.4} />
+      <hemisphereLight args={['#bfe4ff', '#dbe9ff', 0.45]} />
       <directionalLight
         castShadow
         color="#fef6df"
@@ -647,9 +647,9 @@ export default function HeroScene3D() {
             powerPreference: 'high-performance',
           }}
           onCreated={({ gl }) => {
-            gl.setClearColor(0x0A0E27, 1);
+            gl.setClearColor(0xffffff, 1);
             gl.toneMapping = ACESFilmicToneMapping;
-            gl.toneMappingExposure = 1.08;
+            gl.toneMappingExposure = 1.02;
           }}
         >
           <Suspense fallback={null}>

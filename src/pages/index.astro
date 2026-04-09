@@ -13,7 +13,7 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
     <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
       <HeroScene client:media="(min-width: 768px)" />
     </div>
-    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/50 via-bg-primary/30 to-bg-primary/85"></div>
+    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/65 via-bg-primary/45 to-bg-secondary/80"></div>
 
     <div class="relative z-10 flex min-h-screen items-center px-4 py-20">
       <div class="mx-auto w-full max-w-6xl">
@@ -44,7 +44,7 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
             <a
               href="/docs/"
               data-analytics-event="docs_cta_click"
-              class="inline-flex items-center justify-center rounded-lg border border-gray-500/70 px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              class="inline-flex items-center justify-center rounded-lg border border-line-strong/70 px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
               Read Docs
             </a>
@@ -60,15 +60,15 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
             View on GitHub
           </a>
           <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 animate-fade-in-up" style="animation-delay: 0.36s;">
-            <div class="rounded-lg border border-gray-700/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+            <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
               <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Platform</p>
               <p class="mt-1 text-sm font-semibold text-text-primary">macOS</p>
             </div>
-            <div class="rounded-lg border border-gray-700/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+            <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
               <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">License</p>
               <p class="mt-1 text-sm font-semibold text-text-primary">Open Source</p>
             </div>
-            <div class="rounded-lg border border-gray-700/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+            <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
               <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Security</p>
               <p class="mt-1 text-sm font-semibold text-text-primary">Public Verification</p>
             </div>
@@ -84,19 +84,19 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
         Why teams choose Moaiy
       </h2>
       <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
-        <article class="rounded-xl border border-gray-800 bg-bg-primary/45 p-6">
+        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
           <h3 class="font-heading text-xl font-semibold text-text-primary">Simple workflow</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
             Encrypt, decrypt, and manage keys with clear steps instead of long, fragile command chains.
           </p>
         </article>
-        <article class="rounded-xl border border-gray-800 bg-bg-primary/45 p-6">
+        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
           <h3 class="font-heading text-xl font-semibold text-text-primary">Security transparency</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
             Source code, release artifacts, and security policy are public and easy to inspect.
           </p>
         </article>
-        <article class="rounded-xl border border-gray-800 bg-bg-primary/45 p-6">
+        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
           <h3 class="font-heading text-xl font-semibold text-text-primary">Practical release path</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
             Current focus is macOS, with roadmap and release notes clearly separated from shipped features.
@@ -113,41 +113,41 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
           Start in three steps
         </h2>
         <ol class="mt-6 space-y-4">
-          <li class="rounded-lg border border-gray-800 bg-bg-secondary/65 p-4">
+          <li class="rounded-lg border border-line-strong bg-bg-secondary/65 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">1. Download</p>
             <p class="mt-1 text-sm text-text-secondary">Get the latest build from official GitHub Releases.</p>
           </li>
-          <li class="rounded-lg border border-gray-800 bg-bg-secondary/65 p-4">
+          <li class="rounded-lg border border-line-strong bg-bg-secondary/65 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">2. Verify</p>
             <p class="mt-1 text-sm text-text-secondary">Check checksums and signatures before installation.</p>
           </li>
-          <li class="rounded-lg border border-gray-800 bg-bg-secondary/65 p-4">
+          <li class="rounded-lg border border-line-strong bg-bg-secondary/65 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">3. Encrypt</p>
             <p class="mt-1 text-sm text-text-secondary">Follow docs for key generation and file encryption workflows.</p>
           </li>
         </ol>
       </div>
-      <div class="rounded-xl border border-gray-800 bg-bg-secondary/70 p-6">
+      <div class="rounded-xl border border-line-strong bg-bg-secondary/70 p-6">
         <h3 class="font-heading text-2xl font-semibold text-text-primary">Useful links</h3>
         <div class="mt-5 flex flex-col gap-3">
           <a
             href="/download/"
             data-analytics-event="download_click"
-            class="inline-flex items-center justify-between rounded-lg border border-gray-700 bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+            class="inline-flex items-center justify-between rounded-lg border border-line-subtle bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
           >
             Download Center
             <span aria-hidden="true">→</span>
           </a>
           <a
             href="/security/"
-            class="inline-flex items-center justify-between rounded-lg border border-gray-700 bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+            class="inline-flex items-center justify-between rounded-lg border border-line-subtle bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
           >
             Security Model
             <span aria-hidden="true">→</span>
           </a>
           <a
             href="/docs/"
-            class="inline-flex items-center justify-between rounded-lg border border-gray-700 bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+            class="inline-flex items-center justify-between rounded-lg border border-line-subtle bg-bg-primary/55 px-4 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/50 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
           >
             Task Docs
             <span aria-hidden="true">→</span>
@@ -160,8 +160,8 @@ const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
 
 <style>
   .hero-muted {
-    color: var(--hero-tagline-color, rgba(249, 250, 251, 0.95));
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    color: var(--hero-tagline-color, rgba(3, 37, 108, 0.86));
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.4);
     transition: color 220ms ease;
   }
 </style>

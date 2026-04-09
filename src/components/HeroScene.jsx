@@ -19,9 +19,9 @@ function StaticFallback() {
         position: 'absolute',
         inset: 0,
         background: [
-          'radial-gradient(circle at 15% 20%, rgba(78, 205, 196, 0.16), transparent 35%)',
-          'radial-gradient(circle at 80% 10%, rgba(69, 183, 209, 0.22), transparent 30%)',
-          'linear-gradient(180deg, #0A0E27 0%, #151B3B 55%, #1E2545 100%)',
+          'radial-gradient(circle at 15% 20%, rgba(6, 190, 225, 0.16), transparent 35%)',
+          'radial-gradient(circle at 80% 10%, rgba(23, 104, 172, 0.2), transparent 30%)',
+          'linear-gradient(180deg, #ffffff 0%, #f4f8ff 56%, #e9f1ff 100%)',
         ].join(','),
       }}
     />

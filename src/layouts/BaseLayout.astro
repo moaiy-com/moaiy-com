@@ -51,7 +51,7 @@ const footerLinks = [
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#0A0E27" />
+    <meta name="theme-color" content="#ffffff" />
 
     <title>{title}</title>
 
@@ -121,7 +121,7 @@ const footerLinks = [
     <div id="content" class="pt-16">
       <slot />
     </div>
-    <footer class="border-t border-gray-800/80 bg-bg-primary/90">
+    <footer class="border-t border-line-strong/70 bg-bg-primary/90">
       <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 gap-8 md:grid-cols-[1.3fr_1fr_1fr]">
           <div>
@@ -218,15 +218,15 @@ const footerLinks = [
     }
 
     .surface-card {
-      @apply rounded-xl border border-gray-800 bg-bg-secondary/65 p-7 md:p-8;
+      @apply rounded-xl border border-line-strong bg-bg-secondary/65 p-7 md:p-8;
     }
 
     .surface-card-strong {
-      @apply rounded-xl border border-gray-800 bg-bg-secondary/70 p-7 md:p-8;
+      @apply rounded-xl border border-line-strong bg-bg-secondary/70 p-7 md:p-8;
     }
 
     .surface-card-soft {
-      @apply rounded-xl border border-gray-800 bg-bg-secondary/55 p-6;
+      @apply rounded-xl border border-line-strong bg-bg-secondary/55 p-6;
     }
 
     .link-grid {
@@ -234,7 +234,7 @@ const footerLinks = [
     }
 
     .link-card {
-      @apply rounded-lg border border-gray-800 bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary;
+      @apply rounded-lg border border-line-strong bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary;
     }
 
     .link-card-title {
@@ -258,13 +258,13 @@ const footerLinks = [
     }
 
     .btn-secondary {
-      @apply inline-flex items-center rounded-lg border border-gray-600 px-5 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary;
+      @apply inline-flex items-center rounded-lg border border-line-subtle px-5 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary;
     }
   }
 
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   body {
