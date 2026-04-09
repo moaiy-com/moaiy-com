@@ -14,37 +14,37 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
     <div class="page-container-narrow">
       <PageHero
         title="Release notes"
-        subtitle="Product and documentation milestones. For binaries, use official GitHub Releases."
+        subtitle="Recent updates to the product website and documentation. Downloads are on GitHub Releases."
       />
 
       <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Recent milestones</h2>
         <div class="mt-6 space-y-5">
           <article class="border-l-2 border-accent-primary pl-4">
-            <h3 class="font-heading text-xl text-text-primary">March 31, 2026 · SEO baseline</h3>
+            <h3 class="font-heading text-xl text-text-primary">March 31, 2026 · Search and sharing improvements</h3>
             <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-              Added structured metadata, sitemap coverage, task-focused docs, and verification resources.
+              Improved metadata, sitemap coverage, practical docs, and verification guidance.
             </p>
           </article>
           <article class="border-l-2 border-accent-primary pl-4">
-            <h3 class="font-heading text-xl text-text-primary">March 30, 2026 · Security and docs refinement</h3>
+            <h3 class="font-heading text-xl text-text-primary">March 30, 2026 · Clearer security and docs content</h3>
             <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-              Clarified security messaging and removed ambiguous "coming soon" claims.
+              Updated security wording and removed unclear "coming soon" messaging.
             </p>
           </article>
           <article class="border-l-2 border-accent-primary pl-4">
-            <h3 class="font-heading text-xl text-text-primary">March 28, 2026 · Site architecture update</h3>
+            <h3 class="font-heading text-xl text-text-primary">March 28, 2026 · Site structure update</h3>
             <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-              Standardized route structure and improved internal linking.
+              Simplified page routes and improved internal links.
             </p>
           </article>
         </div>
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official release artifacts</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official downloads</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          Binary availability depends on the latest published artifacts in GitHub Releases.
+          The latest install files are published on GitHub Releases.
         </p>
         <a
           href={releaseUrl}
@@ -53,14 +53,14 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
           data-analytics-event="download_click"
           class="btn-primary mt-5"
         >
-          View GitHub Releases
+          Open GitHub Releases
         </a>
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/download/" title="Download" description="Install from official channels." />
-        <LinkCard href="/verification/" title="Verification" description="Checksum and signature checks." />
-        <LinkCard href="/roadmap/" title="Roadmap" description="Upcoming platform scope." />
+        <LinkCard href="/download/" title="Download" description="Install from the official download page." />
+        <LinkCard href="/verification/" title="Verification" description="How to check file hashes and signatures." />
+        <LinkCard href="/roadmap/" title="Roadmap" description="What is planned for upcoming releases." />
       </section>
     </div>
   </main>

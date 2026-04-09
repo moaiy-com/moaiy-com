@@ -42,7 +42,7 @@ const softwareApplicationSchema: SeoSchema = {
   '@type': 'SoftwareApplication',
   name: 'Moaiy',
   applicationCategory: 'SecurityApplication',
-  operatingSystem: 'macOS, Windows, Linux',
+  operatingSystem: 'macOS',
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -52,7 +52,7 @@ const softwareApplicationSchema: SeoSchema = {
   url: SITE_URL,
   downloadUrl: 'https://github.com/moaiy-com/moaiy/releases',
   description:
-    'Moaiy is an open-source encryption tool focused on practical file encryption workflows for individuals and teams.',
+    'Moaiy is a free and open-source macOS app for simple file encryption.',
 };
 
 function breadcrumbSchema(entries: Array<{ name: string; path: string }>): SeoSchema {
@@ -77,7 +77,7 @@ const docsFaqSchema: SeoSchema = {
       name: 'What is Moaiy?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Moaiy is an open-source encryption project designed to simplify OpenPGP-style file encryption workflows.',
+        text: 'Moaiy is a free and open-source macOS app that helps you encrypt files with simple steps.',
       },
     },
     {
@@ -85,7 +85,7 @@ const docsFaqSchema: SeoSchema = {
       name: 'How can I download Moaiy safely?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Use the official GitHub Releases page and verify checksums before installation.',
+        text: 'Download only from the official GitHub Releases page and verify checksums before installing.',
       },
     },
     {
@@ -93,7 +93,7 @@ const docsFaqSchema: SeoSchema = {
       name: 'Does Moaiy process plaintext on a remote server?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Moaiy is designed for local-first encryption workflows and documents this model in its security pages.',
+        text: 'Moaiy is designed to encrypt files locally on your Mac.',
       },
     },
   ],
@@ -101,18 +101,18 @@ const docsFaqSchema: SeoSchema = {
 
 export const pageSeo: Record<string, SeoPageConfig> = {
   home: {
-    title: 'Moaiy | Open-Source Encryption Made Practical',
+    title: 'Moaiy | Simple File Encryption for macOS',
     description:
-      'Moaiy is an open-source encryption tool for practical, secure file workflows. Explore docs, download sources, and verify security practices.',
+      'Encrypt files on macOS with drag and drop. Moaiy is free, open source, and built for local privacy.',
     canonicalPath: '/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'home',
     schema: [organizationSchema, softwareApplicationSchema],
   },
   features: {
-    title: 'Moaiy Features | Open-Source File Encryption Workflows',
+    title: 'Moaiy Features | Simple and Private File Encryption',
     description:
-      'Explore Moaiy features for key management, file encryption, and OpenPGP-compatible workflows built for clarity and operational security.',
+      'See how Moaiy helps you encrypt files on macOS with clear steps, open-source code, and easy verification.',
     canonicalPath: '/features/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'features',
@@ -124,9 +124,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   security: {
-    title: 'Moaiy Security | Encryption Model, Disclosure, and Audit Status',
+    title: 'Moaiy Security | How Your Files Stay Protected',
     description:
-      'Review Moaiy security architecture, responsible disclosure policy, audit status, and operational practices for encryption risk reduction.',
+      'Read a plain-language security summary, then review technical details, reporting steps, and current status.',
     canonicalPath: '/security/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'security',
@@ -138,9 +138,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   docs: {
-    title: 'Moaiy Docs | Install, Encrypt, Decrypt, and Manage Keys',
+    title: 'Moaiy Docs | Simple Guides for Encrypting Files',
     description:
-      'Task-focused Moaiy documentation for installation, encryption, decryption, key handling, and common OpenPGP workflows.',
+      'Follow step-by-step guides to install Moaiy, encrypt and decrypt files, and verify downloads on macOS.',
     canonicalPath: '/docs/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'docs',
@@ -153,9 +153,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   download: {
-    title: 'Download Moaiy | Official Releases and Verification',
+    title: 'Download Moaiy | Official macOS Release',
     description:
-      'Download Moaiy from official channels, view platform status, and verify release checksums before installation.',
+      'Download Moaiy for macOS from the official GitHub Releases page and verify the file before installing.',
     canonicalPath: '/download/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'download',
@@ -167,9 +167,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   about: {
-    title: 'About Moaiy | Mission and Open-Source Encryption Direction',
+    title: 'About Moaiy | Simple, Open-Source File Protection',
     description:
-      'Learn about Moaiy mission, open-source approach, and the team focus on practical encryption for individuals and teams.',
+      'Learn about Moaiy and its goal: making file encryption simple, transparent, and accessible to everyone.',
     canonicalPath: '/about/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'about',
@@ -181,9 +181,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   roadmap: {
-    title: 'Moaiy Roadmap | Planned Features and Release Direction',
+    title: 'Moaiy Roadmap | What Is Available and What Is Next',
     description:
-      'Track Moaiy roadmap milestones including platform expansion, API planning, and documentation priorities.',
+      'See what Moaiy offers today and what features are planned next.',
     canonicalPath: '/roadmap/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'roadmap',
@@ -195,9 +195,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   securityWhitepaper: {
-    title: 'Moaiy Security Whitepaper (Draft) | Threat Model and Controls',
+    title: 'Moaiy Security Whitepaper (Draft) | Technical Details',
     description:
-      'Read the Moaiy security whitepaper draft covering threat model assumptions, security controls, and disclosure process.',
+      'Read the technical draft covering threat assumptions, security controls, and vulnerability reporting.',
     canonicalPath: '/security-whitepaper/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'security-whitepaper',
@@ -209,9 +209,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   releaseNotes: {
-    title: 'Moaiy Release Notes | Version History and Change Log',
+    title: 'Moaiy Release Notes | What Changed',
     description:
-      'Browse Moaiy release notes, version history highlights, and links to official GitHub release artifacts.',
+      'See recent Moaiy updates and visit official release downloads.',
     canonicalPath: '/release-notes/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'release-notes',
@@ -223,9 +223,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   verification: {
-    title: 'Moaiy Verification | Checksums and Signature Validation Guide',
+    title: 'Moaiy Verification Guide | Check Downloads Before Install',
     description:
-      'Learn how to validate Moaiy release checksums and signatures to reduce software supply-chain risk during installation.',
+      'Learn how to verify checksums and signatures so you can install Moaiy safely.',
     canonicalPath: '/verification/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'verification',
@@ -237,9 +237,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   encryptFilesOnMacos: {
-    title: 'Encrypt Files on macOS with Moaiy | Practical Step-by-Step Guide',
+    title: 'Encrypt Files on macOS with Moaiy | Step-by-Step Guide',
     description:
-      'A practical guide to encrypt files on macOS using Moaiy, including setup, key handling, and safe sharing workflows.',
+      'Simple steps to encrypt files on your Mac, manage keys, and share encrypted files safely.',
     canonicalPath: '/encrypt-files-on-macos/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'encrypt-files-on-macos',
@@ -251,9 +251,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   openpgpMadeSimple: {
-    title: 'OpenPGP Made Simple with Moaiy | User-Oriented Encryption',
+    title: 'OpenPGP Made Simple | Beginner Guide with Moaiy',
     description:
-      'Understand OpenPGP basics and use Moaiy to run simpler encryption workflows without sacrificing control.',
+      'Learn OpenPGP basics in plain language and apply them with Moaiy.',
     canonicalPath: '/openpgp-made-simple/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'openpgp-made-simple',
@@ -265,9 +265,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   gpgToolsAlternative: {
-    title: 'Moaiy as a GPG Tools Alternative | Open-Source Encryption UX',
+    title: 'Moaiy vs GPG Tools | Easier File Encryption',
     description:
-      'Compare Moaiy with traditional GPG workflows and evaluate whether a simpler open-source encryption experience fits your team.',
+      'Compare Moaiy with classic GPG workflows and see which is easier for everyday use.',
     canonicalPath: '/gpg-tools-alternative/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'gpg-tools-alternative',

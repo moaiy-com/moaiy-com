@@ -12,9 +12,21 @@ const seo = pageSeo.security;
   <main class="page-shell">
     <div class="page-container">
       <PageHero
-        title="Security model and disclosure policy"
-        subtitle="This page separates verifiable facts from planned work and explains how to report vulnerabilities."
+        title="How Moaiy keeps your files safe"
+        subtitle="Start with a plain-language summary, then review technical details if you want to go deeper."
       />
+
+      <Panel tone="strong">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Quick summary (for most people)</h2>
+        <ul class="list-compact">
+          <li>Your files are encrypted locally on your Mac.</li>
+          <li>Moaiy is open source, so people can inspect the code publicly.</li>
+          <li>Official downloads are published on GitHub Releases with verification guidance.</li>
+          <li>If you find a security issue, email <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.</li>
+        </ul>
+      </Panel>
+
+      <h2 class="mt-12 font-heading text-2xl font-semibold text-text-primary md:text-3xl">Technical details</h2>
 
       <section class="grid grid-cols-1 gap-5 md:grid-cols-3">
         <Panel as="article" tone="strong" class="p-6">
@@ -60,14 +72,14 @@ const seo = pageSeo.security;
       </section>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Current assurance status</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Current security status</h2>
         <div class="mt-6 overflow-x-auto">
           <table class="w-full min-w-[560px] text-left text-sm text-text-secondary">
             <thead>
               <tr class="border-b border-line-subtle text-text-primary">
                 <th class="py-3 pr-4 font-heading">Area</th>
                 <th class="px-4 py-3 font-heading">Status</th>
-                <th class="px-4 py-3 font-heading">Evidence</th>
+                <th class="px-4 py-3 font-heading">How to verify</th>
               </tr>
             </thead>
             <tbody>
