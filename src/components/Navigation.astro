@@ -6,28 +6,33 @@ interface Props {
 const { currentPage = '' } = Astro.props;
 
 const navItems = [
-  { href: '/', label: 'Home', key: 'home' },
   { href: '/features/', label: 'Features', key: 'features' },
   { href: '/security/', label: 'Security', key: 'security' },
   { href: '/docs/', label: 'Docs', key: 'docs' },
-  { href: '/download/', label: 'Download', key: 'download' },
-  { href: '/about/', label: 'About', key: 'about' },
+  { href: '/download/', label: 'Download', key: 'download', analyticsEvent: 'download_click' },
 ];
 ---
 
-<nav class="fixed top-0 left-0 right-0 z-50 bg-bg-primary/95 backdrop-blur-sm border-b border-gray-800">
+<nav class="fixed top-0 left-0 right-0 z-50 border-b border-line-strong/75 bg-bg-primary/90 backdrop-blur-md">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <a href="/" class="flex items-center gap-2">
-        <span class="text-2xl">🗿</span>
-        <span class="font-heading text-xl font-bold text-text-primary">Moaiy</span>
+    <div class="flex h-20 items-center justify-between">
+      <a href="/" class="group flex items-center gap-3 rounded-md px-1 py-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary">
+        <img
+          src="/logo.svg"
+          alt="Moaiy logo"
+          class="h-10 w-10 rounded-md object-contain p-0.5 md:h-11 md:w-11"
+          loading="eager"
+          decoding="async"
+        />
+        <span class="font-heading text-2xl font-semibold tracking-tight text-[#2E60D6] md:text-4xl">Moaiy</span>
       </a>
 
-      <div class="hidden md:flex items-center gap-6">
+      <div class="ml-auto hidden items-center justify-end gap-7 md:flex">
         {navItems.map((item) => (
           <a
             href={item.href}
-            class={`font-body text-sm font-medium transition-colors ${
+            data-analytics-event={item.analyticsEvent}
+            class={`rounded-md px-1 py-1 font-body text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary ${
               currentPage === item.key
                 ? 'text-accent-primary'
                 : 'text-text-secondary hover:text-text-primary'
@@ -38,20 +43,11 @@ const navItems = [
         ))}
       </div>
 
-      <div class="hidden md:block">
-        <a
-          href="/download/"
-          data-analytics-event="download_click"
-          class="px-4 py-2 bg-accent-primary text-white font-semibold text-sm rounded-lg hover:bg-accent-secondary transition-colors"
-        >
-          Get Moaiy
-        </a>
-      </div>
-
       <button
         id="mobile-menu-button"
-        class="md:hidden p-2 text-text-secondary hover:text-text-primary"
+        class="md:hidden rounded-md p-2 text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
         aria-label="Toggle menu"
+        aria-expanded="false"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
@@ -59,12 +55,13 @@ const navItems = [
       </button>
     </div>
 
-    <div id="mobile-menu" class="md:hidden hidden pb-4">
-      <div class="flex flex-col gap-3">
+    <div id="mobile-menu" class="hidden border-t border-line-strong/75 pb-5 pt-4 md:hidden">
+      <div class="flex flex-col gap-2">
         {navItems.map((item) => (
           <a
             href={item.href}
-            class={`font-body text-sm font-medium py-2 px-3 rounded-lg transition-colors ${
+            data-analytics-event={item.analyticsEvent}
+            class={`rounded-lg px-3 py-2 font-body text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary ${
               currentPage === item.key
                 ? 'bg-bg-tertiary text-accent-primary'
                 : 'text-text-secondary hover:text-text-primary hover:bg-bg-tertiary'
@@ -74,11 +71,13 @@ const navItems = [
           </a>
         ))}
         <a
-          href="/download/"
-          data-analytics-event="download_click"
-          class="mt-2 px-4 py-2 bg-accent-primary text-white font-semibold text-sm rounded-lg hover:bg-accent-secondary transition-colors text-center"
+          href="https://github.com/moaiy-com/moaiy"
+          target="_blank"
+          rel="noopener noreferrer"
+          data-analytics-event="github_click"
+          class="rounded-lg px-3 py-2 font-body text-sm font-medium text-text-secondary transition-colors hover:bg-bg-tertiary hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
         >
-          Get Moaiy
+          GitHub
         </a>
       </div>
     </div>
@@ -91,5 +90,7 @@ const navItems = [
 
   button?.addEventListener('click', () => {
     menu?.classList.toggle('hidden');
+    const expanded = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
   });
 </script>

@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,70 +9,63 @@ const seo = pageSeo.roadmap;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-5xl mx-auto">
-      <header class="text-center mb-14">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">Moaiy roadmap</h1>
-        <p class="font-body text-xl text-text-secondary">Planned work is listed separately from currently published capabilities.</p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-narrow">
+      <PageHero
+        title="Moaiy roadmap"
+        subtitle="Planned work is listed separately from already published capabilities."
+      />
 
-      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Status definitions</h2>
-        <ul class="font-body text-text-secondary space-y-2">
-          <li><span class="text-accent-primary font-semibold">Published</span>: available in official release channels.</li>
-          <li><span class="text-accent-primary font-semibold">In progress</span>: actively being implemented or validated.</li>
-          <li><span class="text-accent-primary font-semibold">Planned</span>: scoped but not yet released.</li>
+      <Panel tone="strong">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Status labels</h2>
+        <ul class="list-compact">
+          <li><span class="font-semibold text-accent-primary">Published</span>: available in official release channels.</li>
+          <li><span class="font-semibold text-accent-primary">In progress</span>: currently implemented or validated.</li>
+          <li><span class="font-semibold text-accent-primary">Planned</span>: scoped but not released yet.</li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800 overflow-x-auto">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Milestone tracker</h2>
-        <table class="w-full text-left">
-          <thead>
-            <tr class="border-b border-gray-700">
-              <th class="font-heading text-text-primary py-3 px-4">Milestone</th>
-              <th class="font-heading text-text-primary py-3 px-4">Status</th>
-              <th class="font-heading text-text-primary py-3 px-4">Target window</th>
-            </tr>
-          </thead>
-          <tbody class="font-body text-text-secondary text-sm">
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Task-oriented docs and verification pages</td>
-              <td class="py-3 px-4 text-accent-primary">Published</td>
-              <td class="py-3 px-4">March 2026</td>
-            </tr>
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Release-note cadence standardization</td>
-              <td class="py-3 px-4">In progress</td>
-              <td class="py-3 px-4">Q2 2026</td>
-            </tr>
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Cross-platform distribution expansion</td>
-              <td class="py-3 px-4">Planned</td>
-              <td class="py-3 px-4">Q2-Q3 2026</td>
-            </tr>
-            <tr>
-              <td class="py-3 px-4">Public API documentation</td>
-              <td class="py-3 px-4">Planned</td>
-              <td class="py-3 px-4">After core release stabilization</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Milestones</h2>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[540px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Milestone</th>
+                <th class="px-4 py-3 font-heading">Status</th>
+                <th class="px-4 py-3 font-heading">Window</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Task docs and verification pages</td>
+                <td class="px-4 py-3 text-accent-primary">Published</td>
+                <td class="px-4 py-3">March 2026</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Release note cadence standardization</td>
+                <td class="px-4 py-3">In progress</td>
+                <td class="px-4 py-3">Q2 2026</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Cross-platform distribution expansion</td>
+                <td class="px-4 py-3">Planned</td>
+                <td class="px-4 py-3">Q2-Q3 2026</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4">Public API documentation</td>
+                <td class="px-4 py-3">Planned</td>
+                <td class="px-4 py-3">After core release stabilization</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Panel>
 
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <a href="/download/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Release channel</h2>
-          <p class="font-body text-sm text-text-secondary">Use official releases for current artifact availability.</p>
-        </a>
-        <a href="/release-notes/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Change history</h2>
-          <p class="font-body text-sm text-text-secondary">Track shipped changes and timing.</p>
-        </a>
-        <a href="/security/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Security status</h2>
-          <p class="font-body text-sm text-text-secondary">Review currently published assurance signals.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/download/" title="Download" description="Current official artifact channel." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Shipped changes and timeline." />
+        <LinkCard href="/security/" title="Security" description="Current assurance and disclosure model." />
       </section>
     </div>
   </main>

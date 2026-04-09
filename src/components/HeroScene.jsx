@@ -1,6 +1,15 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
 
-const HeroScene3D = lazy(() => import('./HeroScene3D.jsx'));
+let heroSceneModulePromise;
+
+function loadHeroScene3D() {
+  if (!heroSceneModulePromise) {
+    heroSceneModulePromise = import('./HeroScene3D.jsx');
+  }
+  return heroSceneModulePromise;
+}
+
+const HeroScene3D = lazy(loadHeroScene3D);
 
 function StaticFallback() {
   return (
@@ -10,42 +19,30 @@ function StaticFallback() {
         position: 'absolute',
         inset: 0,
         background: [
-          'radial-gradient(circle at 15% 20%, rgba(78, 205, 196, 0.16), transparent 35%)',
-          'radial-gradient(circle at 80% 10%, rgba(69, 183, 209, 0.22), transparent 30%)',
-          'linear-gradient(180deg, #0A0E27 0%, #151B3B 55%, #1E2545 100%)',
+          'radial-gradient(circle at 15% 20%, rgba(6, 190, 225, 0.16), transparent 35%)',
+          'radial-gradient(circle at 80% 10%, rgba(23, 104, 172, 0.2), transparent 30%)',
+          'linear-gradient(180deg, #ffffff 0%, #f4f8ff 56%, #e9f1ff 100%)',
         ].join(','),
       }}
     />
   );
 }
 
-function isLowPowerDevice() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return true;
-  }
-
-  if (window.innerWidth < 768) {
-    return true;
-  }
-
+function shouldDisable3D() {
   const connection =
     navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+
   if (connection?.saveData) {
     return true;
   }
 
-  if (
-    typeof navigator.deviceMemory === 'number' &&
-    navigator.deviceMemory <= 4
-  ) {
-    return true;
-  }
-
-  if (
-    typeof navigator.hardwareConcurrency === 'number' &&
-    navigator.hardwareConcurrency <= 4
-  ) {
-    return true;
+  if (typeof connection?.effectiveType === 'string') {
+    const isSlowNetwork =
+      connection.effectiveType.includes('2g') ||
+      connection.effectiveType === '3g';
+    if (isSlowNetwork) {
+      return true;
+    }
   }
 
   return false;
@@ -60,23 +57,73 @@ function supportsWebGL() {
   }
 }
 
-export default function HeroScene() {
-  const [shouldLoad3D, setShouldLoad3D] = useState(false);
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const canRender3D = !isLowPowerDevice() && supportsWebGL();
-    setShouldLoad3D(canRender3D);
-    setIsReady(true);
-  }, []);
-
-  if (!isReady || !shouldLoad3D) {
-    return <StaticFallback />;
+function runWhenIdle(callback, timeout = 1800) {
+  if (typeof window.requestIdleCallback === 'function') {
+    const idleId = window.requestIdleCallback(callback, { timeout });
+    return () => window.cancelIdleCallback(idleId);
   }
 
+  const timerId = window.setTimeout(callback, 350);
+  return () => window.clearTimeout(timerId);
+}
+
+export default function HeroScene() {
+  const [isReady, setIsReady] = useState(false);
+  const [isEligible, setIsEligible] = useState(false);
+  const [shouldRender3D, setShouldRender3D] = useState(false);
+
+  useEffect(() => {
+    const evaluateEligibility = () => {
+      const canRender3D = !shouldDisable3D() && supportsWebGL();
+      setIsEligible(canRender3D);
+      if (!canRender3D) {
+        setShouldRender3D(false);
+      }
+    };
+
+    evaluateEligibility();
+    setIsReady(true);
+
+    const connection =
+      navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const handleChange = () => evaluateEligibility();
+
+    if (connection && typeof connection.addEventListener === 'function') {
+      connection.addEventListener('change', handleChange);
+    }
+
+    return () => {
+      if (connection && typeof connection.removeEventListener === 'function') {
+        connection.removeEventListener('change', handleChange);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isReady || !isEligible || shouldRender3D) {
+      return;
+    }
+
+    return runWhenIdle(() => {
+      setShouldRender3D(true);
+      void loadHeroScene3D();
+    }, 900);
+  }, [isReady, isEligible, shouldRender3D]);
+
   return (
-    <Suspense fallback={<StaticFallback />}>
-      <HeroScene3D />
-    </Suspense>
+    <div
+      style={{
+        position: 'absolute',
+        inset: 0,
+      }}
+    >
+      {!isReady || !shouldRender3D ? (
+        <StaticFallback />
+      ) : (
+        <Suspense fallback={<StaticFallback />}>
+          <HeroScene3D />
+        </Suspense>
+      )}
+    </div>
   );
 }

@@ -54,6 +54,18 @@ function extractAllHrefs(content) {
   return Array.from(matches, (match) => match[1]);
 }
 
+function hasInlineAnchorTarget(content, href) {
+  const anchor = decodeURIComponent(href.slice(1));
+  if (!anchor) {
+    return true;
+  }
+
+  const escaped = anchor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const idPattern = new RegExp(`\\bid="${escaped}"`);
+  const namePattern = new RegExp(`\\bname="${escaped}"`);
+  return idPattern.test(content) || namePattern.test(content);
+}
+
 function normalizeLink(href) {
   const [withoutHash] = href.split('#');
   const [withoutQuery] = withoutHash.split('?');
@@ -189,6 +201,12 @@ async function main() {
     const hrefs = extractAllHrefs(content);
     for (const href of hrefs) {
       if (href.startsWith('mailto:') || href.startsWith('tel:')) {
+        continue;
+      }
+      if (href.startsWith('#')) {
+        if (!hasInlineAnchorTarget(content, href)) {
+          issues.push(`${relative}: anchor target not found for ${href}`);
+        }
         continue;
       }
       if (href.startsWith('/')) {

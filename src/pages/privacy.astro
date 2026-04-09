@@ -1,4 +1,6 @@
 ---
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const seo = {
@@ -18,51 +20,55 @@ const seo = {
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-4xl mx-auto bg-bg-secondary rounded-xl p-8 border border-gray-800">
-      <h1 class="font-heading text-4xl md:text-5xl font-bold text-text-primary mb-6">Privacy Policy</h1>
-      <p class="font-body text-text-tertiary text-sm mb-8">Last updated: 2026-03-31</p>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <Panel tone="strong">
+        <PageHero centered={false} class="mb-0" title="Privacy Policy" />
+        <p class="mt-3 text-sm text-text-tertiary">Last updated: 2026-03-31</p>
 
-      <div class="space-y-6 font-body text-text-secondary leading-relaxed">
-        <section>
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-2">Scope</h2>
-          <p>
-            This policy applies to the official website <a href="https://moaiy.com" class="text-accent-primary hover:underline">moaiy.com</a>
-            and official support/security email channels.
-          </p>
-        </section>
+        <div class="mt-8 space-y-6 text-sm leading-relaxed text-text-secondary">
+          <section>
+            <h2 class="font-heading text-2xl font-semibold text-text-primary">Scope</h2>
+            <p class="mt-2">
+              This policy applies to
+              <a href="https://moaiy.com" class="text-accent-primary hover:underline">moaiy.com</a>
+              and official support or security email channels.
+            </p>
+          </section>
 
-        <section>
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-2">Website Analytics</h2>
-          <p>
-            We use website analytics to understand aggregate traffic and improve site quality. Analytics data may include
-            page views, browser information, and approximate region. We do not intentionally collect plaintext secrets through analytics.
-          </p>
-        </section>
+          <section>
+            <h2 class="font-heading text-2xl font-semibold text-text-primary">Website analytics</h2>
+            <p class="mt-2">
+              We use aggregate analytics to improve site quality. Typical data includes page views, browser info,
+              and approximate region. We do not intentionally collect plaintext secrets through analytics.
+            </p>
+          </section>
 
-        <section>
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-2">Support And Security Emails</h2>
-          <p>
-            When you contact us, we process the information you provide (for example email address and issue details)
-            to respond and resolve your request. Do not send private keys or passwords in email.
-          </p>
-        </section>
+          <section>
+            <h2 class="font-heading text-2xl font-semibold text-text-primary">Support and security email</h2>
+            <p class="mt-2">
+              When you contact us, we process information you provide (such as email address and issue details)
+              to respond and resolve requests. Do not send private keys or passwords by email.
+            </p>
+          </section>
 
-        <section>
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-2">Data Retention</h2>
-          <p>
-            We retain communication records only as long as needed for support, security investigation, legal obligations,
-            and abuse prevention.
-          </p>
-        </section>
+          <section>
+            <h2 class="font-heading text-2xl font-semibold text-text-primary">Data retention</h2>
+            <p class="mt-2">
+              Communication records are retained only as needed for support, security investigation, legal obligations,
+              and abuse prevention.
+            </p>
+          </section>
 
-        <section>
-          <h2 class="font-heading text-2xl font-semibold text-text-primary mb-2">Contact</h2>
-          <p>
-            Privacy questions: <a href="mailto:support@moaiy.com" class="text-accent-primary hover:underline">support@moaiy.com</a>
-          </p>
-        </section>
-      </div>
+          <section>
+            <h2 class="font-heading text-2xl font-semibold text-text-primary">Contact</h2>
+            <p class="mt-2">
+              Privacy questions:
+              <a href="mailto:support@moaiy.com" class="text-accent-primary hover:underline">support@moaiy.com</a>
+            </p>
+          </section>
+        </div>
+      </Panel>
     </div>
   </main>
 </BaseLayout>

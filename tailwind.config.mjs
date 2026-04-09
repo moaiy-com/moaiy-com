@@ -4,20 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Moaiy Brand Colors
-        'bg-primary': '#0A0E27',      // Deep space blue
-        'bg-secondary': '#151B3B',    // Midnight blue
-        'bg-tertiary': '#1E2545',     // Dark purple blue
-        'accent-primary': '#4ECDC4',  // Mint green ⭐
-        'accent-secondary': '#45B7D1', // Sky blue
-        'text-primary': '#F9FAFB',    // Almost white
-        'text-secondary': '#D1D5DB',  // Light gray
-        'text-tertiary': '#9CA3AF',   // Medium gray
+        // Moaiy Light Palette (user-selected)
+        'bg-primary': '#ffffff',
+        'bg-secondary': '#f4f8ff',
+        'bg-tertiary': '#eaf1ff',
+        'accent-primary': '#2541b2',
+        'accent-secondary': '#1768ac',
+        'accent-tertiary': '#06bee1',
+        'text-primary': '#03256c',
+        'text-secondary': '#1768ac',
+        'text-tertiary': '#2541b2',
+        'line-subtle': '#d7e2fb',
+        'line-strong': '#b9c8ee',
       },
       fontFamily: {
-        'heading': ['Space Grotesk', 'sans-serif'],
-        'body': ['Inter', 'sans-serif'],
-        'code': ['JetBrains Mono', 'monospace'],
+        'heading': ['Scope One', 'serif'],
+        'body': ['Scope One', 'serif'],
+        'code': ['Scope One', 'serif'],
       },
       animation: {
         'fade-in-up': 'fadeInUp 0.6s ease forwards',

@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,59 +9,49 @@ const seo = pageSeo.verification;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-5xl mx-auto">
-      <header class="text-center mb-14">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
-          Verification and checksum guide
-        </h1>
-        <p class="font-body text-xl text-text-secondary">
-          Validate release artifacts before installation to reduce supply-chain risk.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-narrow">
+      <PageHero
+        title="Verification and checksum guide"
+        subtitle="Validate every artifact before installation to reduce supply-chain risk."
+      />
 
-      <section class="mb-10 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Verification checklist</h2>
-        <ol class="font-body text-text-secondary space-y-2 list-decimal list-inside">
-          <li>Download artifact from official GitHub Releases.</li>
-          <li>Download the matching checksum/signature files from the same release.</li>
-          <li>Compute local checksum and compare exactly with published value.</li>
-          <li>Verify signature when signing keys are published for that release.</li>
+      <Panel tone="strong">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Verification checklist</h2>
+        <ol class="mt-5 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
+          <li>Download binaries from official GitHub Releases.</li>
+          <li>Download matching checksum or signature files.</li>
+          <li>Compute local checksum and compare exactly.</li>
+          <li>Verify signature when signing keys are provided.</li>
         </ol>
-      </section>
+      </Panel>
 
-      <section class="mb-10 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">Example commands</h2>
-        <div class="bg-bg-tertiary rounded-lg p-4 font-code text-sm text-text-secondary overflow-x-auto space-y-2">
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Example commands</h2>
+        <div class="code-block">
           <div class="text-text-tertiary"># macOS / Linux</div>
           <div><span class="text-accent-primary">$</span> shasum -a 256 moaiy.pkg</div>
           <div class="text-text-tertiary"># compare output with published SHA256 value</div>
           <div><span class="text-accent-primary">$</span> gpg --verify moaiy.pkg.sig moaiy.pkg</div>
         </div>
-      </section>
+      </Panel>
 
-      <section class="mb-10 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">If verification fails</h2>
-        <ul class="font-body text-text-secondary space-y-2">
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">If verification fails</h2>
+        <ul class="list-compact">
           <li>Do not execute the artifact.</li>
-          <li>Redownload from the official release page.</li>
-          <li>Report suspicious mismatches to <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.</li>
+          <li>Redownload from official release pages.</li>
+          <li>
+            Report mismatches to
+            <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.
+          </li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <a href="/download/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Download channel</h2>
-          <p class="font-body text-sm text-text-secondary">Get official artifacts.</p>
-        </a>
-        <a href="/security/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Security policy</h2>
-          <p class="font-body text-sm text-text-secondary">Disclosure flow and assurance status.</p>
-        </a>
-        <a href="/release-notes/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Release notes</h2>
-          <p class="font-body text-sm text-text-secondary">Track version-level updates.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/download/" title="Download" description="Official artifact channel." />
+        <LinkCard href="/security/" title="Security" description="Disclosure flow and assurance status." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Version-level changes and timing." />
       </section>
     </div>
   </main>

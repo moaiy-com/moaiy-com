@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { Box3, Vector3 } from 'three';
 
@@ -136,53 +136,27 @@ function ExternalMoai() {
   );
 }
 
-async function hasModelAsset(path) {
-  try {
-    const headResponse = await fetch(path, { method: 'HEAD', cache: 'no-store' });
-    if (headResponse.ok) {
-      return true;
-    }
-  } catch {
-    // Fall through to GET probing for servers that do not support HEAD.
-  }
-
-  try {
-    const getResponse = await fetch(path, { method: 'GET', cache: 'no-store' });
-    return getResponse.ok;
-  } catch {
-    return false;
-  }
+function MoaiPlaceholder() {
+  return (
+    <group position={[0, EXTERNAL_BASELINE_Y, 0]}>
+      <mesh castShadow receiveShadow position={[0, 2.18, 0]}>
+        <boxGeometry args={[1.52, 4.36, 1.2]} />
+        <meshStandardMaterial color="#96a4bf" roughness={0.92} metalness={0.02} />
+      </mesh>
+      <mesh castShadow receiveShadow position={[0, 4.55, 0.1]}>
+        <boxGeometry args={[1.04, 0.44, 0.86]} />
+        <meshStandardMaterial color="#a8b4cd" roughness={0.9} metalness={0.01} />
+      </mesh>
+    </group>
+  );
 }
 
+useGLTF.preload(EXTERNAL_MODEL_PATH);
+
 export default function Moai() {
-  const [isExternalModelEnabled, setIsExternalModelEnabled] = useState(false);
-  const [modelCheckFinished, setModelCheckFinished] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    (async () => {
-      const modelExists = await hasModelAsset(EXTERNAL_MODEL_PATH);
-      if (cancelled) {
-        return;
-      }
-
-      setIsExternalModelEnabled(modelExists);
-      setModelCheckFinished(true);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  if (modelCheckFinished && isExternalModelEnabled) {
-    return (
-      <Suspense fallback={null}>
-        <ExternalMoai />
-      </Suspense>
-    );
-  }
-
-  return null;
+  return (
+    <Suspense fallback={<MoaiPlaceholder />}>
+      <ExternalMoai />
+    </Suspense>
+  );
 }

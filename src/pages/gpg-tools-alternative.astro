@@ -1,4 +1,7 @@
 ---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
 
@@ -6,74 +9,63 @@ const seo = pageSeo.gpgToolsAlternative;
 ---
 
 <BaseLayout {...seo}>
-  <main class="min-h-screen bg-bg-primary py-20 px-4">
-    <div class="max-w-5xl mx-auto">
-      <header class="text-center mb-14">
-        <h1 class="font-heading text-5xl md:text-6xl font-bold text-text-primary mb-4">
-          Is Moaiy a practical GPG tools alternative?
-        </h1>
-        <p class="font-body text-xl text-text-secondary">
-          Compare workflow design, documentation quality, and operational verification habits.
-        </p>
-      </header>
+  <main class="page-shell">
+    <div class="page-container-narrow">
+      <PageHero
+        title="Is Moaiy a practical GPG alternative?"
+        subtitle="Compare workflow clarity, verification habits, and day-to-day usability."
+      />
 
-      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800 overflow-x-auto">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-6">Workflow comparison</h2>
-        <table class="w-full text-left">
-          <thead>
-            <tr class="border-b border-gray-700">
-              <th class="font-heading text-text-primary py-3 px-4">Dimension</th>
-              <th class="font-heading text-text-primary py-3 px-4">Traditional GPG flow</th>
-              <th class="font-heading text-text-primary py-3 px-4">Moaiy focus</th>
-            </tr>
-          </thead>
-          <tbody class="font-body text-text-secondary text-sm">
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Onboarding</td>
-              <td class="py-3 px-4">Power-user oriented</td>
-              <td class="py-3 px-4">Task-first documentation</td>
-            </tr>
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Command discoverability</td>
-              <td class="py-3 px-4">Depends on legacy docs and flags</td>
-              <td class="py-3 px-4">Focused docs for common tasks</td>
-            </tr>
-            <tr class="border-b border-gray-800">
-              <td class="py-3 px-4">Release trust process</td>
-              <td class="py-3 px-4">Varies by distribution channel</td>
-              <td class="py-3 px-4">Dedicated verification page and release references</td>
-            </tr>
-            <tr>
-              <td class="py-3 px-4">Scope communication</td>
-              <td class="py-3 px-4">Feature spread across many tools</td>
-              <td class="py-3 px-4">Roadmap separates published vs planned items</td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
+      <Panel tone="strong">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Workflow comparison</h2>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[620px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Dimension</th>
+                <th class="px-4 py-3 font-heading">Traditional GPG flow</th>
+                <th class="px-4 py-3 font-heading">Moaiy focus</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Onboarding</td>
+                <td class="px-4 py-3">Power-user oriented</td>
+                <td class="px-4 py-3">Task-first documentation</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Command discovery</td>
+                <td class="px-4 py-3">Scattered across legacy docs and flags</td>
+                <td class="px-4 py-3">Focused guides for common tasks</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Release trust process</td>
+                <td class="px-4 py-3">Varies by distribution source</td>
+                <td class="px-4 py-3">Dedicated verification guidance</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4">Scope communication</td>
+                <td class="px-4 py-3">Spread across many tools</td>
+                <td class="px-4 py-3">Published vs planned status is explicit</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Panel>
 
-      <section class="mb-12 bg-bg-secondary rounded-xl p-8 border border-gray-800">
-        <h2 class="font-heading text-3xl font-bold text-text-primary mb-4">When Moaiy is a strong fit</h2>
-        <ul class="font-body text-text-secondary space-y-2 leading-relaxed">
-          <li>Your team wants clearer docs and repeatable command workflows.</li>
-          <li>You require explicit release verification guidance for onboarding.</li>
-          <li>You prefer open-source transparency with fewer UX hurdles.</li>
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">When Moaiy fits well</h2>
+        <ul class="list-compact">
+          <li>You need clearer docs and repeatable command workflows.</li>
+          <li>You require explicit verification guidance for onboarding.</li>
+          <li>You prefer open-source transparency with lower UX friction.</li>
         </ul>
-      </section>
+      </Panel>
 
-      <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <a href="/docs/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Read docs</h2>
-          <p class="font-body text-sm text-text-secondary">See command-level workflows.</p>
-        </a>
-        <a href="/download/" data-analytics-event="download_click" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">Try release channel</h2>
-          <p class="font-body text-sm text-text-secondary">Inspect latest official artifacts.</p>
-        </a>
-        <a href="/openpgp-made-simple/" class="bg-bg-secondary rounded-xl p-6 border border-gray-800 hover:border-accent-primary/50 transition-colors">
-          <h2 class="font-heading text-lg text-text-primary mb-2">OpenPGP primer</h2>
-          <p class="font-body text-sm text-text-secondary">Start with concept-first guidance.</p>
-        </a>
+      <section class="link-grid">
+        <LinkCard href="/docs/" title="Read Docs" description="Command-level workflows." />
+        <LinkCard href="/download/" analyticsEvent="download_click" title="Try Releases" description="Inspect latest official artifacts." />
+        <LinkCard href="/openpgp-made-simple/" title="OpenPGP Primer" description="Concept-first guide." />
       </section>
     </div>
   </main>
