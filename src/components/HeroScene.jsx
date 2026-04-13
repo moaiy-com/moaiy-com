@@ -37,9 +37,9 @@ function shouldDisable3D() {
   }
 
   if (typeof connection?.effectiveType === 'string') {
+    const type = connection.effectiveType.toLowerCase();
     const isSlowNetwork =
-      connection.effectiveType.includes('2g') ||
-      connection.effectiveType === '3g';
+      type.includes('slow-2g') || type === '2g';
     if (isSlowNetwork) {
       return true;
     }
@@ -75,10 +75,9 @@ export default function HeroScene() {
   useEffect(() => {
     const evaluateEligibility = () => {
       const canRender3D = !shouldDisable3D() && supportsWebGL();
-      setIsEligible(canRender3D);
-      if (!canRender3D) {
-        setShouldRender3D(false);
-      }
+      // Keep eligibility sticky once enabled to avoid flicker from unstable
+      // NetworkInformation updates in Chromium.
+      setIsEligible((prev) => prev || canRender3D);
     };
 
     evaluateEligibility();
