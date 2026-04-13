@@ -14,6 +14,45 @@ const MOAI_OFFSET_X = 1.35;
 const SHOW_MOAI = true;
 const SHOW_WEATHER = true;
 
+function resolveSafeDpr() {
+  if (typeof window === 'undefined') {
+    return 1.25;
+  }
+
+  const deviceDpr = window.devicePixelRatio || 1;
+  const width = Math.max(1, window.innerWidth || 1);
+  const height = Math.max(1, window.innerHeight || 1);
+  const fullResPixels = width * height * deviceDpr * deviceDpr;
+
+  if (fullResPixels > 9_000_000) {
+    return 1.0;
+  }
+
+  if (fullResPixels > 6_000_000) {
+    return 1.12;
+  }
+
+  if (fullResPixels > 4_000_000) {
+    return 1.25;
+  }
+
+  return Math.min(deviceDpr, 1.5);
+}
+
+function useAdaptiveDprRange() {
+  const [maxDpr, setMaxDpr] = useState(1.25);
+
+  useEffect(() => {
+    const update = () => setMaxDpr(resolveSafeDpr());
+    update();
+
+    window.addEventListener('resize', update, { passive: true });
+    return () => window.removeEventListener('resize', update);
+  }, []);
+
+  return useMemo(() => [1, maxDpr], [maxDpr]);
+}
+
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -121,8 +160,8 @@ function SceneLighting({ weatherName = 'day' }) {
         intensity={1.2}
         position={[5, 7, 4]}
         target-position={[MOAI_OFFSET_X, 0.8, 0]}
-        shadow-mapSize-height={1024}
-        shadow-mapSize-width={1024}
+        shadow-mapSize-height={768}
+        shadow-mapSize-width={768}
         shadow-camera-near={1}
         shadow-camera-far={24}
         shadow-camera-left={-6}
@@ -681,6 +720,7 @@ function GrassGround() {
 
 export default function HeroScene3D() {
   const [weatherName, setWeatherName] = useState('sunny');
+  const dprRange = useAdaptiveDprRange();
 
   return (
     <ErrorBoundary>
@@ -689,7 +729,7 @@ export default function HeroScene3D() {
         inset: 0,
       }}>
         <Canvas
-          dpr={[1, 1.75]}
+          dpr={dprRange}
           performance={{ min: 0.5 }}
           shadows
           camera={{ position: [0, 1.1, 6.4], fov: 42, near: 0.1, far: 60 }}
@@ -698,9 +738,8 @@ export default function HeroScene3D() {
             height: '100%',
           }}
           gl={{
-            antialias: true,
+            antialias: false,
             alpha: true,
-            powerPreference: 'high-performance',
           }}
           onCreated={({ gl }) => {
             gl.setClearColor(0xffffff, 1);
