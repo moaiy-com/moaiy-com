@@ -21,7 +21,8 @@ export interface SeoPageConfig {
     | 'verification'
     | 'encrypt-files-on-macos'
     | 'openpgp-made-simple'
-    | 'gpg-tools-alternative';
+    | 'gpg-tools-alternative'
+    | 'smartcard-encryption-guide';
   schema?: SeoSchema[];
 }
 
@@ -275,6 +276,20 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       breadcrumbSchema([
         { name: 'Home', path: '/' },
         { name: 'GPG Tools Alternative', path: '/gpg-tools-alternative/' },
+      ]),
+    ],
+  },
+  smartcardEncryptionGuide: {
+    title: 'Smartcard Encryption Guide | Hardware-Backed OpenPGP Workflows',
+    description:
+      'Learn practical smartcard and hardware token workflows for local file encryption, backup, and recovery.',
+    canonicalPath: '/smartcard-encryption-guide/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'smartcard-encryption-guide',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Smartcard Encryption Guide', path: '/smartcard-encryption-guide/' },
       ]),
     ],
   },

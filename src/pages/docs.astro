@@ -2,11 +2,14 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.docs;
 const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
+const [docsMidAd, docsPreFaqAd] = adPlacementMap.docs;
 ---
 
 <BaseLayout {...seo}>
@@ -62,6 +65,8 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         </Panel>
       </section>
 
+      <AdSlot pageKey="docs" {...docsMidAd} class="mt-12" />
+
       <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Build from source (optional)</h2>
         <div class="code-block">
@@ -72,11 +77,25 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         </div>
       </Panel>
 
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Smartcard and hardware token notes</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          If you use an OpenPGP smart card or hardware token, keep private key material on hardware when possible and
+          test your unlock flow before relying on it for daily work.
+        </p>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Use this guide for practical setup patterns, backup planning, and recovery checks:
+          <a href="/smartcard-encryption-guide/" class="ml-1 text-accent-primary hover:underline">Smartcard encryption guide</a>.
+        </p>
+      </Panel>
+
       <section class="link-grid">
         <LinkCard href="https://github.com/moaiy-com/moaiy/blob/main/README.md" target="_blank" title="README" description="Project overview and setup." />
         <LinkCard href="https://github.com/moaiy-com/moaiy/blob/main/CONTRIBUTING.md" target="_blank" title="CONTRIBUTING" description="How to contribute and run checks." />
         <LinkCard href="https://github.com/moaiy-com/moaiy/blob/main/SECURITY.md" target="_blank" title="SECURITY" description="How to report security issues privately." />
       </section>
+
+      <AdSlot pageKey="docs" {...docsPreFaqAd} class="mt-12" />
 
       <section class="mt-12 space-y-3">
         <details class="rounded-lg border border-line-strong bg-bg-secondary/65">

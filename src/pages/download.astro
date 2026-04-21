@@ -2,11 +2,14 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.download;
 const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
+const [downloadMidAd] = adPlacementMap.download;
 ---
 
 <BaseLayout {...seo}>
@@ -58,6 +61,19 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
             <p class="mt-1 text-sm text-text-secondary">Planned, not publicly available yet.</p>
           </div>
         </div>
+      </Panel>
+
+      <AdSlot pageKey="download" {...downloadMidAd} class="mt-12" />
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Using Moaiy with smart cards</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          If you store OpenPGP keys on a smart card or hardware token, verify your card access and recovery process
+          before you depend on it for important files.
+        </p>
+        <a href="/smartcard-encryption-guide/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">
+          Open smartcard encryption guide
+        </a>
       </Panel>
 
       <Panel class="mt-12">

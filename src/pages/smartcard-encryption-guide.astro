@@ -1,0 +1,67 @@
+---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.smartcardEncryptionGuide;
+---
+
+<BaseLayout {...seo}>
+  <main class="page-shell">
+    <div class="page-container">
+      <PageHero
+        title="Smartcard Encryption Guide"
+        subtitle="Practical steps for using OpenPGP smart cards and hardware tokens with local file encryption."
+      />
+
+      <Panel tone="strong">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">When smart cards help</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Smart cards and hardware tokens reduce routine exposure of private keys on your main workstation. They are
+          useful for people who encrypt frequently and want a stronger operational boundary.
+        </p>
+      </Panel>
+
+      <section class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <Panel as="article" class="p-6">
+          <h3 class="font-heading text-xl text-text-primary">1. Keep keys organized</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Use clear labels for card identity, key purpose, and rotation date. Keep a written inventory for each card.
+          </p>
+        </Panel>
+        <Panel as="article" class="p-6">
+          <h3 class="font-heading text-xl text-text-primary">2. Test daily unlock flow</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Confirm the PIN flow and device access on your main Mac before you rely on the setup for urgent file work.
+          </p>
+        </Panel>
+        <Panel as="article" class="p-6">
+          <h3 class="font-heading text-xl text-text-primary">3. Plan recovery first</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Keep recovery instructions and secure backups in a separate location. Run recovery drills periodically.
+          </p>
+        </Panel>
+      </section>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Operational checklist</h2>
+        <ul class="list-compact">
+          <li>Document card model, serial, and ownership.</li>
+          <li>Use strong PIN and set a practical lockout strategy.</li>
+          <li>Verify encryption and decryption workflows before production use.</li>
+          <li>Store backup materials separately from the hardware token.</li>
+          <li>Update your backup and recovery notes after key rotation.</li>
+        </ul>
+      </Panel>
+
+      <section class="link-grid">
+        <LinkCard href="/docs/" title="Docs" description="Core usage steps and command examples." />
+        <LinkCard href="/download/" analyticsEvent="download_click" title="Download" description="Official macOS release channel." />
+        <LinkCard href="/security/" title="Security" description="Project security model and reporting policy." />
+      </section>
+    </div>
+  </main>
+</BaseLayout>
+

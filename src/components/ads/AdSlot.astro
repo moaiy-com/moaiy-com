@@ -1,0 +1,97 @@
+---
+interface Props {
+  pageKey: string;
+  placementId: string;
+  slotId?: string;
+  minHeight?: number;
+  label?: string;
+  class?: string;
+}
+
+const {
+  pageKey,
+  placementId,
+  slotId = '',
+  minHeight = 280,
+  label = 'Sponsored',
+  class: className = '',
+} = Astro.props;
+
+const normalizedSlotId = slotId.trim();
+const isConfigured = /^\d{5,}$/.test(normalizedSlotId);
+const elementId = `ads-${pageKey}-${placementId}`;
+---
+
+{
+  isConfigured ? (
+    <aside
+      class={`ad-slot ${className}`.trim()}
+      data-page-key={pageKey}
+      data-placement-id={placementId}
+      aria-label={label}
+    >
+      <p class="ad-slot-label">{label}</p>
+      <div class="ad-slot-frame">
+        <ins
+          id={elementId}
+          class="adsbygoogle"
+          style={`display:block; min-height:${minHeight}px;`}
+          data-ad-client="ca-pub-1101411190728746"
+          data-ad-slot={normalizedSlotId}
+          data-ad-format="auto"
+          data-full-width-responsive="true"
+        ></ins>
+      </div>
+      <script is:inline define:vars={{ elementId }}>
+        (() => {
+          const mountAd = () => {
+            const adElement = document.getElementById(elementId);
+            if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
+              return;
+            }
+
+            try {
+              (window.adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (error) {
+              console.warn('AdSense render failed:', error);
+            }
+          };
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', mountAd, { once: true });
+          } else {
+            mountAd();
+          }
+
+          document.addEventListener('astro:page-load', mountAd);
+        })();
+      </script>
+    </aside>
+  ) : null
+}
+
+<style>
+  .ad-slot {
+    margin-top: 2rem;
+  }
+
+  .ad-slot-label {
+    margin-bottom: 0.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(23, 104, 172, 0.85);
+  }
+
+  .ad-slot-frame {
+    border: 1px solid rgba(185, 200, 238, 0.85);
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.72);
+    padding: 0.5rem;
+  }
+
+  .ad-slot-frame :global(ins.adsbygoogle[data-ad-status='unfilled']) {
+    display: none !important;
+  }
+</style>
+
