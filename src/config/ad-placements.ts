@@ -15,11 +15,11 @@ export interface AdPlacement {
 // - download_mid_1
 // - about_mid_1
 const adSlotIds = {
-  docs_mid_1: '',
-  docs_pre_faq_1: '',
-  features_mid_1: '',
-  download_mid_1: '',
-  about_mid_1: '',
+  docs_mid_1: '8755204015',
+  docs_pre_faq_1: '9189272105',
+  features_mid_1: '3638608702',
+  download_mid_1: '1012445362',
+  about_mid_1: '7612453243',
 } as const;
 
 export const adPlacementMap: Record<AdPageKey, AdPlacement[]> = {
@@ -62,4 +62,3 @@ export const adPlacementMap: Record<AdPageKey, AdPlacement[]> = {
     },
   ],
 };
-
