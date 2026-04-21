@@ -46,7 +46,31 @@ const elementId = `ads-${pageKey}-${placementId}`;
         (() => {
           const mountAd = () => {
             const adElement = document.getElementById(elementId);
-            if (!adElement || adElement.getAttribute('data-adsbygoogle-status')) {
+            if (!adElement) {
+              return;
+            }
+
+            const slotRoot = adElement.closest('[data-placement-id]');
+            if (slotRoot && !adElement.dataset.statusObserverAttached) {
+              const syncSlotVisibility = () => {
+                const status = adElement.getAttribute('data-ad-status');
+                if (status === 'unfilled' || status === 'unfill-optimized') {
+                  slotRoot.setAttribute('hidden', 'hidden');
+                } else if (status === 'filled') {
+                  slotRoot.removeAttribute('hidden');
+                }
+              };
+
+              const observer = new MutationObserver(syncSlotVisibility);
+              observer.observe(adElement, {
+                attributes: true,
+                attributeFilter: ['data-ad-status'],
+              });
+              adElement.dataset.statusObserverAttached = 'true';
+              syncSlotVisibility();
+            }
+
+            if (adElement.getAttribute('data-adsbygoogle-status')) {
               return;
             }
 
@@ -94,4 +118,3 @@ const elementId = `ads-${pageKey}-${placementId}`;
     display: none !important;
   }
 </style>
-
