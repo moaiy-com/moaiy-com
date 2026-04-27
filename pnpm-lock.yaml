@@ -30,8 +30,8 @@ importers:
         specifier: ^5.18.1
         version: 5.18.1(@types/node@24.12.0)(jiti@1.21.7)(rollup@4.60.0)(typescript@5.9.3)(yaml@2.8.3)
       gsap:
-        specifier: ^3.12.0
-        version: 3.14.2
+        specifier: ^3.15.0
+        version: 3.15.0
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1366,8 +1366,8 @@ packages:
   glsl-noise@0.0.0:
     resolution: {integrity: sha512-b/ZCF6amfAUb7dJM/MxRs7AetQEahYzJ8PtgfrmEdtw6uyGOr+ZSGtgjFm6mfsBkxJ4d2W7kg+Nlqzqvn3Bc0w==}
 
-  gsap@3.14.2:
-    resolution: {integrity: sha512-P8/mMxVLU7o4+55+1TCnQrPmgjPKnwkzkXOK1asnR9Jg2lna4tEY5qBJjMmAaOBDDZWtlRjBXjLa0w53G/uBLA==}
+  gsap@3.15.0:
+    resolution: {integrity: sha512-dMW4CWBTUK1AEEDeZc1g4xpPGIrSf9fJF960qbTZmN/QwZIWY5wgliS6JWl9/25fpTGJrMRtSjGtOmPnfjZB+A==}
 
   h3@1.15.10:
     resolution: {integrity: sha512-YzJeWSkDZxAhvmp8dexjRK5hxziRO7I9m0N53WhvYL5NiWfkUkzssVzY9jvGu0HBoLFW6+duYmNSn6MaZBCCtg==}
@@ -3729,7 +3729,7 @@ snapshots:
 
   glsl-noise@0.0.0: {}
 
-  gsap@3.14.2: {}
+  gsap@3.15.0: {}
 
   h3@1.15.10:
     dependencies:
