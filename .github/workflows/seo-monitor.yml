@@ -36,8 +36,4 @@ jobs:
         run: pnpm run check:seo
 
       - name: Probe live SEO endpoints
-        run: |
-          curl -f -sS https://moaiy.com/robots.txt > /dev/null
-          curl -f -sS https://moaiy.com/sitemap.xml > /dev/null
-          curl -f -sS https://moaiy.com/sitemap-index.xml > /dev/null
-          curl -f -sS https://moaiy.com/download/ > /dev/null
+        run: pnpm run check:seo:live
