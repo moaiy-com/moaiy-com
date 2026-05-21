@@ -1,7 +1,7 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Clone, useGLTF } from '@react-three/drei';
 import { Component, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
-import { ACESFilmicToneMapping, Box3, MathUtils, Vector3 } from 'three';
+import { ACESFilmicToneMapping, Box3, MathUtils, PCFShadowMap, Vector3 } from 'three';
 
 const Moai = lazy(() => import('./Moai.jsx'));
 const WeatherSystem = lazy(() => import('./WeatherSystem.jsx'));
@@ -731,7 +731,7 @@ export default function HeroScene3D() {
         <Canvas
           dpr={dprRange}
           performance={{ min: 0.5 }}
-          shadows
+          shadows={{ type: PCFShadowMap }}
           camera={{ position: [0, 1.1, 6.4], fov: 42, near: 0.1, far: 60 }}
           style={{
             width: '100%',
