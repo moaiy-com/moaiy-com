@@ -1,7 +1,7 @@
-name: Deploy to GitHub Pages
+name: CI
 
 on:
-  # Trigger the workflow every time you push to the `master` branch
+  # Run checks on every push to `master` (deployment is handled by Cloudflare Pages)
   push:
     branches: [ master ]
   pull_request:
@@ -11,12 +11,10 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -47,21 +45,3 @@ jobs:
 
       - name: Run SEO checks against built output
         run: pnpm run check:seo
-      
-      - name: Upload artifact
-        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: ./dist
-
-  deploy:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5
