@@ -18,14 +18,14 @@
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/react": "^7.1.0",
     "@astrojs/tailwind": "^6.0.2",
-    "@react-three/drei": "9.122.0",
-    "@react-three/fiber": "8.18.0",
+    "@react-three/drei": "10.7.9",
+    "@react-three/fiber": "9.8.2",
     "astro": "^7.2.8",
     "gsap": "^3.15.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "tailwindcss": "^3.4.0",
-    "three": "0.182.0"
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@types/react": "^19.3.0",
