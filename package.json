@@ -15,8 +15,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.6.0",
-    "@astrojs/react": "^4.4.2",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/react": "^7.1.0",
     "@astrojs/tailwind": "^6.0.2",
     "@react-three/drei": "9.122.0",
     "@react-three/fiber": "8.18.0",
