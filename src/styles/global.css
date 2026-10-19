@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f4f8ff;
+  --color-bg-tertiary: #eaf1ff;
+  --color-accent-primary: #2541b2;
+  --color-accent-secondary: #1768ac;
+  --color-accent-tertiary: #06bee1;
+  --color-text-primary: #03256c;
+  --color-text-secondary: #1768ac;
+  --color-text-tertiary: #2541b2;
+  --color-line-subtle: #d7e2fb;
+  --color-line-strong: #b9c8ee;
+  --font-heading: 'Scope One', serif;
+  --font-body: 'Scope One', serif;
+  --font-code: 'Scope One', serif;
+  --animate-fade-in-up: fadeInUp 0.6s ease forwards;
+  --animate-pulse-slow: pulse 3s ease-in-out infinite;
+  @keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@source "../**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}";
+
+@font-face {
+    font-family: 'Scope One';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('/fonts/ScopeOne-Regular.ttf') format('truetype');
+  }
+
+  @layer components {
+    .page-shell {
+      @apply min-h-screen bg-bg-primary px-4 py-20;
+    }
+
+    .page-container {
+      @apply mx-auto w-full max-w-6xl;
+    }
+
+    .page-container-narrow {
+      @apply mx-auto w-full max-w-5xl;
+    }
+
+    .page-container-compact {
+      @apply mx-auto w-full max-w-4xl;
+    }
+
+    .page-hero {
+      @apply mb-14;
+    }
+
+    .page-title {
+      @apply text-balance font-heading text-4xl font-bold text-text-primary md:text-5xl;
+    }
+
+    .page-subtitle {
+      @apply mt-4 text-lg leading-relaxed text-text-secondary;
+    }
+
+    .surface-card {
+      @apply rounded-xl border border-line-strong bg-bg-secondary/65 p-7 md:p-8;
+    }
+
+    .surface-card-strong {
+      @apply rounded-xl border border-line-strong bg-bg-secondary/70 p-7 md:p-8;
+    }
+
+    .surface-card-soft {
+      @apply rounded-xl border border-line-strong bg-bg-secondary/55 p-6;
+    }
+
+    .link-grid {
+      @apply mt-12 grid grid-cols-1 gap-4 md:grid-cols-3;
+    }
+
+    .link-card {
+      @apply rounded-lg border border-line-strong bg-bg-secondary/55 p-5 transition-colors hover:border-accent-primary/50 hover:text-accent-primary;
+    }
+
+    .link-card-title {
+      @apply block font-heading text-lg text-text-primary;
+    }
+
+    .link-card-description {
+      @apply mt-2 block text-sm text-text-secondary;
+    }
+
+    .code-block {
+      @apply mt-5 space-y-2 rounded-lg bg-bg-tertiary p-4 font-code text-sm text-text-secondary;
+    }
+
+    .list-compact {
+      @apply mt-5 space-y-2 text-sm leading-relaxed text-text-secondary;
+    }
+
+    .btn-primary {
+      @apply inline-flex items-center rounded-lg bg-accent-primary px-5 py-3 text-sm font-semibold text-bg-primary transition-colors hover:bg-accent-secondary;
+    }
+
+    .btn-secondary {
+      @apply inline-flex items-center rounded-lg border border-line-subtle px-5 py-3 text-sm font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary;
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+    color-scheme: light;
+    font-synthesis: none;
+  }
+
+  body {
+    @apply min-h-screen;
+  }
+
+  /* Scope One only ships regular weight; pin utility-weight combos to avoid fake bold rendering. */
+  .font-heading.font-medium,
+  .font-heading.font-semibold,
+  .font-heading.font-bold,
+  .font-body.font-medium,
+  .font-body.font-semibold,
+  .font-body.font-bold,
+  .font-code.font-medium,
+  .font-code.font-semibold,
+  .font-code.font-bold {
+    font-weight: 400;
+  }
+
+  ::selection {
+    @apply bg-accent-primary text-bg-primary;
+  }
+
+  :where(a, button, summary, [role='button']):focus-visible {
+    @apply outline-none ring-2 ring-accent-primary/70 ring-offset-2 ring-offset-bg-primary;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-bg-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-accent-primary rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-accent-secondary;
+  }
