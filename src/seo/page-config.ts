@@ -15,6 +15,8 @@ export interface SeoPageConfig {
     | 'docs'
     | 'download'
     | 'about'
+    | 'privacy'
+    | 'terms'
     | 'roadmap'
     | 'security-whitepaper'
     | 'release-notes'
@@ -178,6 +180,44 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       breadcrumbSchema([
         { name: 'Home', path: '/' },
         { name: 'About', path: '/about/' },
+      ]),
+    ],
+  },
+  privacy: {
+    title: 'Privacy Policy - Moaiy',
+    description: 'Privacy policy for moaiy.com and support channels.',
+    canonicalPath: '/privacy/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'privacy',
+    schema: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Privacy Policy - Moaiy',
+        url: 'https://moaiy.com/privacy/',
+      },
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Privacy Policy', path: '/privacy/' },
+      ]),
+    ],
+  },
+  terms: {
+    title: 'Terms - Moaiy',
+    description: 'Terms for using moaiy.com resources and releases.',
+    canonicalPath: '/terms/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'terms',
+    schema: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'WebPage',
+        name: 'Terms - Moaiy',
+        url: 'https://moaiy.com/terms/',
+      },
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Terms', path: '/terms/' },
       ]),
     ],
   },

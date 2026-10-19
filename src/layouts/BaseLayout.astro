@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import Navigation from '../components/Navigation.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import type { SeoSchema } from '../seo/page-config';
 
 interface Props {
@@ -11,6 +12,7 @@ interface Props {
   robots?: string;
   schema?: SeoSchema[];
   currentPage?: string;
+  enableAds?: boolean;
 }
 
 const {
@@ -21,7 +23,13 @@ const {
   robots = 'index, follow',
   schema = [],
   currentPage = '',
+  enableAds,
 } = Astro.props;
+
+const shouldLoadAds =
+  typeof enableAds === 'boolean'
+    ? enableAds
+    : Boolean(currentPage && Object.prototype.hasOwnProperty.call(adPlacementMap, currentPage));
 
 const siteUrl = Astro.site ?? new URL('https://moaiy.com');
 const normalizedPath =
@@ -39,6 +47,12 @@ const footerLinks = [
   { href: '/docs/', label: 'Docs' },
   { href: '/security/', label: 'Security' },
   { href: '/features/', label: 'Features' },
+  { href: '/about/', label: 'About' },
+];
+
+const policyLinks = [
+  { href: '/privacy/', label: 'Privacy Policy' },
+  { href: '/terms/', label: 'Terms' },
 ];
 ---
 
@@ -75,11 +89,13 @@ const footerLinks = [
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
     ))}
 
-    <script
-      async
-      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1101411190728746"
-      crossorigin="anonymous"
-    ></script>
+    {shouldLoadAds && (
+      <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1101411190728746"
+        crossorigin="anonymous"
+      ></script>
+    )}
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-1EFMK5162Q"></script>
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -146,14 +162,14 @@ const footerLinks = [
             </div>
           </div>
           <div>
-            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Project</h2>
+            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Project & Legal</h2>
             <div class="flex flex-col gap-2">
               <a
                 href={RELEASES_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 data-analytics-event="download_click"
-                class="text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+                class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
               >
                 Releases
               </a>
@@ -162,7 +178,7 @@ const footerLinks = [
                 target="_blank"
                 rel="noopener noreferrer"
                 data-analytics-event="github_click"
-                class="text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+                class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
               >
                 GitHub
               </a>
@@ -170,10 +186,18 @@ const footerLinks = [
                 href={X_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+                class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
               >
                 X (@moaiycom)
               </a>
+              {policyLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
           </div>
         </div>
@@ -181,4 +205,3 @@ const footerLinks = [
     </footer>
   </body>
 </html>
-

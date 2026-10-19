@@ -2,21 +2,9 @@
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
 
-const seo = {
-  title: 'Terms - Moaiy',
-  description: 'Terms for using moaiy.com resources and releases.',
-  canonicalPath: '/terms/',
-  currentPage: '',
-  schema: [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      name: 'Terms - Moaiy',
-      url: 'https://moaiy.com/terms/',
-    },
-  ],
-};
+const seo = pageSeo.terms;
 ---
 
 <BaseLayout {...seo}>

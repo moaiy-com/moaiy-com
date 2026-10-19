@@ -14,9 +14,6 @@ export default defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
-    server: {
-      allowedHosts: ['.monkeycode-ai.online'],
-    },
     ssr: {
       noExternal: ['@react-three/fiber', '@react-three/drei', 'three'],
     },
