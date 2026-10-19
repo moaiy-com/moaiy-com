@@ -1,9 +1,11 @@
 # Build
 dist/
 .astro/
+.wrangler/
 
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Logs
 npm-debug.log*

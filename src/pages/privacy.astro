@@ -2,21 +2,9 @@
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
 
-const seo = {
-  title: 'Privacy Policy - Moaiy',
-  description: 'Privacy policy for moaiy.com and support channels.',
-  canonicalPath: '/privacy/',
-  currentPage: '',
-  schema: [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'WebPage',
-      name: 'Privacy Policy - Moaiy',
-      url: 'https://moaiy.com/privacy/',
-    },
-  ],
-};
+const seo = pageSeo.privacy;
 ---
 
 <BaseLayout {...seo}>

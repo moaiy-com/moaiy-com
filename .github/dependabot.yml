@@ -23,6 +23,7 @@ updates:
       three_stack:
         patterns:
           - "three"
+          - "@types/three*"
           - "@react-three/*"
     commit-message:
       prefix: "chore(deps)"

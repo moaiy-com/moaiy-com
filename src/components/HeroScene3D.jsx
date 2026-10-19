@@ -665,54 +665,21 @@ function BareSoilLayer() {
   ));
 }
 
-async function hasModelAsset(path) {
-  try {
-    const headResponse = await fetch(path, { method: 'HEAD', cache: 'no-store' });
-    if (headResponse.ok) {
-      return true;
-    }
-  } catch {
-    // Continue to GET probing.
-  }
-
-  try {
-    const getResponse = await fetch(path, { method: 'GET', cache: 'no-store' });
-    return getResponse.ok;
-  } catch {
-    return false;
-  }
-}
+useGLTF.preload(GRASS_MODEL_PATH);
 
 function GrassGround() {
-  const [isGrassModelEnabled, setIsGrassModelEnabled] = useState(false);
-  const [modelCheckFinished, setModelCheckFinished] = useState(false);
-
-  useEffect(() => {
-    let cancelled = false;
-
-    (async () => {
-      const modelExists = await hasModelAsset(GRASS_MODEL_PATH);
-      if (cancelled) {
-        return;
-      }
-
-      setIsGrassModelEnabled(modelExists);
-      setModelCheckFinished(true);
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
   return (
     <group>
-      {modelCheckFinished && isGrassModelEnabled ? (
+      <Suspense
+        fallback={
+          <>
+            <ProceduralGrassGround />
+            <BareSoilLayer />
+          </>
+        }
+      >
         <ExternalGrassGround />
-      ) : (
-        <ProceduralGrassGround />
-      )}
-      {modelCheckFinished && isGrassModelEnabled ? null : <BareSoilLayer />}
+      </Suspense>
       <FlowerLayer />
     </group>
   );
