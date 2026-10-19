@@ -6,7 +6,7 @@ Source code for https://moaiy.com.
 
 - Product website and landing pages
 - Download/docs/security/public policy pages
-- GitHub Pages deployment workflows
+- CI workflows (build and quality checks); deployed on Cloudflare Pages
 
 ## Project Links
 
