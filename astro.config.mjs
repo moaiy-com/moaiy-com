@@ -1,18 +1,19 @@
 import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
-import tailwind from '@astrojs/tailwind';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://moaiy.com',
   trailingSlash: 'always',
-  integrations: [react(), tailwind(), sitemap()],
+  integrations: [react(), sitemap()],
   output: 'static',
   build: {
     assets: 'assets',
   },
   vite: {
+    plugins: [tailwindcss()],
     server: {
       allowedHosts: ['.monkeycode-ai.online'],
     },
