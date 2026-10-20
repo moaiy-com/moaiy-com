@@ -14,41 +14,41 @@ const seo = pageSeo.openpgpMadeSimple;
       <PageHero
         centered={false}
         title="OpenPGP made simple with Moaiy"
-        subtitle="Understand the key model and run a workflow users can follow."
+        subtitle="Understand how OpenPGP keys work in plain language—and use them through a visual macOS interface without touching the terminal."
       />
 
       <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Core model</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Core concepts in plain language</h2>
         <ul class="list-compact">
-          <li><span class="text-text-primary">Public key</span>: share with senders who encrypt files for you.</li>
-          <li><span class="text-text-primary">Private key</span>: keep secret; it decrypts files addressed to you.</li>
-          <li><span class="text-text-primary">Passphrase</span>: protects your private key on disk.</li>
+          <li><span class="text-text-primary">Public key</span>: like an open padlock you share with anyone who wants to lock files for you.</li>
+          <li><span class="text-text-primary">Private key</span>: stays safely on your Mac (or smart card) and unlocks files encrypted for your public key.</li>
+          <li><span class="text-text-primary">Passphrase</span>: the password that protects your private key before it can be used.</li>
         </ul>
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Workflow example</h2>
-        <div class="code-block">
-          <div><span class="text-accent-primary">$</span> moaiy key generate</div>
-          <div><span class="text-accent-primary">$</span> moaiy key export --output my-public.key</div>
-          <div><span class="text-accent-primary">$</span> moaiy encrypt payroll.csv --recipient finance@example.com</div>
-          <div><span class="text-accent-primary">$</span> moaiy decrypt payroll.csv.gpg</div>
-        </div>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">How it works visually in Moaiy</h2>
+        <ol class="mt-5 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
+          <li><strong class="text-text-primary">Create your key pair:</strong> Open Moaiy’s Key Manager, enter your name, email, and a strong passphrase, and click <strong>Create</strong>.</li>
+          <li><strong class="text-text-primary">Share your public key:</strong> Click <strong>Export Public Key</strong> in Moaiy and send the <code>.asc</code> or <code>.key</code> file to your collaborators.</li>
+          <li><strong class="text-text-primary">Encrypt for a recipient:</strong> Import a colleague’s public key, drag <code>payroll.csv</code> into Moaiy, select their name, and click <strong>Encrypt</strong>.</li>
+          <li><strong class="text-text-primary">Decrypt incoming files:</strong> Drag an encrypted <code>.gpg</code> file addressed to you into Moaiy and enter your passphrase to unlock it.</li>
+        </ol>
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Common mistakes</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Common mistakes to avoid</h2>
         <ul class="list-compact">
-          <li>Storing private keys in shared folders.</li>
-          <li>Skipping checksum checks for new binaries.</li>
-          <li>Reusing weak passphrases across systems.</li>
+          <li>Accidentally sharing your private key instead of your public key.</li>
+          <li>Storing unencrypted private key backups in shared cloud folders.</li>
+          <li>Reusing weak passphrases or forgetting to keep an offline recovery backup.</li>
         </ul>
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/docs/" title="Task Docs" description="Command references and usage patterns." />
-        <LinkCard href="/verification/" title="Verification" description="Trusted installation checklist." />
-        <LinkCard href="/gpg-tools-alternative/" title="Alternative View" description="Compare Moaiy and classic GPG UX." />
+        <LinkCard href="/docs/" title="Visual Docs" description="Step-by-step macOS guides and FAQs." />
+        <LinkCard href="/verification/" title="Verification" description="Trusted download and checksum checklist." />
+        <LinkCard href="/gpg-tools-alternative/" title="Compare Workflows" description="Compare Moaiy with traditional GPG tools." />
       </section>
     </div>
   </main>

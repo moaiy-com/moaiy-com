@@ -14,37 +14,37 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
     <div class="page-container-narrow">
       <PageHero
         title="Release notes"
-        subtitle="Recent updates to the product website and documentation. Downloads are on GitHub Releases."
+        subtitle="Key milestones across the Moaiy macOS app and official documentation. Binary changelogs and installers are hosted on GitHub Releases."
       />
 
       <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Recent milestones</h2>
         <div class="mt-6 space-y-5">
           <article class="border-l-2 border-accent-primary pl-4">
-            <h3 class="font-heading text-xl text-text-primary">March 31, 2026 · Search and sharing improvements</h3>
+            <h3 class="font-heading text-xl text-text-primary">Visual macOS workflow & smart card guides</h3>
             <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-              Improved metadata, sitemap coverage, practical docs, and verification guidance.
+              Expanded visual drag-and-drop documentation, recipient vs. password encryption guides, and OpenPGP smart card / hardware token setup checklists.
             </p>
           </article>
           <article class="border-l-2 border-accent-primary pl-4">
-            <h3 class="font-heading text-xl text-text-primary">March 30, 2026 · Clearer security and docs content</h3>
+            <h3 class="font-heading text-xl text-text-primary">Release verification & security transparency</h3>
             <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-              Updated security wording and removed unclear "coming soon" messaging.
+              Added step-by-step SHA-256 checksum and signature verification instructions alongside the public security model and vulnerability disclosure policy.
             </p>
           </article>
           <article class="border-l-2 border-accent-primary pl-4">
-            <h3 class="font-heading text-xl text-text-primary">March 28, 2026 · Site structure update</h3>
+            <h3 class="font-heading text-xl text-text-primary">Native macOS drag-and-drop encryption foundation</h3>
             <p class="mt-2 text-sm leading-relaxed text-text-secondary">
-              Simplified page routes and improved internal links.
+              Established the core macOS graphical interface for local OpenPGP file encryption, decryption, and visual keyring management.
             </p>
           </article>
         </div>
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official downloads</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official macOS downloads & version logs</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          The latest install files are published on GitHub Releases.
+          Every tagged macOS build, checksum file, and version-specific changelog is published directly on GitHub Releases.
         </p>
         <a
           href={releaseUrl}
@@ -58,9 +58,9 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/download/" title="Download" description="Install from the official download page." />
+        <LinkCard href="/download/" title="Download" description="Install from the official macOS download page." />
         <LinkCard href="/verification/" title="Verification" description="How to check file hashes and signatures." />
-        <LinkCard href="/roadmap/" title="Roadmap" description="What is planned for upcoming releases." />
+        <LinkCard href="/roadmap/" title="Roadmap" description="What is available now and what is planned next." />
       </section>
     </div>
   </main>

@@ -55,7 +55,7 @@ const softwareApplicationSchema: SeoSchema = {
   url: SITE_URL,
   downloadUrl: 'https://github.com/moaiy-com/moaiy/releases',
   description:
-    'Moaiy is a free and open-source macOS app for simple file encryption.',
+    'Moaiy is a free and open-source native macOS app for drag-and-drop OpenPGP file encryption.',
 };
 
 function breadcrumbSchema(entries: Array<{ name: string; path: string }>): SeoSchema {
@@ -80,7 +80,7 @@ const docsFaqSchema: SeoSchema = {
       name: 'What is Moaiy?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Moaiy is a free and open-source macOS app that helps you encrypt files with simple steps.',
+        text: 'Moaiy is a free and open-source native macOS app that lets you encrypt and decrypt files with simple drag-and-drop steps.',
       },
     },
     {
@@ -96,7 +96,7 @@ const docsFaqSchema: SeoSchema = {
       name: 'Does Moaiy process plaintext on a remote server?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Moaiy is designed to encrypt files locally on your Mac.',
+        text: 'No. Moaiy encrypts and decrypts all files locally on your Mac without uploading plaintext to the cloud.',
       },
     },
   ],
@@ -104,18 +104,18 @@ const docsFaqSchema: SeoSchema = {
 
 export const pageSeo: Record<string, SeoPageConfig> = {
   home: {
-    title: 'Moaiy | Simple File Encryption for macOS',
+    title: 'Moaiy | Drag-and-Drop File Encryption for macOS',
     description:
-      'Encrypt files on macOS with drag and drop. Moaiy is free, open source, and built for local privacy.',
+      'Encrypt files on macOS with drag and drop—no command line needed. Moaiy is free, open source, and built for local privacy.',
     canonicalPath: '/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'home',
     schema: [organizationSchema, softwareApplicationSchema],
   },
   features: {
-    title: 'Moaiy Features | Simple and Private File Encryption',
+    title: 'Moaiy Features | Native macOS Drag-and-Drop Encryption',
     description:
-      'See how Moaiy helps you encrypt files on macOS with clear steps, open-source code, and easy verification.',
+      'Explore Moaiy on macOS: drag-and-drop OpenPGP encryption, recipient and password modes, visual key management, and smart card support.',
     canonicalPath: '/features/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'features',
@@ -127,9 +127,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   security: {
-    title: 'Moaiy Security | How Your Files Stay Protected',
+    title: 'Moaiy Security | How Your Files Stay Protected Locally',
     description:
-      'Read a plain-language security summary, then review technical details, reporting steps, and current status.',
+      'Read a plain-language security summary, then review local encryption principles, release verification, and vulnerability reporting.',
     canonicalPath: '/security/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'security',
@@ -141,9 +141,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   docs: {
-    title: 'Moaiy Docs | Simple Guides for Encrypting Files',
+    title: 'Moaiy Docs | Visual Guides for Encrypting Files on macOS',
     description:
-      'Follow step-by-step guides to install Moaiy, encrypt and decrypt files, and verify downloads on macOS.',
+      'Follow simple visual guides to install Moaiy on macOS, manage keys, drag and drop files to encrypt or decrypt, and verify downloads.',
     canonicalPath: '/docs/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'docs',
@@ -156,9 +156,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   download: {
-    title: 'Download Moaiy | Official macOS Release',
+    title: 'Download Moaiy | Official macOS App Release',
     description:
-      'Download Moaiy for macOS from the official GitHub Releases page and verify the file before installing.',
+      'Download the official Moaiy macOS app from GitHub Releases and verify the installer before opening.',
     canonicalPath: '/download/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'download',
@@ -170,9 +170,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   about: {
-    title: 'About Moaiy | Simple, Open-Source File Protection',
+    title: 'About Moaiy | Simple, Open-Source File Protection for Mac',
     description:
-      'Learn about Moaiy and its goal: making file encryption simple, transparent, and accessible to everyone.',
+      'Learn the story behind Moaiy and our mission to make local OpenPGP file encryption effortless, visual, and transparent on macOS.',
     canonicalPath: '/about/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'about',
@@ -185,7 +185,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
   },
   privacy: {
     title: 'Privacy Policy - Moaiy',
-    description: 'Privacy policy for moaiy.com and support channels.',
+    description: 'Privacy policy for moaiy.com and official support channels.',
     canonicalPath: '/privacy/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'privacy',
@@ -204,7 +204,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
   },
   terms: {
     title: 'Terms - Moaiy',
-    description: 'Terms for using moaiy.com resources and releases.',
+    description: 'Terms for using moaiy.com resources and open-source releases.',
     canonicalPath: '/terms/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'terms',
@@ -222,9 +222,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   roadmap: {
-    title: 'Moaiy Roadmap | What Is Available and What Is Next',
+    title: 'Moaiy Roadmap | Shipped Features and Upcoming Milestones',
     description:
-      'See what Moaiy offers today and what features are planned next.',
+      'See what Moaiy offers on macOS today and what capabilities are in progress or planned next.',
     canonicalPath: '/roadmap/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'roadmap',
@@ -236,9 +236,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   securityWhitepaper: {
-    title: 'Moaiy Security Whitepaper (Draft) | Technical Details',
+    title: 'Moaiy Security Whitepaper (Draft) | Threat Model & Controls',
     description:
-      'Read the technical draft covering threat assumptions, security controls, and vulnerability reporting.',
+      'Read the technical draft covering local threat assumptions, security controls, and coordinated vulnerability reporting.',
     canonicalPath: '/security-whitepaper/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'security-whitepaper',
@@ -250,9 +250,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   releaseNotes: {
-    title: 'Moaiy Release Notes | What Changed',
+    title: 'Moaiy Release Notes | Product & Site Milestones',
     description:
-      'See recent Moaiy updates and visit official release downloads.',
+      'Review recent Moaiy product and documentation milestones and access official macOS downloads on GitHub Releases.',
     canonicalPath: '/release-notes/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'release-notes',
@@ -264,9 +264,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   verification: {
-    title: 'Moaiy Verification Guide | Check Downloads Before Install',
+    title: 'Moaiy Verification Guide | Check macOS Downloads Before Install',
     description:
-      'Learn how to verify checksums and signatures so you can install Moaiy safely.',
+      'Learn how to verify SHA-256 checksums and signatures before installing Moaiy on your Mac.',
     canonicalPath: '/verification/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'verification',
@@ -278,9 +278,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   encryptFilesOnMacos: {
-    title: 'Encrypt Files on macOS with Moaiy | Step-by-Step Guide',
+    title: 'Encrypt Files on macOS with Moaiy | Visual Drag-and-Drop Guide',
     description:
-      'Simple steps to encrypt files on your Mac, manage keys, and share encrypted files safely.',
+      'Encrypt files on your Mac in seconds with drag and drop, visual key management, and zero command-line setup.',
     canonicalPath: '/encrypt-files-on-macos/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'encrypt-files-on-macos',
@@ -292,9 +292,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   openpgpMadeSimple: {
-    title: 'OpenPGP Made Simple | Beginner Guide with Moaiy',
+    title: 'OpenPGP Made Simple | Visual Beginner Guide with Moaiy',
     description:
-      'Learn OpenPGP basics in plain language and apply them with Moaiy.',
+      'Understand public keys, private keys, and passphrases in plain language and use them visually on macOS with Moaiy.',
     canonicalPath: '/openpgp-made-simple/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'openpgp-made-simple',
@@ -306,9 +306,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   gpgToolsAlternative: {
-    title: 'Moaiy vs GPG Tools | Easier File Encryption',
+    title: 'Moaiy vs GPG Tools | Simpler macOS File Encryption',
     description:
-      'Compare Moaiy with classic GPG workflows and see which is easier for everyday use.',
+      'Compare Moaiy’s native macOS drag-and-drop interface with traditional GPG suites and command-line workflows.',
     canonicalPath: '/gpg-tools-alternative/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'gpg-tools-alternative',
@@ -320,16 +320,16 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   smartcardEncryptionGuide: {
-    title: 'Smartcard Encryption Guide | Hardware-Backed OpenPGP Workflows',
+    title: 'Smart Card Encryption Guide | Hardware-Backed OpenPGP on macOS',
     description:
-      'Learn practical smartcard and hardware token workflows for local file encryption, backup, and recovery.',
+      'Learn practical smart card and hardware token workflows for local file encryption, backup, and recovery on macOS.',
     canonicalPath: '/smartcard-encryption-guide/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'smartcard-encryption-guide',
     schema: [
       breadcrumbSchema([
         { name: 'Home', path: '/' },
-        { name: 'Smartcard Encryption Guide', path: '/smartcard-encryption-guide/' },
+        { name: 'Smart Card Encryption Guide', path: '/smartcard-encryption-guide/' },
       ]),
     ],
   },

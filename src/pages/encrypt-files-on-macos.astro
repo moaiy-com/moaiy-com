@@ -15,13 +15,15 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
       <PageHero
         centered={false}
         title="Encrypt files on macOS with Moaiy"
-        subtitle="A compact workflow for key generation, encryption, and trusted distribution."
+        subtitle="A visual, drag-and-drop workflow for locking sensitive files, managing keys, and sharing safely—with zero terminal commands."
       />
 
       <section class="space-y-5">
         <Panel as="article" tone="strong" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Get a trusted build</h2>
-          <p class="mt-3 text-sm leading-relaxed text-text-secondary">Download only from official GitHub Releases.</p>
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Install the official macOS app</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Download the latest Moaiy release for macOS from official GitHub Releases and move <strong>Moaiy.app</strong> to your Applications folder.
+          </p>
           <a
             href={releaseUrl}
             target="_blank"
@@ -34,32 +36,31 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         </Panel>
 
         <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Generate a key pair</h2>
-          <div class="code-block">
-            <div><span class="text-accent-primary">$</span> moaiy key generate</div>
-          </div>
-        </Panel>
-
-        <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Encrypt a file</h2>
-          <div class="code-block">
-            <div><span class="text-accent-primary">$</span> moaiy encrypt contracts.zip --recipient partner@example.com</div>
-            <div><span class="text-accent-primary">$</span> moaiy encrypt contracts.zip --password</div>
-          </div>
-        </Panel>
-
-        <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Verify and share</h2>
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Set up your keys in Key Manager</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Verify release checksums, then share encrypted artifacts through your preferred channel.
+            Open Moaiy and create your personal OpenPGP key pair in a few clicks, or import the public key of the colleague or client you want to share files with.
           </p>
-          <a href="/verification/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">Read verification guide</a>
+        </Panel>
+
+        <Panel as="article" class="p-6 md:p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Drag, drop, and encrypt</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Drag your file (for example, <code>contracts.zip</code>) directly into the Moaiy window. Choose <strong>Recipient Mode</strong> to lock it for specific public keys, or <strong>Password Mode</strong> to protect it with a shared passphrase, then click <strong>Encrypt</strong>.
+          </p>
+        </Panel>
+
+        <Panel as="article" class="p-6 md:p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Share encrypted files anywhere</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Because encryption happens locally on your Mac before the file ever leaves your drive, you can safely send the resulting <code>.gpg</code> file over email, chat, or cloud storage.
+          </p>
+          <a href="/verification/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">Read download verification guide</a>
         </Panel>
       </section>
 
       <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <LinkCard href="/docs/" title="Full Docs" description="Expanded command patterns and FAQs." />
-        <LinkCard href="/gpg-tools-alternative/" title="Compare Alternatives" description="Evaluate complexity versus classic GPG tools." />
+        <LinkCard href="/docs/" title="Full Docs" description="Visual step-by-step guides and FAQs." />
+        <LinkCard href="/gpg-tools-alternative/" title="Compare Alternatives" description="See how Moaiy compares with traditional GPG tools." />
       </section>
     </div>
   </main>

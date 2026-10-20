@@ -13,49 +13,49 @@ const seo = pageSeo.roadmap;
     <div class="page-container-narrow">
       <PageHero
         title="Moaiy roadmap"
-        subtitle="See what is available today and what we are building next."
+        subtitle="See what is available in Moaiy on macOS today and what capabilities we are building next."
       />
 
       <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">How to read this page</h2>
         <ul class="list-compact">
-          <li><span class="font-semibold text-accent-primary">Published</span>: available now on the official release page.</li>
-          <li><span class="font-semibold text-accent-primary">In progress</span>: actively being worked on.</li>
-          <li><span class="font-semibold text-accent-primary">Planned</span>: not started or not released yet.</li>
+          <li><span class="font-semibold text-accent-primary">Published</span>: available now in the official macOS release or documentation.</li>
+          <li><span class="font-semibold text-accent-primary">In progress</span>: actively being designed, refined, or tested.</li>
+          <li><span class="font-semibold text-accent-primary">Planned</span>: on the product backlog for future releases.</li>
         </ul>
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Milestones</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Product milestones</h2>
         <div class="mt-6 overflow-x-auto">
           <table class="w-full min-w-[540px] text-left text-sm text-text-secondary">
             <thead>
               <tr class="border-b border-line-subtle text-text-primary">
-                <th class="py-3 pr-4 font-heading">Milestone</th>
+                <th class="py-3 pr-4 font-heading">Capability</th>
                 <th class="px-4 py-3 font-heading">Status</th>
-                <th class="px-4 py-3 font-heading">Window</th>
+                <th class="px-4 py-3 font-heading">Notes</th>
               </tr>
             </thead>
             <tbody>
               <tr class="border-b border-line-strong">
-                <td class="py-3 pr-4">Step-by-step docs and verification pages</td>
+                <td class="py-3 pr-4">Native macOS drag-and-drop encryption & visual keyring</td>
                 <td class="px-4 py-3 text-accent-primary">Published</td>
-                <td class="px-4 py-3">March 2026</td>
+                <td class="px-4 py-3">Recipient public-key mode and shared password mode</td>
               </tr>
               <tr class="border-b border-line-strong">
-                <td class="py-3 pr-4">More regular release-note updates</td>
+                <td class="py-3 pr-4">Release verification & smart card setup guides</td>
+                <td class="px-4 py-3 text-accent-primary">Published</td>
+                <td class="px-4 py-3">SHA-256 verification and hardware token best practices</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4">Streamlined batch folder & Finder integration</td>
                 <td class="px-4 py-3">In progress</td>
-                <td class="px-4 py-3">Q2 2026</td>
-              </tr>
-              <tr class="border-b border-line-strong">
-                <td class="py-3 pr-4">Support for more platforms</td>
-                <td class="px-4 py-3">Planned</td>
-                <td class="px-4 py-3">Q2-Q3 2026</td>
+                <td class="px-4 py-3">Faster multi-file packaging and macOS desktop shortcuts</td>
               </tr>
               <tr>
-                <td class="py-3 pr-4">Public API docs</td>
+                <td class="py-3 pr-4">Cross-platform desktop builds (Windows & Linux)</td>
                 <td class="px-4 py-3">Planned</td>
-                <td class="px-4 py-3">After core release stabilization</td>
+                <td class="px-4 py-3">Scheduled after core macOS experience stabilization</td>
               </tr>
             </tbody>
           </table>
@@ -63,8 +63,8 @@ const seo = pageSeo.roadmap;
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/download/" title="Download" description="Current official download page." />
-        <LinkCard href="/release-notes/" title="Release Notes" description="Recent updates and release history." />
+        <LinkCard href="/download/" title="Download" description="Current official macOS download page." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Recent milestones and release history." />
         <LinkCard href="/security/" title="Security" description="Plain-language summary and technical details." />
       </section>
     </div>
