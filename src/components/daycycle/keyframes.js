@@ -7,7 +7,7 @@ export const DAY_LENGTH_SECONDS = 100;
  * Keyframes along the 0..1 day axis. Every keyframe holds the same param set.
  * Directions are world-space unit-ish vectors (+x = east/right, -x = west/left,
  * +y = up, +z = towards the camera / south). They are normalised after blending.
- * cloudiness / rain / lightning are consumed in STEP 2 (storm system).
+ * cloudiness / rain / lightning drive the storm layers (sky clouds, lightning, GPU rain).
  */
 export const DAY_KEYFRAMES = [
   {
@@ -27,7 +27,7 @@ export const DAY_KEYFRAMES = [
     fogColor: '#d3d5d2',
     fogDensity: 0.16,
     mistOpacity: 0.55,
-    cloudiness: 0.3,
+    cloudiness: 0.2,
     rain: 0,
     lightning: 0,
     starOpacity: 0,
@@ -77,7 +77,7 @@ export const DAY_KEYFRAMES = [
     fogColor: '#b4d4ee',
     fogDensity: 0.012,
     mistOpacity: 0,
-    cloudiness: 0.15,
+    cloudiness: 0.1,
     rain: 0,
     lightning: 0,
     starOpacity: 0,
@@ -127,7 +127,7 @@ export const DAY_KEYFRAMES = [
     fogColor: '#151d36',
     fogDensity: 0.02,
     mistOpacity: 0,
-    cloudiness: 0.1,
+    cloudiness: 0,
     rain: 0,
     lightning: 0,
     starOpacity: 1,
@@ -152,7 +152,7 @@ export const DAY_KEYFRAMES = [
     fogColor: '#7e8394',
     fogDensity: 0.11,
     mistOpacity: 0.35,
-    cloudiness: 0.25,
+    cloudiness: 0.1,
     rain: 0,
     lightning: 0,
     starOpacity: 0.35,
