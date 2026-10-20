@@ -29,15 +29,32 @@ export interface SeoPageConfig {
 }
 
 const SITE_URL = 'https://moaiy.com';
-const DEFAULT_OG_IMAGE = '/og-image.svg';
+const DEFAULT_OG_IMAGE = '/og-image.png';
+const BRAND_LOGO = '/moaiy_logo.png';
 
 const organizationSchema: SeoSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Moaiy',
   url: SITE_URL,
-  logo: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+  logo: `${SITE_URL}${BRAND_LOGO}`,
+  description:
+    'Open-source project building Moaiy, a native macOS app for drag-and-drop OpenPGP file encryption.',
+  email: 'support@moaiy.com',
   sameAs: ['https://github.com/moaiy-com/moaiy', 'https://x.com/moaiycom'],
+};
+
+const webSiteSchema: SeoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Moaiy',
+  url: SITE_URL,
+  inLanguage: 'en-US',
+  publisher: {
+    '@type': 'Organization',
+    name: 'Moaiy',
+    url: SITE_URL,
+  },
 };
 
 const softwareApplicationSchema: SeoSchema = {
@@ -45,7 +62,10 @@ const softwareApplicationSchema: SeoSchema = {
   '@type': 'SoftwareApplication',
   name: 'Moaiy',
   applicationCategory: 'SecurityApplication',
+  applicationSubCategory: 'File Encryption Software',
   operatingSystem: 'macOS',
+  isAccessibleForFree: true,
+  license: 'https://opensource.org/licenses/MIT',
   offers: {
     '@type': 'Offer',
     price: '0',
@@ -54,8 +74,22 @@ const softwareApplicationSchema: SeoSchema = {
   softwareVersion: 'Active development',
   url: SITE_URL,
   downloadUrl: 'https://github.com/moaiy-com/moaiy/releases',
+  image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
+  author: {
+    '@type': 'Organization',
+    name: 'Moaiy',
+    url: SITE_URL,
+  },
+  featureList: [
+    'Drag-and-drop OpenPGP file encryption and decryption on macOS',
+    'Recipient Mode (public-key encryption) and Password Mode (symmetric passphrase encryption)',
+    'Visual OpenPGP Key Manager for generating, importing, and exporting keys without terminal commands',
+    'OpenPGP smart card and hardware security key (YubiKey) support',
+    '100% local processing on your Mac with zero cloud uploads',
+    'Free and open-source under the MIT License',
+  ],
   description:
-    'Moaiy is a free and open-source native macOS app for drag-and-drop OpenPGP file encryption.',
+    'Moaiy is a free and open-source native macOS app for drag-and-drop OpenPGP file encryption and decryption.',
 };
 
 function breadcrumbSchema(entries: Array<{ name: string; path: string }>): SeoSchema {
@@ -68,6 +102,35 @@ function breadcrumbSchema(entries: Array<{ name: string; path: string }>): SeoSc
       name: entry.name,
       item: `${SITE_URL}${entry.path}`,
     })),
+  };
+}
+
+function techArticleSchema(params: {
+  headline: string;
+  description: string;
+  path: string;
+}): SeoSchema {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'TechArticle',
+    headline: params.headline,
+    description: params.description,
+    url: `${SITE_URL}${params.path}`,
+    inLanguage: 'en-US',
+    author: {
+      '@type': 'Organization',
+      name: 'Moaiy',
+      url: SITE_URL,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Moaiy',
+      url: SITE_URL,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${SITE_URL}${BRAND_LOGO}`,
+      },
+    },
   };
 }
 
@@ -85,10 +148,18 @@ const docsFaqSchema: SeoSchema = {
     },
     {
       '@type': 'Question',
+      name: 'Do I need to use the Terminal or command line to use Moaiy?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'No. Moaiy is designed around a clean graphical interface on macOS—key creation, file encryption, and decryption are all handled visually.',
+      },
+    },
+    {
+      '@type': 'Question',
       name: 'How can I download Moaiy safely?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Download only from the official GitHub Releases page and verify checksums before installing.',
+        text: 'Download only from the official GitHub Releases page and verify SHA-256 checksums before installing.',
       },
     },
     {
@@ -102,6 +173,29 @@ const docsFaqSchema: SeoSchema = {
   ],
 };
 
+const gpgAlternativeFaqSchema: SeoSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'How is Moaiy different from traditional GPG tools on macOS?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Moaiy focuses on a lightweight, standalone macOS drag-and-drop window with a visual keyring and both recipient and password encryption modes, without requiring terminal commands, background daemons, or invasive Mail plugins.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Is Moaiy free and open source?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Moaiy is 100% free and distributed under the MIT License with public source code on GitHub.',
+      },
+    },
+  ],
+};
+
 export const pageSeo: Record<string, SeoPageConfig> = {
   home: {
     title: 'Moaiy | Drag-and-Drop File Encryption for macOS',
@@ -110,7 +204,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     canonicalPath: '/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'home',
-    schema: [organizationSchema, softwareApplicationSchema],
+    schema: [organizationSchema, webSiteSchema, softwareApplicationSchema],
   },
   features: {
     title: 'Moaiy Features | Native macOS Drag-and-Drop Encryption',
@@ -124,6 +218,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Features', path: '/features/' },
       ]),
+      softwareApplicationSchema,
     ],
   },
   security: {
@@ -138,6 +233,12 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Security', path: '/security/' },
       ]),
+      techArticleSchema({
+        headline: 'Moaiy Security Model and Vulnerability Reporting Policy',
+        description:
+          'Plain-language summary and technical overview of Moaiy local file encryption security, release verification, and coordinated disclosure.',
+        path: '/security/',
+      }),
     ],
   },
   docs: {
@@ -167,6 +268,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Download', path: '/download/' },
       ]),
+      softwareApplicationSchema,
     ],
   },
   about: {
@@ -181,6 +283,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'About', path: '/about/' },
       ]),
+      organizationSchema,
     ],
   },
   privacy: {
@@ -247,6 +350,12 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Security Whitepaper', path: '/security-whitepaper/' },
       ]),
+      techArticleSchema({
+        headline: 'Moaiy Security Whitepaper (Draft)',
+        description:
+          'Technical summary of threat model assumptions, control priorities, and vulnerability disclosure for Moaiy on macOS.',
+        path: '/security-whitepaper/',
+      }),
     ],
   },
   releaseNotes: {
@@ -275,6 +384,12 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Verification', path: '/verification/' },
       ]),
+      techArticleSchema({
+        headline: 'How to Verify Moaiy macOS Downloads with SHA-256 Checksums and Signatures',
+        description:
+          'Step-by-step verification checklist for checking SHA-256 hashes and PGP signatures before installing Moaiy on macOS.',
+        path: '/verification/',
+      }),
     ],
   },
   encryptFilesOnMacos: {
@@ -289,6 +404,12 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Encrypt Files on macOS', path: '/encrypt-files-on-macos/' },
       ]),
+      techArticleSchema({
+        headline: 'How to Encrypt Files on macOS with Drag and Drop Using Moaiy',
+        description:
+          'Visual 4-step workflow for encrypting files on macOS with recipient public keys or shared passwords in Moaiy.',
+        path: '/encrypt-files-on-macos/',
+      }),
     ],
   },
   openpgpMadeSimple: {
@@ -303,6 +424,12 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'OpenPGP Made Simple', path: '/openpgp-made-simple/' },
       ]),
+      techArticleSchema({
+        headline: 'OpenPGP Made Simple: Visual Guide to Public Keys, Private Keys, and Passphrases',
+        description:
+          'Beginner-friendly guide to OpenPGP concepts and how to use them visually on macOS without terminal commands.',
+        path: '/openpgp-made-simple/',
+      }),
     ],
   },
   gpgToolsAlternative: {
@@ -317,6 +444,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'GPG Tools Alternative', path: '/gpg-tools-alternative/' },
       ]),
+      gpgAlternativeFaqSchema,
     ],
   },
   smartcardEncryptionGuide: {
@@ -331,6 +459,12 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Home', path: '/' },
         { name: 'Smart Card Encryption Guide', path: '/smartcard-encryption-guide/' },
       ]),
+      techArticleSchema({
+        headline: 'Smart Card Encryption Guide: Using OpenPGP Hardware Tokens with Moaiy on macOS',
+        description:
+          'Best practices for pairing YubiKey and OpenPGP smart cards with Moaiy on macOS, including PIN management and recovery planning.',
+        path: '/smartcard-encryption-guide/',
+      }),
     ],
   },
 };

@@ -2,6 +2,7 @@ const DEFAULT_URLS = [
   'https://moaiy.com/robots.txt',
   'https://moaiy.com/sitemap.xml',
   'https://moaiy.com/sitemap-index.xml',
+  'https://moaiy.com/llms.txt',
   'https://moaiy.com/download/',
 ];
 
@@ -121,4 +122,3 @@ async function main() {
 }
 
 await main();
-

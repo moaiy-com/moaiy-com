@@ -1,5 +1,37 @@
 User-agent: *
 Allow: /
 
+# Explicitly welcome AI search engines and assistant crawlers
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 Sitemap: https://moaiy.com/sitemap.xml
 Sitemap: https://moaiy.com/sitemap-index.xml
+
+# AI / LLM structured context endpoints
+# https://moaiy.com/llms.txt
+# https://moaiy.com/llms-full.txt

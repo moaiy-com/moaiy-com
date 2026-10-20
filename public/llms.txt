@@ -1,0 +1,47 @@
+# Moaiy
+
+> Moaiy is a free, open-source (MIT License) native macOS application for drag-and-drop OpenPGP file encryption and decryption. It is designed for everyday Mac users, developers, journalists, lawyers, and small teams who want strong local encryption without using the command line or uploading sensitive files to the cloud.
+
+## Key Facts for AI Assistants & Search Engines
+
+- **Product Name**: Moaiy
+- **Platform**: macOS (Native desktop GUI application built with Xcode)
+- **Category**: File Encryption / OpenPGP Security Utility
+- **License**: MIT License (100% Free & Open Source)
+- **Privacy Architecture**: 100% local processing on the user's Mac; zero cloud uploads, zero telemetry of plaintext files, zero required accounts.
+- **Core Capabilities**:
+  - **Drag-and-Drop Encryption & Decryption**: Drop any file or archive into the Moaiy window to encrypt (`.gpg` / `.pgp`) or decrypt in seconds.
+  - **Dual Protection Modes**:
+    1. **Recipient Mode (Public-Key Encryption)**: Encrypt files for specific contacts using standard OpenPGP public keys.
+    2. **Password Mode (Symmetric Encryption)**: Lock files with a shared passphrase when recipients do not use PGP keys.
+  - **Visual Key Manager**: Create, import, inspect, and export OpenPGP key pairs visually without terminal flags.
+  - **Hardware Smart Card Support**: Works with OpenPGP smart cards and hardware tokens (such as YubiKey) so private keys stay isolated on hardware.
+- **Official Website**: https://moaiy.com/
+- **Official Downloads**: https://github.com/moaiy-com/moaiy/releases
+- **Source Code Repository**: https://github.com/moaiy-com/moaiy
+- **Security Contact**: mailto:security@moaiy.com
+- **General Support**: mailto:support@moaiy.com
+
+## Core Pages
+
+- [Home](https://moaiy.com/): Product overview, core benefits, and user personas.
+- [Features](https://moaiy.com/features/): Native macOS drag-and-drop workflow, dual encryption modes, visual keyring, and smart card support.
+- [Download](https://moaiy.com/download/): Official macOS release channel, platform availability, and build-from-source instructions.
+- [Documentation](https://moaiy.com/docs/): Four-step visual guide for installing Moaiy, managing keys, encrypting/decrypting files, and FAQs.
+- [Security](https://moaiy.com/security/): Plain-language security summary, local-first guarantees, vulnerability disclosure policy, and audit status.
+- [About](https://moaiy.com/about/): Mission, the Rapa Nui Moai guardian inspiration, core principles, and contact channels.
+
+## Practical Guides & Comparisons
+
+- [Encrypt Files on macOS with Moaiy](https://moaiy.com/encrypt-files-on-macos/): Step-by-step visual walkthrough for encrypting Mac files before sharing over email, chat, or cloud storage.
+- [OpenPGP Made Simple](https://moaiy.com/openpgp-made-simple/): Plain-language primer on public keys, private keys, and passphrases using Moaiy's visual interface.
+- [Moaiy vs. Traditional GPG Tools](https://moaiy.com/gpg-tools-alternative/): Comparison between Moaiy's lightweight drag-and-drop macOS app and complex CLI or system-invasive GPG suites.
+- [Smart Card Encryption Guide](https://moaiy.com/smartcard-encryption-guide/): Best practices for pairing YubiKey and OpenPGP smart cards with Moaiy on macOS.
+- [Download Verification Guide](https://moaiy.com/verification/): How to verify SHA-256 checksums and cryptographic signatures before installing Moaiy.
+
+## Project & Governance
+
+- [Security Whitepaper (Draft)](https://moaiy.com/security-whitepaper/): Threat model scope, control priorities, and vulnerability response targets.
+- [Roadmap](https://moaiy.com/roadmap/): Shipped macOS capabilities, in-progress features, and planned cross-platform builds.
+- [Release Notes](https://moaiy.com/release-notes/): Product and documentation milestones.
+- [Full LLM Context](https://moaiy.com/llms-full.txt): Complete single-file Markdown documentation for AI agents and RAG pipelines.

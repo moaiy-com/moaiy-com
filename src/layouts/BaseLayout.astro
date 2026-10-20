@@ -19,7 +19,7 @@ const {
   title,
   description,
   canonicalPath,
-  ogImage = '/og-image.svg',
+  ogImage = '/og-image.png',
   robots = 'index, follow',
   schema = [],
   currentPage = '',
@@ -36,6 +36,11 @@ const normalizedPath =
   canonicalPath === '/' ? '/' : canonicalPath.endsWith('/') ? canonicalPath : `${canonicalPath}/`;
 const canonicalUrl = new URL(normalizedPath, siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteUrl).toString();
+const ogImageType = ogImage.endsWith('.png')
+  ? 'image/png'
+  : ogImage.endsWith('.svg')
+    ? 'image/svg+xml'
+    : 'image/jpeg';
 
 const X_URL = 'https://x.com/moaiycom';
 const GITHUB_URL = 'https://github.com/moaiy-com/moaiy';
@@ -47,7 +52,18 @@ const footerLinks = [
   { href: '/docs/', label: 'Docs' },
   { href: '/security/', label: 'Security' },
   { href: '/features/', label: 'Features' },
+  { href: '/roadmap/', label: 'Roadmap' },
+  { href: '/release-notes/', label: 'Release Notes' },
   { href: '/about/', label: 'About' },
+];
+
+const guideLinks = [
+  { href: '/encrypt-files-on-macos/', label: 'Encrypt Files on macOS' },
+  { href: '/openpgp-made-simple/', label: 'OpenPGP Made Simple' },
+  { href: '/gpg-tools-alternative/', label: 'Moaiy vs GPG Tools' },
+  { href: '/smartcard-encryption-guide/', label: 'Smart Card Guide' },
+  { href: '/verification/', label: 'Verify Downloads' },
+  { href: '/security-whitepaper/', label: 'Security Whitepaper' },
 ];
 
 const policyLinks = [
@@ -65,6 +81,8 @@ const policyLinks = [
     <meta name="robots" content={robots} />
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="LLM Context" />
+    <link rel="alternate" type="text/plain" href="/llms-full.txt" title="Full LLM Context" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#ffffff" />
 
@@ -77,13 +95,17 @@ const policyLinks = [
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:alt" content="Moaiy open-source encryption project" />
+    <meta property="og:image:type" content={ogImageType} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Moaiy — Drag-and-Drop OpenPGP File Encryption for macOS" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@moaiycom" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content="Moaiy — Drag-and-Drop OpenPGP File Encryption for macOS" />
 
     {schema.map((entry) => (
       <script type="application/ld+json" set:html={JSON.stringify(entry)} />
@@ -138,7 +160,7 @@ const policyLinks = [
     </div>
     <footer class="border-t border-line-strong/70 bg-bg-primary/90">
       <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 gap-8 md:grid-cols-[1.3fr_1fr_1fr]">
+        <div class="grid grid-cols-1 gap-8 md:grid-cols-[1.3fr_0.9fr_1.1fr_0.9fr]">
           <div>
             <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Moaiy</h2>
             <p class="max-w-md text-sm text-text-secondary">
@@ -149,9 +171,22 @@ const policyLinks = [
             </p>
           </div>
           <div>
-            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Core</h2>
+            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Product</h2>
             <div class="flex flex-col gap-2">
               {footerLinks.map((link) => (
+                <a
+                  href={link.href}
+                  class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+          </div>
+          <div>
+            <h2 class="mb-3 font-heading text-lg font-semibold text-text-primary">Guides & Comparisons</h2>
+            <div class="flex flex-col gap-2">
+              {guideLinks.map((link) => (
                 <a
                   href={link.href}
                   class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
@@ -198,6 +233,12 @@ const policyLinks = [
                   {link.label}
                 </a>
               ))}
+              <a
+                href="/llms.txt"
+                class="w-fit text-sm text-text-secondary transition-colors hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              >
+                LLMs.txt (AI Context)
+              </a>
             </div>
           </div>
         </div>
