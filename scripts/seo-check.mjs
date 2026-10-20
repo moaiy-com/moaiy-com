@@ -118,6 +118,18 @@ async function main() {
   if (!existsSync(path.join(distRoot, 'sitemap-index.xml'))) {
     issues.push('dist/sitemap-index.xml is missing');
   }
+  if (!existsSync(path.join(distRoot, 'llms.txt'))) {
+    issues.push('dist/llms.txt is missing');
+  }
+  if (!existsSync(path.join(distRoot, 'llms-full.txt'))) {
+    issues.push('dist/llms-full.txt is missing');
+  }
+  if (!existsSync(path.join(distRoot, '.well-known/security.txt'))) {
+    issues.push('dist/.well-known/security.txt is missing');
+  }
+  if (!existsSync(path.join(distRoot, 'og-image.png'))) {
+    issues.push('dist/og-image.png is missing');
+  }
 
   const htmlFiles = await walkHtmlFiles(distRoot);
 
@@ -125,6 +137,8 @@ async function main() {
   const descriptions = new Map();
   const canonicalUrls = new Map();
   const ogUrls = new Map();
+  const indexableRoutes = new Set();
+  const inboundInternalLinks = new Map();
 
   for (const filePath of htmlFiles) {
     const relative = toPosix(path.relative(repoRoot, filePath));
@@ -140,6 +154,8 @@ async function main() {
     const jsonLdCount = (content.match(/<script[^>]*type="application\/ld\+json"/gi) || []).length;
 
     if (indexable) {
+      indexableRoutes.add(route);
+
       if (!title) {
         issues.push(`${relative}: missing <title>`);
       }
@@ -212,6 +228,14 @@ async function main() {
       if (href.startsWith('/')) {
         if (!checkInternalTarget(href)) {
           issues.push(`${relative}: internal link target not found for ${href}`);
+        } else {
+          const normalizedTarget = normalizeLink(href);
+          if (normalizedTarget && normalizedTarget !== route) {
+            inboundInternalLinks.set(
+              normalizedTarget,
+              (inboundInternalLinks.get(normalizedTarget) ?? 0) + 1,
+            );
+          }
         }
         continue;
       }
@@ -230,6 +254,15 @@ async function main() {
       }
 
       issues.push(`${relative}: unsupported href format ${href}`);
+    }
+  }
+
+  for (const route of indexableRoutes) {
+    if (route === '/') {
+      continue;
+    }
+    if ((inboundInternalLinks.get(route) ?? 0) < 1) {
+      issues.push(`Orphan indexable route detected (0 incoming internal links): ${route}`);
     }
   }
 
