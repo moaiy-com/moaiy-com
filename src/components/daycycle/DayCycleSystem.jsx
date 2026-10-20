@@ -56,6 +56,33 @@ float fbm(vec2 p) {
   return v;
 }
 
+vec3 hash33(vec3 p) {
+  p = fract(p * vec3(0.1031, 0.1030, 0.0973));
+  p += dot(p, p.yxz + 33.33);
+  return fract((p.xxy + p.yxx) * p.zyx);
+}
+
+vec3 starLayer(vec3 dir, float scale, float density, float horizonTw, float seed) {
+  vec3 p = dir * scale;
+  vec3 cell = floor(p);
+  vec3 r = hash33(cell + seed);
+  if (r.x < density) return vec3(0.0);
+  // Centre jittered but kept inside the cell so no star is cut at a cell edge.
+  vec3 center = cell + 0.5 + (hash33(cell + seed + 17.0) - 0.5) * 0.5;
+  float d = length(p - center);
+  float u = (r.x - density) / (1.0 - density);
+  float mag = pow(u, 6.0);
+  float radius = 0.06 + 0.16 * mag;
+  float core = exp(-d * d / (radius * radius));
+  float bright = 0.06 + 2.4 * mag;
+  vec3 tint = mix(vec3(0.72, 0.82, 1.0), vec3(1.0, 0.86, 0.68), r.y);
+  tint = mix(vec3(1.0), tint, 0.55);
+  float amp = (0.04 + 0.4 * horizonTw) * smoothstep(0.02, 0.4, mag);
+  float tw = 1.0 + amp * (sin(uTime * (2.0 + r.z * 5.0) + r.y * 40.0) * 0.6
+    + sin(uTime * (5.3 + r.y * 7.0) + r.z * 23.0) * 0.4);
+  return tint * core * bright * tw;
+}
+
 float hash(vec3 p) {
   p = fract(p * 0.3183099 + 0.1);
   p *= 17.0;
@@ -80,29 +107,20 @@ void main() {
   col += uGlow * pow(sunDot, 40.0) * uGlowStrength * 0.6 * sunAbove;
   col += vec3(1.0, 0.95, 0.85) * smoothstep(0.9993, 0.9997, sunDot) * sunAbove * (1.0 - uFog) * step(0.0, h);
 
-  // Twinkling stars (procedural, no textures).
-  if (uStars > 0.001 && h > 0.0) {
-    vec3 p = dir * 140.0;
-    vec3 cell = floor(p);
-    float r = hash(cell);
-    if (r > 0.965) {
-      vec3 center = cell + 0.5 + (vec3(hash(cell + 1.3), hash(cell + 2.7), hash(cell + 4.1)) - 0.5) * 0.6;
-      float d = length(p - center);
-      float tw = 0.55 + 0.45 * sin(uTime * (1.5 + r * 40.0) + r * 120.0);
-      float s = (1.0 - smoothstep(0.0, 0.32, d)) * 1.6 * tw * smoothstep(0.0, 0.02, h);
-      col += vec3(0.9, 0.95, 1.0) * s * uStars * (1.0 - uFog);
-    }
+  // Night sky: two jittered star layers with power-law magnitudes + faint milky way.
+  if (uStars > 0.001 && h > -0.02) {
+    float skyFade = uStars * smoothstep(0.0, 0.1, h) * (1.0 - uFog) * (1.0 - uCloud * 0.85);
+    float horizonTw = 1.0 - smoothstep(0.0, 0.25, h);
+    col += starLayer(dir, 95.0, 0.93, horizonTw, 0.0) * skyFade;
+    col += starLayer(dir, 230.0, 0.80, horizonTw, 7.0) * skyFade * 0.7;
+    // Milky way: soft noisy band around a tilted great circle.
+    vec3 mwN = normalize(vec3(0.35, 0.55, 0.76));
+    float band = exp(-pow(dot(dir, mwN) / 0.16, 2.0));
+    float mw = fbm(dir.xz * 7.0 + dir.y * 3.0) * fbm(dir.zy * 13.0 + 4.0);
+    col += vec3(0.55, 0.6, 0.78) * band * mw * 0.085 * skyFade;
   }
 
-  // Full moon: disc + soft halo.
-  float md = dot(dir, uMoonDir);
-  float disc = smoothstep(0.99925, 0.9995, md);
-  float halo = pow(max(md, 0.0), 400.0) * 0.45 + pow(max(md, 0.0), 60.0) * 0.06;
-  float moonVis = uMoon * smoothstep(-0.06, 0.04, h);
-  vec2 mottle = vec2(dot(dir, vec3(91.0, 13.0, 37.0)), dot(dir, vec3(17.0, 83.0, 29.0)));
-  float shade = 0.88 + 0.12 * sin(mottle.x) * sin(mottle.y);
-  col = mix(col, vec3(0.96, 0.95, 0.88) * shade, disc * moonVis * (1.0 - uFog * 0.8));
-  col += vec3(0.6, 0.7, 0.9) * halo * moonVis;
+  // Moon disc intentionally not drawn; moonlight comes from the shared directional light.
 
   // Rolling storm clouds: domain-warped fbm projected on a virtual cloud deck.
   if (uCloud > 0.001) {
