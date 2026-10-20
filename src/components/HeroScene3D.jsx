@@ -1,19 +1,33 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Clone, useGLTF } from '@react-three/drei';
 import { Component, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
-import { ACESFilmicToneMapping, Box3, PCFShadowMap, Vector3 } from 'three';
+import {
+  ACESFilmicToneMapping,
+  BufferAttribute,
+  BufferGeometry,
+  Color,
+  DoubleSide,
+  DynamicDrawUsage,
+  InstancedBufferAttribute,
+  Matrix4,
+  MeshStandardMaterial,
+  PCFShadowMap,
+  PlaneGeometry,
+  Quaternion,
+  Vector3,
+} from 'three';
+import { createDayState, sampleDay } from './daycycle/keyframes.js';
+import { useDayTime } from './daycycle/useDayTime.js';
 
 const Moai = lazy(() => import('./Moai.jsx'));
 const DayCycleSystem = lazy(() => import('./daycycle/DayCycleSystem.jsx'));
-const GRASS_MODEL_PATH = '/models/moai/realistics_grass.glb';
-const GROUND_Y = -2.45;
-const GRASS_HEIGHT_RATIO = 0.18;
-const GRASS_COVERAGE_XZ_RATIO = 1.26;
-const GRASS_SINK_Y = -1.5;
+
+const GROUND_Y = -2.14;
 const MOAI_OFFSET_X = 1.35;
+const MOAI_OFFSET_Z = 0.0;
 const SHOW_MOAI = true;
 const SHOW_DAY_CYCLE = true;
-const DAY_LIGHT_TARGET = [MOAI_OFFSET_X, GROUND_Y, 0];
+const DAY_LIGHT_TARGET = [MOAI_OFFSET_X, GROUND_Y, MOAI_OFFSET_Z];
+const GRASS_BLADE_COUNT = 22000;
 
 function resolveSafeDpr() {
   if (typeof window === 'undefined') {
@@ -71,23 +85,25 @@ class ErrorBoundary extends Component {
   render() {
     if (this.state.hasError) {
       return (
-      <div style={{ 
-          width: '100vw', 
-          height: '100vh',
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          background: '#ffffff',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: '#1768ac',
-          fontFamily: 'monospace',
-          padding: '20px'
-        }}>
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            background: '#ffffff',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#1768ac',
+            fontFamily: 'monospace',
+            padding: '20px',
+          }}
+        >
           <div>
-            <h1 style={{color: '#03256c'}}>Error Loading 3D Scene</h1>
-            <pre style={{fontSize: '12px', color: '#2541b2', maxWidth: '600px', overflow: 'auto'}}>
+            <h1 style={{ color: '#03256c' }}>Error Loading 3D Scene</h1>
+            <pre style={{ fontSize: '12px', color: '#2541b2', maxWidth: '600px', overflow: 'auto' }}>
               {this.state.error?.message || 'Unknown error'}
             </pre>
           </div>
@@ -99,502 +115,466 @@ class ErrorBoundary extends Component {
   }
 }
 
-function Flower({ position, rotationY, scale, petalColor }) {
-  const petals = useMemo(
-    () =>
-      Array.from({ length: 6 }, (_, index) => {
-        const angle = (Math.PI * 2 * index) / 6;
-        return {
-          x: Math.cos(angle) * 0.085 * scale,
-          z: Math.sin(angle) * 0.085 * scale,
-        };
-      }),
-    [scale],
-  );
-
-  return (
-    <group position={position} rotation={[0, rotationY, 0]}>
-      <mesh castShadow position={[0, 0.16 * scale, 0]}>
-        <cylinderGeometry args={[0.018 * scale, 0.024 * scale, 0.32 * scale, 12]} />
-        <meshStandardMaterial color="#4d8f35" roughness={0.92} />
-      </mesh>
-
-      {petals.map((petal, index) => (
-        <mesh
-          key={`petal-${index}`}
-          castShadow
-          position={[petal.x, 0.33 * scale, petal.z]}
-        >
-          <sphereGeometry args={[0.058 * scale, 12, 10]} />
-          <meshStandardMaterial color={petalColor} roughness={0.7} />
-        </mesh>
-      ))}
-
-      <mesh castShadow position={[0, 0.33 * scale, 0]}>
-        <sphereGeometry args={[0.048 * scale, 14, 12]} />
-        <meshStandardMaterial color="#f4be4f" roughness={0.62} metalness={0.03} />
-      </mesh>
-    </group>
-  );
+/**
+ * Deterministic pseudo-random generator so the meadow layout is stable across renders.
+ */
+function createSeededRandom(seed = 1337) {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
-function FlowerLayer() {
-  const flowers = useMemo(() => {
-    const flowerCount = Math.random() > 0.5 ? 1 : 0;
-    const petalPalette = ['#f4e8cf', '#e9dfcb', '#f2e3d8'];
+/**
+ * Shared Rapa Nui hillside heightfield.
+ * Gently rises around the Moai statue base so the stone torso sits naturally embedded
+ * in the volcanic meadow, with soft rolling undulations across the foreground and horizon.
+ */
+function getTerrainHeight(x, z) {
+  const dxMoai = x - MOAI_OFFSET_X;
+  const dzMoai = z - MOAI_OFFSET_Z;
+  const distMoaiSq = dxMoai * dxMoai + dzMoai * dzMoai;
 
-    return Array.from({ length: flowerCount }, (_, index) => {
-      const angle = Math.random() * Math.PI * 2;
-      const radius = 3.4 + Math.random() * 2.2;
+  // Gentle mound supporting the Moai statue base (peaks around -2.07 so the statue base at -2.12 is embedded)
+  const moaiMound = 0.085 * Math.exp(-distMoaiSq / 7.5);
 
-      return {
-        key: `flower-${index}`,
-        position: [Math.cos(angle) * radius, GROUND_Y + 0.02, Math.sin(angle) * radius],
-        rotationY: Math.random() * Math.PI * 2,
-        scale: 0.58 + Math.random() * 0.22,
-        petalColor: petalPalette[Math.floor(Math.random() * petalPalette.length)],
-      };
-    });
+  // Soft foreground knoll on the left to balance the composition
+  const dxLeft = x + 2.4;
+  const dzLeft = z - 0.6;
+  const leftKnoll = 0.055 * Math.exp(-(dxLeft * dxLeft + dzLeft * dzLeft) / 11.0);
+
+  // Multi-octave natural ground undulation
+  const rolling =
+    Math.sin(x * 0.42 + z * 0.31) * 0.042 +
+    Math.cos(x * 0.27 - z * 0.48 + 0.8) * 0.034 +
+    Math.sin(x * 0.85 - z * 0.72 + 1.9) * 0.014;
+
+  // Gradual slope falloff toward the distant horizon so the meadow edge blends into fog
+  const radialDist = Math.sqrt(x * x + z * z);
+  const edgeDrop = Math.max(0, radialDist - 6.5) * 0.038;
+
+  return GROUND_Y + moaiMound + leftKnoll + rolling - edgeDrop;
+}
+
+/**
+ * Builds a single 5-segment curved, tapering 3D grass blade geometry.
+ * Root is at y = 0, tip is at y = 1.
+ */
+function createGrassBladeGeometry() {
+  const segments = 5;
+  const baseHalfWidth = 0.022;
+  const positions = [];
+  const uvs = [];
+  const indices = [];
+
+  for (let i = 0; i < segments; i += 1) {
+    const t = i / segments;
+    const widthScale = Math.pow(1 - t, 0.72);
+    const halfW = baseHalfWidth * widthScale;
+    const naturalBendZ = 0.095 * t * t;
+    const midArchZ = 0.004 * (1 - t);
+
+    // Left and right vertices at this height step
+    positions.push(-halfW, t, naturalBendZ);
+    positions.push(halfW, t, naturalBendZ + midArchZ);
+
+    uvs.push(0, t);
+    uvs.push(1, t);
+  }
+
+  // Pointed blade tip at t = 1.0
+  const tipIndex = segments * 2;
+  positions.push(0, 1.0, 0.095);
+  uvs.push(0.5, 1.0);
+
+  for (let i = 0; i < segments - 1; i += 1) {
+    const bl = i * 2;
+    const br = bl + 1;
+    const tl = bl + 2;
+    const tr = bl + 3;
+
+    indices.push(bl, br, tl);
+    indices.push(br, tr, tl);
+  }
+
+  const lastL = (segments - 1) * 2;
+  const lastR = lastL + 1;
+  indices.push(lastL, lastR, tipIndex);
+
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3));
+  geometry.setAttribute('uv', new BufferAttribute(new Float32Array(uvs), 2));
+  geometry.setIndex(indices);
+
+  // Tilt normals upward so hemisphere + directional lights shade both sides smoothly without harsh dark flips
+  const vertCount = positions.length / 3;
+  const normals = new Float32Array(vertCount * 3);
+  for (let i = 0; i < vertCount; i += 1) {
+    const side = i === tipIndex ? 0 : i % 2 === 0 ? -0.18 : 0.18;
+    const nx = side;
+    const ny = 0.78;
+    const nz = 0.6;
+    const len = Math.hypot(nx, ny, nz);
+    normals[i * 3] = nx / len;
+    normals[i * 3 + 1] = ny / len;
+    normals[i * 3 + 2] = nz / len;
+  }
+  geometry.setAttribute('normal', new BufferAttribute(normals, 3));
+  geometry.computeBoundingSphere();
+
+  return geometry;
+}
+
+/**
+ * Rolling volcanic grass mound beneath the instanced grass blades.
+ */
+function TerrainMound() {
+  const terrainGeo = useMemo(() => {
+    const geo = new PlaneGeometry(30, 30, 112, 112);
+    geo.rotateX(-Math.PI / 2);
+
+    const pos = geo.attributes.position;
+    const colors = new Float32Array(pos.count * 3);
+
+    const soilDark = new Color('#1c2a17');
+    const turfMid = new Color('#2b4222');
+    const turfWarm = new Color('#364f27');
+    const tmpColor = new Color();
+
+    for (let i = 0; i < pos.count; i += 1) {
+      const x = pos.getX(i);
+      const z = pos.getZ(i);
+      const y = getTerrainHeight(x, z);
+      pos.setY(i, y);
+
+      const dxMoai = x - MOAI_OFFSET_X;
+      const dzMoai = z - MOAI_OFFSET_Z;
+      const distMoai = Math.hypot(dxMoai, dzMoai);
+
+      // Subtle contact darkening directly under the Moai statue + organic moss/turf variation
+      const moaiContactAo = Math.min(1, Math.max(0, (distMoai - 0.55) / 1.45));
+      const noiseTone = 0.5 + 0.5 * Math.sin(x * 0.7 + z * 0.9);
+      tmpColor.copy(turfMid).lerp(turfWarm, noiseTone * 0.65);
+      tmpColor.lerp(soilDark, 1 - moaiContactAo * 0.82);
+
+      colors[i * 3] = tmpColor.r;
+      colors[i * 3 + 1] = tmpColor.g;
+      colors[i * 3 + 2] = tmpColor.b;
+    }
+
+    geo.setAttribute('color', new BufferAttribute(colors, 3));
+    geo.computeVertexNormals();
+    return geo;
   }, []);
 
-  return flowers.map((flower) => (
-    <Flower
-      key={flower.key}
-      petalColor={flower.petalColor}
-      position={flower.position}
-      rotationY={flower.rotationY}
-      scale={flower.scale}
-    />
-  ));
-}
-
-function ProceduralGrassGround() {
   return (
-    <>
-      <mesh
-        position={[0, GROUND_Y, 0]}
-        receiveShadow
-        rotation={[-Math.PI / 2, 0, 0]}
-      >
-        <circleGeometry args={[9.5, 96]} />
-        <meshStandardMaterial color="#2f6f3a" metalness={0.02} roughness={0.95} />
-      </mesh>
-
-      <mesh
-        position={[0, GROUND_Y + 0.01, 0]}
-        receiveShadow
-        rotation={[-Math.PI / 2, 0, 0]}
-      >
-        <circleGeometry args={[6.2, 96]} />
-        <meshStandardMaterial color="#3f8c45" metalness={0.01} roughness={0.9} />
-      </mesh>
-    </>
+    <mesh geometry={terrainGeo} receiveShadow>
+      <meshStandardMaterial vertexColors roughness={0.96} metalness={0.01} />
+    </mesh>
   );
 }
 
-function ExternalGrassGround() {
-  const { scene } = useGLTF(GRASS_MODEL_PATH);
-  const patchRefs = useRef([]);
-  const coverageRefs = useRef([]);
-
-  const normalizedPatch = useMemo(() => {
-    const clone = scene.clone(true);
-    const rawBox = new Box3().setFromObject(clone);
-    const rawSize = new Vector3();
-    const rawCenter = new Vector3();
-    rawBox.getSize(rawSize);
-    rawBox.getCenter(rawCenter);
-
-    const span = Math.max(rawSize.x, rawSize.z, 1);
-    const scale = 8.4 / span;
-    clone.scale.setScalar(scale);
-    clone.position.set(
-      -rawCenter.x * scale,
-      GROUND_Y - rawBox.min.y * scale,
-      -rawCenter.z * scale,
-    );
-
-    clone.traverse((child) => {
-      if (!child.isMesh) {
-        return;
-      }
-
-      child.castShadow = true;
-      child.receiveShadow = true;
-
-      const materials = Array.isArray(child.material)
-        ? child.material
-        : [child.material];
-
-      for (const material of materials) {
-        if (!material) {
-          continue;
-        }
-
-        if ('roughness' in material && typeof material.roughness === 'number') {
-          material.roughness = Math.max(material.roughness, 0.78);
-        }
-
-        if ('metalness' in material && typeof material.metalness === 'number') {
-          material.metalness = Math.min(material.metalness, 0.08);
-        }
-
-        if (material.color) {
-          material.color.offsetHSL(0.01, -0.2, -0.12);
-        }
-      }
-    });
-
-    return clone;
-  }, [scene]);
-
-  const dryPatch = useMemo(() => {
-    const clone = normalizedPatch.clone(true);
-
-    clone.traverse((child) => {
-      if (!child.isMesh) {
-        return;
-      }
-
-      if (Array.isArray(child.material)) {
-        child.material = child.material.map((material) => material?.clone());
-      } else if (child.material) {
-        child.material = child.material.clone();
-      }
-
-      const materials = Array.isArray(child.material)
-        ? child.material
-        : [child.material];
-
-      for (const material of materials) {
-        if (!material) {
-          continue;
-        }
-
-        if ('roughness' in material && typeof material.roughness === 'number') {
-          material.roughness = Math.max(material.roughness, 0.86);
-        }
-
-        if ('metalness' in material && typeof material.metalness === 'number') {
-          material.metalness = Math.min(material.metalness, 0.06);
-        }
-
-        if (material.color) {
-          material.color.offsetHSL(0.08, -0.42, -0.02);
-        }
-      }
-    });
-
-    return clone;
-  }, [normalizedPatch]);
-
-  const patchLayout = useMemo(
-    () => [
-      {
-        key: 'grass-clump-a',
-        variant: 'lush',
-        position: [-0.75, GRASS_SINK_Y + 0.05, 0.92],
-        rotationY: 0.52,
-        scaleX: 0.76,
-        scaleZ: 0.49,
-        scaleY: 0.94,
-        swaySpeed: 0.58,
-        swayAmp: 0.045,
-        yawAmp: 0.03,
-        phase: 0.9,
-      },
-      {
-        key: 'grass-clump-b',
-        variant: 'lush',
-        position: [0.95, GRASS_SINK_Y + 0.03, 0.08],
-        rotationY: 1.34,
-        scaleX: 0.63,
-        scaleZ: 0.42,
-        scaleY: 0.86,
-        swaySpeed: 0.77,
-        swayAmp: 0.054,
-        yawAmp: 0.028,
-        phase: 2.3,
-      },
-      {
-        key: 'grass-clump-c',
-        variant: 'dry',
-        position: [0.22, GRASS_SINK_Y + 0.04, -0.96],
-        rotationY: 2.6,
-        scaleX: 0.58,
-        scaleZ: 0.38,
-        scaleY: 0.82,
-        swaySpeed: 0.68,
-        swayAmp: 0.05,
-        yawAmp: 0.026,
-        phase: 1.4,
-      },
-      {
-        key: 'grass-front-left',
-        variant: 'lush',
-        position: [-2.85, GRASS_SINK_Y - 0.06, 2.16],
-        rotationY: 1.98,
-        scaleX: 0.52,
-        scaleZ: 0.34,
-        scaleY: 0.78,
-        swaySpeed: 0.91,
-        swayAmp: 0.06,
-        yawAmp: 0.03,
-        phase: 3.6,
-      },
-      {
-        key: 'grass-front-right',
-        variant: 'lush',
-        position: [3.16, GRASS_SINK_Y - 0.07, 1.38],
-        rotationY: 1.02,
-        scaleX: 0.54,
-        scaleZ: 0.35,
-        scaleY: 0.8,
-        swaySpeed: 0.82,
-        swayAmp: 0.061,
-        yawAmp: 0.031,
-        phase: 4.2,
-      },
-      {
-        key: 'grass-back-left',
-        variant: 'dry',
-        position: [-2.32, GRASS_SINK_Y - 0.09, -2.05],
-        rotationY: 2.76,
-        scaleX: 0.5,
-        scaleZ: 0.32,
-        scaleY: 0.74,
-        swaySpeed: 0.66,
-        swayAmp: 0.05,
-        yawAmp: 0.028,
-        phase: 5.4,
-      },
-      {
-        key: 'grass-back-mid',
-        variant: 'dry',
-        position: [0.92, GRASS_SINK_Y - 0.1, -2.36],
-        rotationY: 0.48,
-        scaleX: 0.44,
-        scaleZ: 0.29,
-        scaleY: 0.7,
-        swaySpeed: 0.58,
-        swayAmp: 0.046,
-        yawAmp: 0.024,
-        phase: 0.3,
-      },
-      {
-        key: 'grass-side-right',
-        variant: 'dry',
-        position: [3.42, GRASS_SINK_Y - 0.08, -0.58],
-        rotationY: 1.64,
-        scaleX: 0.42,
-        scaleZ: 0.28,
-        scaleY: 0.68,
-        swaySpeed: 0.88,
-        swayAmp: 0.048,
-        yawAmp: 0.024,
-        phase: 2.95,
-      },
-      {
-        key: 'grass-side-left',
-        variant: 'dry',
-        position: [-3.52, GRASS_SINK_Y - 0.1, 0.25],
-        rotationY: 2.1,
-        scaleX: 0.4,
-        scaleZ: 0.26,
-        scaleY: 0.66,
-        swaySpeed: 0.94,
-        swayAmp: 0.044,
-        yawAmp: 0.022,
-        phase: 1.7,
-      },
-    ],
+/**
+ * GPU-instanced 3D grass meadow with vertex-shader traveling wind waves,
+ * root ambient occlusion, and day-cycle responsive breeze.
+ */
+function InstancedGrassMeadow() {
+  const meshRef = useRef(null);
+  const timeRef = useDayTime(0);
+  const dayState = useMemo(() => createDayState(), []);
+  const shaderUniforms = useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uWindStrength: { value: 1.0 },
+    }),
     [],
   );
 
-  const coverageLayout = useMemo(
-    () => [
-      {
-        key: 'coverage-core',
-        variant: 'lush',
-        position: [0.34, GRASS_SINK_Y - 0.18, -0.12],
-        rotationY: 0.42,
-        scaleX: 1.62,
-        scaleZ: 1.04,
-        scaleY: 0.48,
-        swaySpeed: 0.42,
-        swayAmp: 0.026,
-        yawAmp: 0.014,
-        phase: 1.1,
-      },
-      {
-        key: 'coverage-right',
-        variant: 'lush',
-        position: [2.42, GRASS_SINK_Y - 0.2, 0.44],
-        rotationY: 1.08,
-        scaleX: 1.18,
-        scaleZ: 0.82,
-        scaleY: 0.42,
-        swaySpeed: 0.51,
-        swayAmp: 0.028,
-        yawAmp: 0.015,
-        phase: 2.9,
-      },
-      {
-        key: 'coverage-left',
-        variant: 'lush',
-        position: [-2.54, GRASS_SINK_Y - 0.22, 0.22],
-        rotationY: 2.34,
-        scaleX: 1.12,
-        scaleZ: 0.8,
-        scaleY: 0.4,
-        swaySpeed: 0.47,
-        swayAmp: 0.027,
-        yawAmp: 0.014,
-        phase: 4.3,
-      },
-      {
-        key: 'coverage-back',
-        variant: 'dry',
-        position: [0.12, GRASS_SINK_Y - 0.22, -2.42],
-        rotationY: 2.76,
-        scaleX: 1.24,
-        scaleZ: 0.86,
-        scaleY: 0.4,
-        swaySpeed: 0.39,
-        swayAmp: 0.024,
-        yawAmp: 0.013,
-        phase: 0.4,
-      },
-    ],
-    [],
-  );
+  const { geometry, matrices } = useMemo(() => {
+    const rand = createSeededRandom(20261020);
+    const bladeGeo = createGrassBladeGeometry();
+
+    // Pre-generate tussock cluster centers (especially around the Moai base and foreground)
+    const clusterCenters = [
+      // Ring of lush tussocks hugging the Moai base
+      { x: MOAI_OFFSET_X - 0.92, z: 0.58, radius: 0.95, heightBoost: 1.28 },
+      { x: MOAI_OFFSET_X + 0.88, z: 0.46, radius: 0.9, heightBoost: 1.22 },
+      { x: MOAI_OFFSET_X - 0.45, z: 0.82, radius: 0.85, heightBoost: 1.18 },
+      { x: MOAI_OFFSET_X + 0.35, z: -0.78, radius: 0.95, heightBoost: 1.25 },
+      { x: MOAI_OFFSET_X - 0.85, z: -0.62, radius: 0.9, heightBoost: 1.2 },
+      // Foreground & mid-ground natural meadow tussocks
+      { x: -0.55, z: 1.85, radius: 1.35, heightBoost: 1.24 },
+      { x: -2.25, z: 1.15, radius: 1.45, heightBoost: 1.2 },
+      { x: 2.85, z: 1.35, radius: 1.3, heightBoost: 1.18 },
+      { x: -1.45, z: -1.35, radius: 1.5, heightBoost: 1.15 },
+      { x: 0.25, z: -1.85, radius: 1.4, heightBoost: 1.15 },
+      { x: -3.35, z: -0.35, radius: 1.5, heightBoost: 1.12 },
+      { x: 3.45, z: -0.85, radius: 1.4, heightBoost: 1.12 },
+    ];
+
+    const matArray = new Float32Array(GRASS_BLADE_COUNT * 16);
+    // vec4(phase, windWeight, leanAngle, colorMix)
+    const bladeMeta = new Float32Array(GRASS_BLADE_COUNT * 4);
+
+    const dummyMat = new Matrix4();
+    const pos = new Vector3();
+    const quat = new Quaternion();
+    const scale = new Vector3();
+    const yAxis = new Vector3(0, 1, 0);
+    const xAxis = new Vector3(1, 0, 0);
+    const tiltQuat = new Quaternion();
+
+    let placed = 0;
+    let attempts = 0;
+
+    while (placed < GRASS_BLADE_COUNT && attempts < GRASS_BLADE_COUNT * 3) {
+      attempts += 1;
+
+      let x;
+      let z;
+      let clusterBoost = 1.0;
+
+      // 42% of blades spawn in natural tussock clusters, 58% across the continuous meadow
+      if (rand() < 0.42) {
+        const c = clusterCenters[Math.floor(rand() * clusterCenters.length)];
+        const angle = rand() * Math.PI * 2;
+        const r = Math.pow(rand(), 0.68) * c.radius;
+        x = c.x + Math.cos(angle) * r;
+        z = c.z + Math.sin(angle) * r;
+        clusterBoost = c.heightBoost * (1 - (r / c.radius) * 0.28);
+      } else {
+        const angle = rand() * Math.PI * 2;
+        // Bias density toward the visible foreground and mid-ground
+        const r = Math.pow(rand(), 0.62) * 10.8;
+        x = Math.cos(angle) * r * 1.12 + 0.15;
+        z = Math.sin(angle) * r * 0.92 - 0.35;
+      }
+
+      // Exclude the interior footprint of the Moai statue's stone body so blades don't poke through the chest
+      const dxMoai = (x - MOAI_OFFSET_X) / 0.64;
+      const dzMoai = (z - MOAI_OFFSET_Z) / 0.48;
+      const moaiFootprint = dxMoai * dxMoai + dzMoai * dzMoai;
+      if (moaiFootprint < 0.92) {
+        continue;
+      }
+
+      const distFromOrigin = Math.hypot(x, z);
+      const distanceFade = Math.max(0.42, 1 - Math.max(0, distFromOrigin - 4.8) / 8.5);
+
+      // Natural tussock height variation around the statue base & across the slope
+      const ringNearMoai = moaiFootprint < 2.4 ? 1.16 : 1.0;
+      const baseHeight = (0.19 + Math.pow(rand(), 1.45) * 0.31) * clusterBoost * ringNearMoai * distanceFade;
+      const bladeWidth = (0.78 + rand() * 0.56) * Math.min(1.15, 0.8 + baseHeight * 0.7);
+
+      const y = getTerrainHeight(x, z) - 0.012;
+      pos.set(x, y, z);
+
+      const yaw = rand() * Math.PI * 2;
+      const naturalPitch = (rand() - 0.35) * 0.26;
+      quat.setFromAxisAngle(yAxis, yaw);
+      tiltQuat.setFromAxisAngle(xAxis, naturalPitch);
+      quat.multiply(tiltQuat);
+
+      scale.set(bladeWidth, baseHeight, bladeWidth);
+      dummyMat.compose(pos, quat, scale);
+      dummyMat.toArray(matArray, placed * 16);
+
+      // Per-blade shader attributes:
+      // x: random phase (0..2pi)
+      // y: wind flexibility (taller blades sway slightly more)
+      // z: dry/golden meadow tint factor (0..1)
+      // w: brightness variation (0.82..1.18)
+      const isGoldenTuft = rand() < 0.18 ? 0.55 + rand() * 0.45 : rand() * 0.35;
+      bladeMeta[placed * 4] = rand() * Math.PI * 2;
+      bladeMeta[placed * 4 + 1] = (0.65 + rand() * 0.55) * Math.min(1.35, baseHeight * 2.4);
+      bladeMeta[placed * 4 + 2] = isGoldenTuft;
+      bladeMeta[placed * 4 + 3] = 0.84 + rand() * 0.32;
+
+      placed += 1;
+    }
+
+    bladeGeo.setAttribute('aBladeMeta', new InstancedBufferAttribute(bladeMeta, 4));
+
+    return {
+      geometry: bladeGeo,
+      matrices: matArray,
+    };
+  }, []);
+
+  const material = useMemo(() => {
+    const mat = new MeshStandardMaterial({
+      color: '#ffffff',
+      roughness: 0.76,
+      metalness: 0.02,
+      side: DoubleSide,
+    });
+
+    mat.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = shaderUniforms.uTime;
+      shader.uniforms.uWindStrength = shaderUniforms.uWindStrength;
+
+      shader.vertexShader = shader.vertexShader
+        .replace(
+          '#include <common>',
+          /* glsl */ `
+          #include <common>
+          attribute vec4 aBladeMeta;
+          uniform float uTime;
+          uniform float uWindStrength;
+          varying float vHeightFrac;
+          varying vec3 vBladeTint;
+          varying float vWindBend;
+          `,
+        )
+        .replace(
+          '#include <begin_vertex>',
+          /* glsl */ `
+          #include <begin_vertex>
+          vHeightFrac = clamp(uv.y, 0.0, 1.0);
+
+          // World-space root position of this blade instance
+          vec3 worldRoot = vec3(instanceMatrix[3][0], instanceMatrix[3][1], instanceMatrix[3][2]);
+          float phase = aBladeMeta.x;
+          float flex = aBladeMeta.y;
+          float goldenMix = aBladeMeta.z;
+          float lumVar = aBladeMeta.w;
+
+          // Root stays 100% anchored (bendWeight = 0 at uv.y = 0)
+          float bendWeight = pow(vHeightFrac, 1.65) * flex * uWindStrength;
+
+          // Traveling coastal wind wave + secondary cross ripple + individual blade flutter
+          float wavePrimary = sin(worldRoot.x * 0.52 + worldRoot.z * 0.38 - uTime * 1.65 + phase * 0.35);
+          float waveGust = sin(worldRoot.x * 0.24 - worldRoot.z * 0.29 - uTime * 0.92 + 1.7) * 0.65;
+          float flutter = sin(uTime * 3.1 + phase * 2.0) * 0.18;
+
+          float windX = (0.095 + 0.085 * wavePrimary + 0.055 * waveGust + flutter * 0.04) * bendWeight;
+          float windZ = (0.045 * cos(worldRoot.z * 0.46 - uTime * 1.35 + phase) + 0.035 * waveGust) * bendWeight;
+
+          // Transform world-space wind vector into the blade's local XZ orientation
+          vec3 rightAxis = normalize(vec3(instanceMatrix[0][0], instanceMatrix[0][1], instanceMatrix[0][2]));
+          vec3 forwardAxis = normalize(vec3(instanceMatrix[2][0], instanceMatrix[2][1], instanceMatrix[2][2]));
+          float localWindX = dot(vec3(windX, 0.0, windZ), rightAxis);
+          float localWindZ = dot(vec3(windX, 0.0, windZ), forwardAxis);
+
+          transformed.x += localWindX;
+          transformed.z += localWindZ;
+          // Subtle arc-length conservation: as a blade bends sideways, its tip dips slightly
+          transformed.y -= min(0.22, (localWindX * localWindX + localWindZ * localWindZ) * 0.55);
+
+          vWindBend = clamp((wavePrimary * 0.5 + 0.5) * vHeightFrac, 0.0, 1.0);
+
+          // Natural Rapa Nui coastal meadow palette (root AO -> lush mid -> warm sun-kissed tip)
+          vec3 rootCol = vec3(0.10, 0.17, 0.08);
+          vec3 lushMid = vec3(0.22, 0.40, 0.16);
+          vec3 dryMid  = vec3(0.34, 0.42, 0.18);
+          vec3 lushTip = vec3(0.44, 0.62, 0.26);
+          vec3 goldTip = vec3(0.64, 0.66, 0.31);
+
+          vec3 midCol = mix(lushMid, dryMid, goldenMix);
+          vec3 tipCol = mix(lushTip, goldTip, goldenMix);
+
+          vec3 gradCol = mix(rootCol, midCol, smoothstep(0.0, 0.48, vHeightFrac));
+          gradCol = mix(gradCol, tipCol, smoothstep(0.42, 1.0, vHeightFrac));
+          vBladeTint = gradCol * lumVar;
+          `,
+        );
+
+      shader.fragmentShader = shader.fragmentShader
+        .replace(
+          '#include <common>',
+          /* glsl */ `
+          #include <common>
+          varying float vHeightFrac;
+          varying vec3 vBladeTint;
+          varying float vWindBend;
+          `,
+        )
+        .replace(
+          'vec4 diffuseColor = vec4( diffuse, opacity );',
+          /* glsl */ `
+          // Subtle wind-wave sheen across swaying tips + root ambient occlusion
+          vec3 bladeColor = vBladeTint + vec3(0.05, 0.07, 0.02) * vWindBend * smoothstep(0.35, 1.0, vHeightFrac);
+          vec4 diffuseColor = vec4( bladeColor, opacity );
+          `,
+        );
+    };
+
+    mat.customProgramCacheKey = () => 'moaiy-instanced-grass-v1';
+    return mat;
+  }, [shaderUniforms]);
+
+  useEffect(() => {
+    const mesh = meshRef.current;
+    if (!mesh) {
+      return;
+    }
+
+    mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+    mesh.instanceMatrix.array.set(matrices);
+    mesh.instanceMatrix.needsUpdate = true;
+  }, [matrices]);
 
   useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    const gust =
-      0.6 +
-      Math.sin(t * 0.19) * 0.2 +
-      Math.sin(t * 0.11 + 1.4) * 0.18 +
-      Math.sin(t * 0.07 + 2.1) * 0.12;
+    const elapsed = state.clock.elapsedTime;
+    sampleDay(timeRef.current, dayState);
 
-    coverageLayout.forEach((patch, index) => {
-      const patchGroup = coverageRefs.current[index];
-      if (!patchGroup) {
-        return;
-      }
-
-      const swayFactor = patch.swayAmp * (0.8 + gust * 0.42);
-      patchGroup.rotation.y =
-        patch.rotationY + Math.sin(t * patch.swaySpeed + patch.phase) * patch.yawAmp;
-      patchGroup.rotation.x =
-        Math.sin(t * patch.swaySpeed * 1.18 + patch.phase * 1.7) * swayFactor;
-      patchGroup.rotation.z =
-        Math.cos(t * patch.swaySpeed * 1.04 + patch.phase * 1.2) * swayFactor * 0.76;
-    });
-
-    patchLayout.forEach((patch, index) => {
-      const patchGroup = patchRefs.current[index];
-      if (!patchGroup) {
-        return;
-      }
-
-      const swayFactor = patch.swayAmp * (0.85 + gust * 0.55);
-      patchGroup.rotation.y =
-        patch.rotationY + Math.sin(t * patch.swaySpeed + patch.phase) * patch.yawAmp;
-      patchGroup.rotation.x =
-        Math.sin(t * patch.swaySpeed * 1.24 + patch.phase * 1.9) * swayFactor;
-      patchGroup.rotation.z =
-        Math.cos(t * patch.swaySpeed * 1.08 + patch.phase * 1.3) * swayFactor * 0.78;
-    });
+    // Stronger gusts during stormy weather, calmer breeze at dawn/night
+    const stormBoost = 1.0 + dayState.rain * 0.55 + dayState.cloudiness * 0.22;
+    shaderUniforms.uTime.value = elapsed * (0.95 + dayState.rain * 0.35);
+    shaderUniforms.uWindStrength.value = stormBoost;
   });
 
   return (
-    <>
-      {coverageLayout.map((patch, index) => (
-        <group
-          key={patch.key}
-          ref={(node) => {
-            if (node) {
-              coverageRefs.current[index] = node;
-            }
-          }}
-          position={patch.position}
-          rotation={[0, patch.rotationY, 0]}
-          scale={[
-            patch.scaleX * GRASS_COVERAGE_XZ_RATIO,
-            patch.scaleY * GRASS_HEIGHT_RATIO,
-            patch.scaleZ * GRASS_COVERAGE_XZ_RATIO,
-          ]}
-        >
-          <Clone object={patch.variant === 'dry' ? dryPatch : normalizedPatch} />
-        </group>
-      ))}
-
-      {patchLayout.map((patch, index) => (
-        <group
-          key={patch.key}
-          ref={(node) => {
-            if (node) {
-              patchRefs.current[index] = node;
-            }
-          }}
-          position={patch.position}
-          rotation={[0, patch.rotationY, 0]}
-          scale={[
-            patch.scaleX * GRASS_COVERAGE_XZ_RATIO,
-            patch.scaleY * GRASS_HEIGHT_RATIO,
-            patch.scaleZ * GRASS_COVERAGE_XZ_RATIO,
-          ]}
-        >
-          <Clone object={patch.variant === 'dry' ? dryPatch : normalizedPatch} />
-        </group>
-      ))}
-    </>
+    <instancedMesh
+      ref={meshRef}
+      args={[geometry, material, GRASS_BLADE_COUNT]}
+      castShadow={false}
+      receiveShadow
+      frustumCulled={false}
+    />
   );
 }
 
-function BareSoilLayer() {
-  const soilPatches = useMemo(
+/**
+ * Subtle weathered volcanic stones nestled in the grass near the Moai statue.
+ */
+function VolcanicStones() {
+  const stones = useMemo(
     () => [
-      { key: 'soil-a', position: [-1.2, GROUND_Y - 0.002, 1.05], rotationY: 0.32, scaleX: 1.15, scaleZ: 0.82, color: '#385532' },
-      { key: 'soil-b', position: [1.46, GROUND_Y - 0.003, 0.18], rotationY: 1.18, scaleX: 0.94, scaleZ: 0.66, color: '#2f472a' },
-      { key: 'soil-c', position: [0.28, GROUND_Y - 0.004, -1.22], rotationY: 2.04, scaleX: 1.08, scaleZ: 0.71, color: '#3d5f37' },
-      { key: 'soil-d', position: [-2.36, GROUND_Y - 0.005, -0.88], rotationY: 2.62, scaleX: 0.88, scaleZ: 0.6, color: '#324c2d' },
-      { key: 'soil-e', position: [2.52, GROUND_Y - 0.006, -1.56], rotationY: 0.76, scaleX: 0.72, scaleZ: 0.5, color: '#2c4228' },
+      { key: 'stone-1', x: MOAI_OFFSET_X - 1.05, z: 0.62, scale: [0.22, 0.11, 0.17], rotY: 0.4, color: '#4c545c' },
+      { key: 'stone-2', x: MOAI_OFFSET_X + 0.92, z: 0.48, scale: [0.16, 0.08, 0.14], rotY: 1.2, color: '#586068' },
+      { key: 'stone-3', x: -1.15, z: 1.45, scale: [0.18, 0.09, 0.15], rotY: 2.1, color: '#515962' },
     ],
     [],
   );
 
-  return soilPatches.map((patch) => (
-    <mesh
-      key={patch.key}
-      position={patch.position}
-      receiveShadow
-      rotation={[-Math.PI / 2, patch.rotationY, 0]}
-      scale={[patch.scaleX, 1, patch.scaleZ]}
-    >
-      <circleGeometry args={[1.12, 56]} />
-      <meshStandardMaterial color={patch.color} roughness={0.98} metalness={0.01} />
-    </mesh>
-  ));
+  return stones.map((stone) => {
+    const y = getTerrainHeight(stone.x, stone.z) + stone.scale[1] * 0.35;
+    return (
+      <mesh
+        key={stone.key}
+        position={[stone.x, y, stone.z]}
+        rotation={[0.08, stone.rotY, -0.05]}
+        scale={stone.scale}
+        castShadow
+        receiveShadow
+      >
+        <dodecahedronGeometry args={[1, 1]} />
+        <meshStandardMaterial color={stone.color} roughness={0.92} metalness={0.04} />
+      </mesh>
+    );
+  });
 }
-
-useGLTF.preload(GRASS_MODEL_PATH);
 
 function GrassGround() {
   return (
     <group>
-      <Suspense
-        fallback={
-          <>
-            <ProceduralGrassGround />
-            <BareSoilLayer />
-          </>
-        }
-      >
-        <ExternalGrassGround />
-      </Suspense>
-      <FlowerLayer />
+      <TerrainMound />
+      <InstancedGrassMeadow />
+      <VolcanicStones />
     </group>
   );
 }
@@ -604,10 +584,12 @@ export default function HeroScene3D() {
 
   return (
     <ErrorBoundary>
-      <div style={{
-        position: 'absolute',
-        inset: 0,
-      }}>
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+        }}
+      >
         <Canvas
           dpr={dprRange}
           performance={{ min: 0.5 }}
