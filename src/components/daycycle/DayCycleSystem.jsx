@@ -2,6 +2,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useEffect, useMemo, useRef } from 'react';
 import { BackSide, Color, FogExp2, Object3D, Vector3 } from 'three';
 import { createDayState, sampleDay } from './keyframes.js';
+import RainLayer from './RainLayer.jsx';
 import { useDayTime } from './useDayTime.js';
 
 const SKY_RADIUS = 50;
@@ -27,7 +28,33 @@ uniform float uMoon;
 uniform float uStars;
 uniform float uFog;
 uniform float uTime;
+uniform float uCloud;
+uniform float uFlash;
+uniform float uBolt;
+uniform float uBoltSeed;
+uniform vec3 uFlashDir;
 varying vec3 vDir;
+
+float vnoise(vec2 p) {
+  vec2 i = floor(p);
+  vec2 f = fract(p);
+  f = f * f * (3.0 - 2.0 * f);
+  float a = fract(sin(dot(i, vec2(127.1, 311.7))) * 43758.5453);
+  float b = fract(sin(dot(i + vec2(1.0, 0.0), vec2(127.1, 311.7))) * 43758.5453);
+  float c = fract(sin(dot(i + vec2(0.0, 1.0), vec2(127.1, 311.7))) * 43758.5453);
+  float d = fract(sin(dot(i + vec2(1.0, 1.0), vec2(127.1, 311.7))) * 43758.5453);
+  return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+float fbm(vec2 p) {
+  float v = 0.0;
+  float amp = 0.5;
+  for (int i = 0; i < 4; i++) {
+    v += amp * vnoise(p);
+    p = p * 2.03 + vec2(1.7, 9.2);
+    amp *= 0.5;
+  }
+  return v;
+}
 
 float hash(vec3 p) {
   p = fract(p * 0.3183099 + 0.1);
@@ -77,6 +104,33 @@ void main() {
   col = mix(col, vec3(0.96, 0.95, 0.88) * shade, disc * moonVis * (1.0 - uFog * 0.8));
   col += vec3(0.6, 0.7, 0.9) * halo * moonVis;
 
+  // Rolling storm clouds: domain-warped fbm projected on a virtual cloud deck.
+  if (uCloud > 0.001) {
+    vec2 cp = dir.xz / (max(h, 0.0) + 0.09) * 0.9;
+    vec2 q = vec2(
+      fbm(cp + vec2(uTime * 0.06, 0.0)),
+      fbm(cp + vec2(5.2, 1.3) - vec2(0.0, uTime * 0.05))
+    );
+    float n = fbm(cp + 2.2 * q + vec2(uTime * 0.11, uTime * 0.03));
+    float cov = smoothstep(0.62 - uCloud * 0.5, 0.95 - uCloud * 0.25, n + uCloud * 0.2);
+    vec3 cdark = mix(uHorizon * 0.55, vec3(0.05, 0.06, 0.075), clamp(q.y * 0.9 + n * 0.3, 0.0, 1.0));
+    float fl = uFlash * (0.35 + 0.65 * pow(max(dot(dir, uFlashDir), 0.0), 3.0));
+    vec3 ccol = cdark + vec3(0.6, 0.66, 0.85) * fl * (0.25 + n * 0.9);
+    col = mix(col, ccol, cov * uCloud);
+    col += vec3(0.55, 0.6, 0.78) * uFlash * 0.05 * uCloud;
+  }
+
+  // Faint distant bolt during the main flash.
+  if (uBolt > 0.001 && h > 0.0 && h < uFlashDir.y) {
+    float az = atan(dir.x, -dir.z);
+    float faz = atan(uFlashDir.x, -uFlashDir.z);
+    float jag = (vnoise(vec2(h * 45.0, uBoltSeed)) - 0.5) * 0.05
+      + (vnoise(vec2(h * 160.0, uBoltSeed + 3.0)) - 0.5) * 0.012;
+    float bd = abs(az - faz - jag - (uFlashDir.y - h) * 0.15);
+    float bolt = 1.0 - smoothstep(0.0, 0.0035, bd);
+    col += vec3(0.9, 0.93, 1.0) * bolt * uBolt * 1.6;
+  }
+
   // Below horizon & heavy fog both melt into the fog/horizon colour.
   col = mix(col, uHorizon, (1.0 - smoothstep(-0.08, 0.0, h)));
   col = mix(col, uHorizon, uFog * (1.0 - smoothstep(0.0, 0.6, h) * 0.5));
@@ -124,6 +178,24 @@ function computeTaglineColor(skyHorizon, skyTop, out, light, dark) {
 export default function DayCycleSystem({ target = [0, 0, 0] }) {
   const { scene, gl } = useThree();
   const timeRef = useDayTime(0);
+  const rainRef = useRef(null);
+  const strike = useMemo(
+    () => ({ nextAt: 2, start: -10, double: false, strength: 1, seed: 0, dir: new Vector3(0, 0.15, -1), reduced: false, force: false }),
+    [],
+  );
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const flashParam = new URLSearchParams(window.location.search).get('flash');
+    strike.force = flashParam === '1';
+    if (flashParam === '0') strike.reduced = true;
+    const mq = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    const apply = () => {
+      strike.reduced = Boolean(mq?.matches) || flashParam === '0';
+    };
+    apply();
+    mq?.addEventListener?.('change', apply);
+    return () => mq?.removeEventListener?.('change', apply);
+  }, [strike]);
   const day = useMemo(() => createDayState(), []);
   const lightRef = useRef(null);
   const hemiRef = useRef(null);
@@ -133,7 +205,7 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
   const lastTagline = useRef('');
   const lastOverlay = useRef('');
   const tmp = useMemo(
-    () => ({ v: new Vector3(), c: new Color(), light: new Color('#EEF4FF'), dark: new Color('#1D2740') }),
+    () => ({ v: new Vector3(), white: new Color('#ffffff'), c: new Color(), light: new Color('#EEF4FF'), dark: new Color('#1D2740') }),
     [],
   );
   const lightTarget = useMemo(() => {
@@ -154,6 +226,11 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
       uStars: { value: 0 },
       uFog: { value: 0 },
       uTime: { value: 0 },
+      uCloud: { value: 0 },
+      uFlash: { value: 0 },
+      uBolt: { value: 0 },
+      uBoltSeed: { value: 0 },
+      uFlashDir: { value: new Vector3(0, 0.15, -1).normalize() },
     }),
     [],
   );
@@ -189,6 +266,28 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
     sampleDay(timeRef.current, day);
     const elapsed = state.clock.elapsedTime;
 
+    // Lightning: random-interval strikes with optional double flicker (scalar state only).
+    let flash = 0;
+    let bolt = 0;
+    if (!strike.reduced && day.lightning > 0.02) {
+      if (strike.force && elapsed - strike.start > 1.6) strike.nextAt = elapsed;
+      if (elapsed >= strike.nextAt) {
+        strike.start = elapsed;
+        strike.double = Math.random() < 0.45;
+        strike.strength = 0.55 + Math.random() * 0.45;
+        strike.seed = Math.random() * 100;
+        strike.dir.set(-0.9 + Math.random() * 1.8, 0.1 + Math.random() * 0.12, -1).normalize();
+        strike.nextAt = elapsed + (1.2 + Math.random() * 5.5) / (0.35 + day.lightning);
+      }
+      const dt = elapsed - strike.start;
+      if (dt >= 0 && dt < 1.2) {
+        let env = Math.exp(-dt * 13);
+        if (strike.double && dt > 0.15) env += 0.85 * Math.exp(-(dt - 0.15) * 11);
+        flash = Math.min(1, env * strike.strength * Math.min(1, day.lightning * 1.6));
+        bolt = dt < 0.3 ? flash : 0;
+      }
+    }
+
     // Shared sun/moon directional light.
     const light = lightRef.current;
     if (light) {
@@ -198,13 +297,13 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
       tmp.v.normalize();
       light.position.copy(lightTarget.position).addScaledVector(tmp.v, LIGHT_DISTANCE);
       light.color.copy(day.lightColor);
-      light.intensity = day.lightIntensity;
+      light.intensity = day.lightIntensity + flash * 1.1;
     }
     const hemi = hemiRef.current;
     if (hemi) {
       hemi.color.copy(day.hemiSky);
       hemi.groundColor.copy(day.hemiGround);
-      hemi.intensity = day.hemiIntensity;
+      hemi.intensity = day.hemiIntensity + flash * 0.8;
     }
 
     fog.color.copy(day.fogColor);
@@ -224,6 +323,21 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
     u.uStars.value = day.starOpacity;
     u.uFog.value = Math.min(1, Math.max(0, (day.fogDensity - 0.03) / 0.12));
     u.uTime.value = elapsed;
+    u.uCloud.value = day.cloudiness;
+    u.uFlash.value = flash;
+    u.uBolt.value = bolt;
+    u.uBoltSeed.value = strike.seed;
+    u.uFlashDir.value.copy(strike.dir);
+
+    const rain = rainRef.current;
+    if (rain) {
+      rain.visible = day.rain > 0.01;
+      const ru = rain.material.uniforms;
+      ru.uTime.value = elapsed;
+      ru.uRain.value = day.rain;
+      ru.uOpacity.value = 0.3 + flash * 0.4;
+      ru.uColor.value.copy(day.fogColor).lerp(tmp.white, 0.55);
+    }
     if (skyRef.current) skyRef.current.position.copy(state.camera.position);
 
     MIST_LAYOUT.forEach((m, i) => {
@@ -241,7 +355,7 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
 
     const brightness = computeTaglineColor(u.uHorizon.value, day.skyTop, tmp.c, tmp.light, tmp.dark);
     // Page wash overlay over the canvas: fade it out at night so stars/moon read.
-    const overlay = (0.15 + 0.85 * Math.min(1, Math.max(0, (brightness - 0.08) / 0.4))).toFixed(2);
+    const overlay = ((0.15 + 0.85 * Math.min(1, Math.max(0, (brightness - 0.08) / 0.4))) * (1 - day.cloudiness * 0.6)).toFixed(2);
     if (overlay !== lastOverlay.current) {
       document.documentElement.style.setProperty('--hero-overlay-opacity', overlay);
       lastOverlay.current = overlay;
@@ -271,6 +385,7 @@ export default function DayCycleSystem({ target = [0, 0, 0] }) {
         shadow-camera-top={SHADOW_HALF_EXTENT}
         shadow-camera-bottom={-SHADOW_HALF_EXTENT}
       />
+      <RainLayer ref={rainRef} />
       <mesh ref={skyRef} frustumCulled={false} renderOrder={-1}>
         <sphereGeometry args={[SKY_RADIUS, 32, 16]} />
         <shaderMaterial
