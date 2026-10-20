@@ -8,28 +8,28 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
 const repositoryUrl = 'https://github.com/moaiy-com/moaiy';
 const personaCards = [
   {
-    role: 'Everyday Users',
-    copy: 'Drag, drop, and encrypt in seconds, with no command line and no complicated setup.',
+    role: 'Everyday Mac Users',
+    copy: 'Drag, drop, and encrypt personal files in seconds—no terminal commands and no complicated setup.',
   },
   {
     role: 'Indie Developers',
-    copy: 'Encrypt `.env` files, API keys, and config secrets before sharing them with collaborators.',
+    copy: 'Lock `.env` files, API keys, and project secrets in a click before sending them to collaborators.',
   },
   {
     role: 'Crypto Users',
-    copy: 'Encrypt seed phrase backups and wallet key files locally, then store backups carefully and test recovery steps.',
+    copy: 'Encrypt wallet exports and recovery backups locally on your Mac before storing them on offline drives.',
   },
   {
-    role: 'Journalists, Lawyers, and Freelancers',
-    copy: 'Protect client files and sensitive communications before sending, syncing, or archiving.',
+    role: 'Journalists, Lawyers & Freelancers',
+    copy: 'Protect confidential client documents and source files locally before emailing, syncing, or archiving.',
   },
   {
-    role: 'Tech Enthusiasts',
-    copy: 'Learn practical PGP habits through a clear interface, without getting blocked by terminal commands.',
+    role: 'Privacy Enthusiasts',
+    copy: 'Use standard OpenPGP encryption through a clean macOS window, without memorizing command-line flags.',
   },
   {
     role: 'Small Teams',
-    copy: 'Share encrypted internal files with your team using an open-source tool that fits a startup budget.',
+    copy: 'Exchange encrypted files across your team using a free, open-source Mac app anyone can learn in minutes.',
   },
 ];
 ---
@@ -39,7 +39,7 @@ const personaCards = [
     <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
       <HeroScene client:load />
     </div>
-    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/35 via-bg-primary/18 to-bg-secondary/42"></div>
+    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/35 via-bg-primary/18 to-bg-secondary/42" style="opacity: var(--hero-overlay-opacity, 1)"></div>
 
     <div class="relative z-10 flex min-h-screen items-center px-4 py-20">
       <div class="mx-auto w-full max-w-7xl">
@@ -51,10 +51,10 @@ const personaCards = [
             Encrypt Files With Drag and Drop
           </h1>
           <p class="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl animate-fade-in-up" style="animation-delay: 0.12s;">
-            Encrypt files on your Mac in a few clicks. Drag in a file, protect it, and share it safely.
+            Protect sensitive files on your Mac in a few clicks. Drag in a file, lock it locally with OpenPGP, and share it anywhere with confidence.
           </p>
           <p class="hero-muted mt-4 text-sm font-medium uppercase tracking-[0.1em] animate-fade-in-up" style="animation-delay: 0.18s;">
-            No cloud upload · Open source · Easy to trust
+            No cloud upload · No command line · 100% open source
           </p>
 
           <div class="mt-9 flex flex-col gap-3 sm:flex-row animate-fade-in-up" style="animation-delay: 0.24s">
@@ -65,14 +65,14 @@ const personaCards = [
               data-analytics-event="download_click"
               class="inline-flex items-center justify-center rounded-lg bg-accent-primary px-6 py-3 text-base font-semibold text-bg-primary transition-colors hover:bg-accent-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
-              Download
+              Download for macOS
             </a>
             <a
               href="/docs/"
               data-analytics-event="docs_cta_click"
               class="inline-flex items-center justify-center rounded-lg border border-line-strong/70 px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
             >
-              Read Docs
+              How It Works
             </a>
           </div>
           <a
@@ -83,20 +83,20 @@ const personaCards = [
             class="mt-4 inline-flex items-center text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary animate-fade-in-up"
             style="animation-delay: 0.3s;"
           >
-            View on GitHub
+            View Source on GitHub
           </a>
           <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 animate-fade-in-up" style="animation-delay: 0.36s;">
             <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Platform</p>
-              <p class="mt-1 text-sm font-semibold text-text-primary">macOS</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Experience</p>
+              <p class="mt-1 text-sm font-semibold text-text-primary">Native macOS App</p>
             </div>
             <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
               <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">License</p>
-              <p class="mt-1 text-sm font-semibold text-text-primary">Open Source</p>
+              <p class="mt-1 text-sm font-semibold text-text-primary">MIT Open Source</p>
             </div>
             <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Security</p>
-              <p class="mt-1 text-sm font-semibold text-text-primary">Public Verification</p>
+              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Privacy</p>
+              <p class="mt-1 text-sm font-semibold text-text-primary">100% Local Processing</p>
             </div>
           </div>
         </div>
@@ -111,21 +111,21 @@ const personaCards = [
       </h2>
       <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
         <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
-          <h3 class="font-heading text-xl font-semibold text-text-primary">Easy to use</h3>
+          <h3 class="font-heading text-xl font-semibold text-text-primary">Visual drag-and-drop</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Drag and drop files, then encrypt or decrypt with clear steps.
+            Drop files into the app to encrypt or decrypt with recipients or passwords—no terminal commands needed.
+          </p>
+        </article>
+        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
+          <h3 class="font-heading text-xl font-semibold text-text-primary">Steadfast local privacy</h3>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Every key and file stays on your Mac. Nothing is uploaded to external servers or cloud dashboards.
           </p>
         </article>
         <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
           <h3 class="font-heading text-xl font-semibold text-text-primary">Built in the open</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            The code, releases, and security policy are public for anyone to inspect.
-          </p>
-        </article>
-        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
-          <h3 class="font-heading text-xl font-semibold text-text-primary">Clear download path</h3>
-          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Download the latest macOS version from the official Releases page.
+            The source code, official releases, and verification steps are public on GitHub for anyone to inspect.
           </p>
         </article>
       </div>

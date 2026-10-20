@@ -1,10 +1,10 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Clone, useGLTF } from '@react-three/drei';
 import { Component, Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
-import { ACESFilmicToneMapping, Box3, MathUtils, PCFShadowMap, Vector3 } from 'three';
+import { ACESFilmicToneMapping, Box3, PCFShadowMap, Vector3 } from 'three';
 
 const Moai = lazy(() => import('./Moai.jsx'));
-const WeatherSystem = lazy(() => import('./WeatherSystem.jsx'));
+const DayCycleSystem = lazy(() => import('./daycycle/DayCycleSystem.jsx'));
 const GRASS_MODEL_PATH = '/models/moai/realistics_grass.glb';
 const GROUND_Y = -2.45;
 const GRASS_HEIGHT_RATIO = 0.18;
@@ -12,7 +12,8 @@ const GRASS_COVERAGE_XZ_RATIO = 1.26;
 const GRASS_SINK_Y = -1.5;
 const MOAI_OFFSET_X = 1.35;
 const SHOW_MOAI = true;
-const SHOW_WEATHER = true;
+const SHOW_DAY_CYCLE = true;
+const DAY_LIGHT_TARGET = [MOAI_OFFSET_X, GROUND_Y, 0];
 
 function resolveSafeDpr() {
   if (typeof window === 'undefined') {
@@ -96,93 +97,6 @@ class ErrorBoundary extends Component {
 
     return this.props.children;
   }
-}
-
-function SceneLighting({ weatherName = 'day' }) {
-  const ambientRef = useRef(null);
-  const hemisphereRef = useRef(null);
-  const sunRef = useRef(null);
-  const fillRef = useRef(null);
-  const rimRef = useRef(null);
-
-  useFrame((state, delta) => {
-    const ambient = ambientRef.current;
-    const hemisphere = hemisphereRef.current;
-    const sun = sunRef.current;
-    const fill = fillRef.current;
-    const rim = rimRef.current;
-
-    if (!ambient || !hemisphere || !sun || !fill || !rim) {
-      return;
-    }
-
-    const isSunnyDay = weatherName === 'sunny';
-
-    if (isSunnyDay) {
-      const t = state.clock.elapsedTime * 0.12;
-      const dayProgress = Math.sin(t) * 0.5 + 0.5;
-
-      const targetX = MOAI_OFFSET_X + Math.sin(t * 1.6) * 4.2;
-      const targetY = 5.1 + dayProgress * 3.3;
-      const targetZ = 4.2 + Math.cos(t * 0.85) * 1.4;
-
-      sun.position.x = MathUtils.damp(sun.position.x, targetX, 2.4, delta);
-      sun.position.y = MathUtils.damp(sun.position.y, targetY, 2.4, delta);
-      sun.position.z = MathUtils.damp(sun.position.z, targetZ, 2.4, delta);
-
-      sun.intensity = MathUtils.damp(sun.intensity, 1.45 + dayProgress * 0.95, 2.8, delta);
-      ambient.intensity = MathUtils.damp(ambient.intensity, 0.34 + dayProgress * 0.18, 2.6, delta);
-      hemisphere.intensity = MathUtils.damp(hemisphere.intensity, 0.42 + dayProgress * 0.22, 2.4, delta);
-      fill.intensity = MathUtils.damp(fill.intensity, 0.2 + dayProgress * 0.2, 2.6, delta);
-      rim.intensity = MathUtils.damp(rim.intensity, 0.1 + (1 - dayProgress) * 0.1, 2.6, delta);
-      return;
-    }
-
-    sun.position.x = MathUtils.damp(sun.position.x, 5, 2.4, delta);
-    sun.position.y = MathUtils.damp(sun.position.y, 7, 2.4, delta);
-    sun.position.z = MathUtils.damp(sun.position.z, 4, 2.4, delta);
-
-    sun.intensity = MathUtils.damp(sun.intensity, 1.2, 2.8, delta);
-    ambient.intensity = MathUtils.damp(ambient.intensity, 0.4, 2.4, delta);
-    hemisphere.intensity = MathUtils.damp(hemisphere.intensity, 0.45, 2.4, delta);
-    fill.intensity = MathUtils.damp(fill.intensity, 0.7, 2.4, delta);
-    rim.intensity = MathUtils.damp(rim.intensity, 0.35, 2.4, delta);
-  });
-
-  return (
-    <>
-      <ambientLight ref={ambientRef} intensity={0.4} />
-      <hemisphereLight ref={hemisphereRef} args={['#bfe4ff', '#dbe9ff', 0.45]} />
-      <directionalLight
-        ref={sunRef}
-        castShadow
-        color="#fef6df"
-        intensity={1.2}
-        position={[5, 7, 4]}
-        target-position={[MOAI_OFFSET_X, 0.8, 0]}
-        shadow-mapSize-height={768}
-        shadow-mapSize-width={768}
-        shadow-camera-near={1}
-        shadow-camera-far={24}
-        shadow-camera-left={-6}
-        shadow-camera-right={6}
-        shadow-camera-top={6}
-        shadow-camera-bottom={-6}
-      />
-      <pointLight
-        ref={fillRef}
-        position={[-4, 2.5, 3]}
-        intensity={0.7}
-        color="#56d3ca"
-      />
-      <pointLight
-        ref={rimRef}
-        position={[0, 3.5, -4]}
-        intensity={0.35}
-        color="#8ea7ff"
-      />
-    </>
-  );
 }
 
 function Flower({ position, rotationY, scale, petalColor }) {
@@ -686,7 +600,6 @@ function GrassGround() {
 }
 
 export default function HeroScene3D() {
-  const [weatherName, setWeatherName] = useState('sunny');
   const dprRange = useAdaptiveDprRange();
 
   return (
@@ -715,9 +628,8 @@ export default function HeroScene3D() {
           }}
         >
           <Suspense fallback={null}>
-            <SceneLighting weatherName={weatherName} />
+            {SHOW_DAY_CYCLE ? <DayCycleSystem target={DAY_LIGHT_TARGET} /> : null}
             <GrassGround />
-            {SHOW_WEATHER ? <WeatherSystem onWeatherChange={setWeatherName} /> : null}
             {SHOW_MOAI ? (
               <group position={[MOAI_OFFSET_X, 0, 0]}>
                 <Moai />
