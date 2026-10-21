@@ -2,63 +2,111 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.smartcardEncryptionGuide;
+const [smartcardAd] = adPlacementMap['smartcard-encryption-guide'];
 ---
 
 <BaseLayout {...seo}>
   <main class="page-shell">
     <div class="page-container">
       <PageHero
-        title="Smart Card Encryption Guide"
-        subtitle="Practical steps for pairing OpenPGP smart cards and hardware tokens with Moaiy on macOS."
+        title="Smart Card & YubiKey Encryption Guide for macOS"
+        subtitle="Practical architecture and operational steps for pairing OpenPGP smart cards and hardware security keys with Moaiy on your Mac."
       />
 
       <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">When smart cards help</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Why store OpenPGP keys on a hardware smart card?</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            In a standard software keyring, your private key is stored as an encrypted file on your Mac’s internal SSD. Even when protected by a strong passphrase, the private key must be decrypted into system memory whenever you unlock a file.
+          </p>
+          <p>
+            An <strong>OpenPGP smart card</strong> or USB-C hardware security token (such as a <strong>YubiKey 5 Series</strong>, Nitrokey, or Gnuk token) changes this security boundary fundamentally: <strong>the private key lives inside a tamper-resistant cryptographic chip on the hardware token and can never be copied off the device</strong>.
+          </p>
+          <p>
+            When you drag an encrypted <code>.gpg</code> file into Moaiy on macOS, Moaiy sends only the small encrypted session-key challenge to your connected hardware token over USB. Once you enter your card PIN (and tap the hardware touch sensor, if enabled), the token performs the private-key math internally and returns the unlocked session key—so your private key never enters your Mac’s RAM or filesystem.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Understanding the 3 OpenPGP smart card key slots</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          OpenPGP smart cards and hardware tokens (such as YubiKey) keep your private keys isolated on dedicated hardware rather than on your Mac’s internal drive. They are ideal for users who encrypt sensitive files regularly and want stronger protection against key extraction.
+          Every standard OpenPGP smart card provides three dedicated subkey slots under your primary identity:
         </p>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[600px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Card Slot</th>
+                <th class="px-4 py-3 font-heading">Cryptographic Role</th>
+                <th class="px-4 py-3 font-heading">How Moaiy uses it on macOS</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Encryption Subkey ([E])</td>
+                <td class="px-4 py-3">Unlocks session keys for encrypted files</td>
+                <td class="px-4 py-3">Used whenever you drop a `.gpg` file into Moaiy to decrypt it.</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Signature Subkey ([S])</td>
+                <td class="px-4 py-3">Signs files and detached `.sig` checksums</td>
+                <td class="px-4 py-3">Used when you cryptographically sign an archive so recipients can verify authorship.</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Authentication Subkey ([A])</td>
+                <td class="px-4 py-3">SSH / system authentication</td>
+                <td class="px-4 py-3">Optional slot for developers who also use their token for SSH server login.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </Panel>
 
       <section class="mt-12 grid grid-cols-1 gap-5 lg:grid-cols-3">
         <Panel as="article" class="p-6">
-          <h3 class="font-heading text-xl text-text-primary">1. Keep keys organized</h3>
+          <h3 class="font-heading text-xl text-text-primary">1. Generate off-card & back up first</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Use clear labels for each card’s identity, key purpose, and expiration date. Keep a written inventory when managing primary and backup tokens.
+            For files you must never lose access to, generate your master key and encryption subkeys off-card first, save an encrypted offline backup to a vault USB drive, and then transfer the subkeys to your smart card. If you generate keys exclusively on-card without an off-card backup, losing or breaking the token permanently prevents decrypting old archives.
           </p>
         </Panel>
         <Panel as="article" class="p-6">
-          <h3 class="font-heading text-xl text-text-primary">2. Test daily unlock flow</h3>
+          <h3 class="font-heading text-xl text-text-primary">2. Separate User PIN and Admin PIN</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Plug in your token, open Moaiy on your Mac, and test encrypting and decrypting a sample file with your PIN before relying on the setup for urgent work.
+            OpenPGP cards enforce a strict retry counter (typically 3 attempts for the daily User PIN and 3 attempts for the Admin PIN). Immediately change the factory default PINs (<code>123456</code> and <code>12345678</code>) to strong custom codes, and record the Admin PIN in your offline recovery vault.
           </p>
         </Panel>
         <Panel as="article" class="p-6">
-          <h3 class="font-heading text-xl text-text-primary">3. Plan recovery first</h3>
+          <h3 class="font-heading text-xl text-text-primary">3. Import the public key stub on your Mac</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Store your revocation certificate and offline key backup in a secure, separate location—and test your recovery steps before you ever lose a hardware token.
+            To use your hardware token on a new Mac, import your public key file (<code>.asc</code>) into Moaiy and insert the hardware token. Moaiy links the public key identity to the smart card’s serial number so you can encrypt at any time and decrypt whenever the token is plugged in.
           </p>
         </Panel>
       </section>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Operational checklist</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Operational checklist & recovery drills</h2>
         <ul class="list-compact">
-          <li>Record each hardware token’s model, serial number, and assigned key fingerprint.</li>
-          <li>Set a strong user PIN and Admin PIN, and store the Admin PIN / reset code offline.</li>
-          <li>Test drag-and-drop encryption and decryption in Moaiy before daily production use.</li>
-          <li>Keep offline backup keys physically separate from your everyday workstation and token.</li>
-          <li>Update your backup and recovery notes whenever you rotate or renew keys.</li>
+          <li><strong class="text-text-primary">Inventory every token:</strong> Document each hardware token’s model, serial number, assigned key fingerprint, and subkey expiration date.</li>
+          <li><strong class="text-text-primary">Provision a spare backup token:</strong> Because off-card subkeys can be loaded onto multiple YubiKeys, many professionals keep a primary token on their keychain and a second identical token locked in a safe.</li>
+          <li><strong class="text-text-primary">Verify the daily unlock flow:</strong> Encrypt a test document to your public key in Moaiy, unplug and reinsert your token, and confirm decryption succeeds with your User PIN before deleting any original files.</li>
+          <li><strong class="text-text-primary">Release competing CCID locks if needed:</strong> macOS allows only one process to hold exclusive smart card access at a time. If another utility is polling the card continuously, close it before unlocking files in Moaiy.</li>
+          <li><strong class="text-text-primary">Update recovery notes after rotation:</strong> Whenever you extend key expiration dates or rotate subkeys, update both your offline backup drive and your published public key.</li>
         </ul>
       </Panel>
 
+      <AdSlot pageKey="smartcard-encryption-guide" {...smartcardAd} class="mt-12" />
+
       <section class="link-grid">
-        <LinkCard href="/docs/" title="Docs" description="Visual macOS usage steps and FAQs." />
+        <LinkCard href="/docs/" title="User Manual" description="Visual macOS usage steps and FAQs." />
         <LinkCard href="/download/" analyticsEvent="download_click" title="Download" description="Official macOS release channel." />
-        <LinkCard href="/security/" title="Security" description="Project security model and reporting policy." />
+        <LinkCard href="/security-whitepaper/" title="Security Whitepaper" description="Threat model and cryptographic architecture." />
       </section>
     </div>
   </main>

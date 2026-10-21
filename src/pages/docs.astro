@@ -9,22 +9,22 @@ import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.docs;
 const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
-const [docsMidAd, docsPreFaqAd] = adPlacementMap.docs;
+const [docsPreFaqAd] = adPlacementMap.docs;
 ---
 
 <BaseLayout {...seo}>
   <main class="page-shell">
     <div class="page-container">
       <PageHero
-        title="Docs: simple visual guides for daily use"
-        subtitle="Protect and unlock files on your Mac in four clear steps—no terminal commands required."
+        title="Moaiy Documentation & macOS User Manual"
+        subtitle="Complete visual guide to installing Moaiy on macOS, managing OpenPGP keys, encrypting and decrypting files with drag and drop, and troubleshooting everyday workflows."
       />
 
       <section class="grid grid-cols-1 gap-5 lg:grid-cols-2">
         <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Download and install on macOS</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Download the latest official release from GitHub Releases, verify the installer if desired, and drag <strong>Moaiy.app</strong> into your <strong>Applications</strong> folder.
+            Download the latest official release from GitHub Releases, verify the SHA-256 checksum against the release notes, and drag <strong>Moaiy.app</strong> into your <strong>/Applications</strong> folder. Moving the app into <code>/Applications</code> ensures macOS App Translocation does not isolate your local keyring between sessions.
           </p>
           <a
             href={releaseUrl}
@@ -33,34 +33,125 @@ const [docsMidAd, docsPreFaqAd] = adPlacementMap.docs;
             data-analytics-event="download_click"
             class="btn-primary mt-5"
           >
-            Open Releases
+            Open Official Releases
           </a>
         </Panel>
 
         <Panel as="article" tone="strong" class="p-6">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Create or import keys visually</h2>
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Set up keys in the visual Key Manager</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Open Moaiy’s Key Manager and click <strong>New Key</strong> to create your personal OpenPGP key pair with your name, email, and passphrase—or click <strong>Import</strong> to add a collaborator’s public key file.
+            Open Moaiy’s Key Manager and click <strong>New Key</strong> to generate your personal OpenPGP key pair with your name, email address, and a strong passphrase—or click <strong>Import</strong> to add a colleague’s or client’s public key file (<code>.asc</code>, <code>.pgp</code>, or <code>.gpg</code>).
           </p>
         </Panel>
 
         <Panel as="article" tone="strong" class="p-6">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Drag and drop to encrypt</h2>
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Drag and drop files to encrypt</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Drag any file or folder archive into the Moaiy window. Choose <strong>Recipient Mode</strong> to encrypt for selected contacts’ public keys, or <strong>Password Mode</strong> to lock the file with a shared passphrase, then click <strong>Encrypt</strong>.
+            Drag any document, archive, or backup directly into the Moaiy window. Choose <strong>Recipient Mode</strong> to encrypt for one or more public keys in your keyring, or <strong>Password Mode</strong> to lock the file with a shared passphrase, then click <strong>Encrypt</strong>.
           </p>
         </Panel>
 
         <Panel as="article" tone="strong" class="p-6">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Decrypt and verify with confidence</h2>
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Decrypt and verify incoming files</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Drop an encrypted <code>.gpg</code> or <code>.pgp</code> file into Moaiy, enter your passphrase when prompted, and save the restored file locally on your Mac.
+            Drop an encrypted <code>.gpg</code> or <code>.pgp</code> file back into Moaiy, enter your private-key passphrase (or hardware token PIN) when prompted, and save the restored file to your Mac. If the sender signed the file, Moaiy also checks the signature against their public key.
           </p>
           <a href="/verification/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">Read download verification guide</a>
         </Panel>
       </section>
 
-      <AdSlot pageKey="docs" {...docsMidAd} class="mt-12" />
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Choosing between Recipient Mode and Password Mode</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Moaiy supports two standard OpenPGP encryption methods inside the same drag-and-drop window. Picking the right mode depends on who will unlock the file and how you communicate with them:
+        </p>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[600px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Criteria</th>
+                <th class="px-4 py-3 font-heading">Recipient Mode (Public-Key / Asymmetric)</th>
+                <th class="px-4 py-3 font-heading">Password Mode (Passphrase / Symmetric)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">How it locks the file</td>
+                <td class="px-4 py-3">Uses the recipient’s OpenPGP public key; only their private key can unlock it.</td>
+                <td class="px-4 py-3">Derives a cryptographic key from a shared secret passphrase using OpenPGP S2K.</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Need to share a secret?</td>
+                <td class="px-4 py-3">No shared password needed—public keys can be exchanged openly over email or GitHub.</td>
+                <td class="px-4 py-3">Yes—you must send the passphrase to the recipient over a separate channel (e.g., Signal or phone).</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Multi-person teams</td>
+                <td class="px-4 py-3">Select multiple recipients so each teammate unlocks the file with their own key.</td>
+                <td class="px-4 py-3">Everyone uses the same shared password; rotating access requires re-encrypting the file.</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Best use cases</td>
+                <td class="px-4 py-3">Ongoing team collaboration, client deliverables, journalist dropboxes, and hardware smart cards.</td>
+                <td class="px-4 py-3">Personal offline backups, one-off sharing with contacts who do not have an OpenPGP key pair yet.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Key lifecycle management & backup hygiene</h2>
+        <div class="mt-4 space-y-4 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Because Moaiy is a true local-first encryption tool with zero cloud accounts, <strong>your private key and passphrase exist only on your Mac (or your hardware smart card)</strong>. Following a few key-hygiene habits ensures you never lose access to important archives:
+          </p>
+          <ul class="list-compact">
+            <li>
+              <strong class="text-text-primary">Use a high-entropy passphrase:</strong> When generating a new key pair in Moaiy, choose a memorable multi-word passphrase (for example, four to six random words or a 20+ character phrase) to protect your private key at rest on disk.
+            </li>
+            <li>
+              <strong class="text-text-primary">Set a practical expiration date:</strong> Setting a 2-year or 3-year expiration date on your key reminds contacts to refresh your public key periodically. You can extend the expiration date in Key Manager at any time as long as you hold the private key.
+            </li>
+            <li>
+              <strong class="text-text-primary">Keep an offline backup and revocation certificate:</strong> After creating your primary key pair, export a backup copy and store it on an encrypted external USB drive or offline vault kept separate from your daily MacBook.
+            </li>
+            <li>
+              <strong class="text-text-primary">Verify fingerprints out of band:</strong> Before encrypting highly sensitive files for a new contact, compare the 40-character hexadecimal OpenPGP fingerprint shown in Moaiy over a quick voice call or verified messaging channel.
+            </li>
+          </ul>
+        </div>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Troubleshooting common macOS issues</h2>
+        <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">“No secret key” when decrypting a file</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              This message means the <code>.gpg</code> file was encrypted for a different OpenPGP public key than the private key currently loaded in Moaiy, or was encrypted only for the recipient’s key (and not your own). Confirm that the matching private key is imported in Key Manager, or when encrypting files you also want to open later, include your own key in the recipient list.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Encrypting folders with multiple files</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              The OpenPGP standard encrypts single data streams. When protecting an entire project directory or photo album on macOS, right-click the folder in Finder and choose <strong>Compress</strong> to create a <code>.zip</code> archive first, or drop the archive directly into Moaiy so directory structure and permissions remain intact.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Smart card or YubiKey not detected</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Unplug and reconnect the USB-C token, verify that no background terminal process has locked exclusive CCID access to the card, and confirm your token’s OpenPGP applet is enabled. See our <a href="/smartcard-encryption-guide/" class="text-accent-primary hover:underline">Smart Card Encryption Guide</a> for detailed checks.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">macOS Gatekeeper prompt on first launch</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Always download Moaiy from the official GitHub Releases page and verify its SHA-256 hash first. After moving <code>Moaiy.app</code> into <code>/Applications</code>, you can right-click (or Control-click) the app icon and select <strong>Open</strong> on first launch.
+            </p>
+          </div>
+        </div>
+      </Panel>
 
       <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Deep-dive guides & comparisons</h2>
@@ -68,12 +159,12 @@ const [docsMidAd, docsPreFaqAd] = adPlacementMap.docs;
           <LinkCard
             href="/encrypt-files-on-macos/"
             title="Encrypt Files on macOS"
-            description="Complete visual walkthrough for locking and sharing files on a Mac."
+            description="Complete visual walkthrough and comparison with FileVault and Disk Utility."
           />
           <LinkCard
             href="/openpgp-made-simple/"
             title="OpenPGP Made Simple"
-            description="Plain-language guide to public keys, private keys, and passphrases."
+            description="Plain-language guide to public keys, private keys, passphrases, and signatures."
           />
           <LinkCard
             href="/gpg-tools-alternative/"
@@ -91,7 +182,7 @@ const [docsMidAd, docsPreFaqAd] = adPlacementMap.docs;
       <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Build from source in Xcode (optional)</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          Developers who prefer to inspect and compile the native macOS app themselves can build directly from the public Xcode project:
+          Developers and security reviewers who prefer to inspect and compile the native macOS app themselves can build directly from the public Xcode project:
         </p>
         <div class="code-block">
           <div>git clone https://github.com/moaiy-com/moaiy.git</div>
@@ -109,21 +200,30 @@ const [docsMidAd, docsPreFaqAd] = adPlacementMap.docs;
       <AdSlot pageKey="docs" {...docsPreFaqAd} class="mt-12" />
 
       <section class="mt-12 space-y-3">
+        <h2 class="mb-4 font-heading text-2xl font-semibold text-text-primary md:text-3xl">Frequently asked questions</h2>
         <details class="rounded-lg border border-line-strong bg-bg-secondary/65">
           <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">What is Moaiy?</summary>
-          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Moaiy is a free, open-source native macOS app that lets you encrypt and decrypt files with simple drag-and-drop steps.</p>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Moaiy is a free, open-source (MIT License) native macOS app that lets you encrypt and decrypt files using standard OpenPGP with simple drag-and-drop steps.</p>
         </details>
         <details class="rounded-lg border border-line-strong bg-bg-secondary/65">
           <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">Do I need to use the Terminal or command line?</summary>
-          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">No. Moaiy is designed around a clean graphical interface on macOS—key creation, file encryption, and decryption are all handled visually.</p>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">No. Moaiy is designed around a clean graphical interface on macOS—key creation, public key import/export, file encryption, and decryption are all handled visually.</p>
+        </details>
+        <details class="rounded-lg border border-line-strong bg-bg-secondary/65">
+          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">Can recipients on Windows or Linux decrypt files created by Moaiy?</summary>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Yes. Moaiy produces standard RFC 4880 OpenPGP encrypted files (<code>.gpg</code> / <code>.pgp</code>), which are 100% interoperable with GnuPG, Kleopatra, GPG4Win, and any other compliant OpenPGP tool on Windows, Linux, or macOS.</p>
         </details>
         <details class="rounded-lg border border-line-strong bg-bg-secondary/65">
           <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">How do I download safely?</summary>
-          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Download from official GitHub Releases and verify checksums before opening the installer.</p>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Download only from the official GitHub Releases page and verify the SHA-256 checksum before opening the installer.</p>
         </details>
         <details class="rounded-lg border border-line-strong bg-bg-secondary/65">
-          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">Does Moaiy upload unencrypted files?</summary>
-          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">No. Moaiy performs all encryption and decryption locally on your Mac. See the security page for details.</p>
+          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">Does Moaiy upload unencrypted files or private keys?</summary>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">No. Moaiy performs all encryption, decryption, and key management locally on your Mac with zero cloud uploads. See the security page and whitepaper for details.</p>
+        </details>
+        <details class="rounded-lg border border-line-strong bg-bg-secondary/65">
+          <summary class="cursor-pointer px-5 py-3 text-sm font-semibold text-text-primary">What happens if I forget my passphrase or lose my private key?</summary>
+          <p class="px-5 pb-4 text-sm leading-relaxed text-text-secondary">Because Moaiy is a true zero-knowledge local application with no central server or backdoor, we cannot reset your passphrase or recover a lost private key. Always keep an offline backup in a secure location.</p>
         </details>
       </section>
     </div>

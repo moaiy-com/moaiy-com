@@ -2,10 +2,13 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.openpgpMadeSimple;
+const [openpgpSimpleAd] = adPlacementMap['openpgp-made-simple'];
 ---
 
 <BaseLayout {...seo}>
@@ -13,41 +16,105 @@ const seo = pageSeo.openpgpMadeSimple;
     <div class="page-container-compact">
       <PageHero
         centered={false}
-        title="OpenPGP made simple with Moaiy"
-        subtitle="Understand how OpenPGP keys work in plain language—and use them through a visual macOS interface without touching the terminal."
+        title="OpenPGP Made Simple with Moaiy"
+        subtitle="A plain-language guide to public keys, private keys, passphrases, fingerprints, and digital signatures—and how to use them visually on macOS without touching the terminal."
       />
 
-      <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Core concepts in plain language</h2>
-        <ul class="list-compact">
-          <li><span class="text-text-primary">Public key</span>: like an open padlock you share with anyone who wants to lock files for you.</li>
-          <li><span class="text-text-primary">Private key</span>: stays safely on your Mac (or smart card) and unlocks files encrypted for your public key.</li>
-          <li><span class="text-text-primary">Passphrase</span>: the password that protects your private key before it can be used.</li>
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Why OpenPGP has a reputation for being hard—and why the core idea is actually simple</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            OpenPGP (defined in RFC 4880) is one of the most battle-tested cryptographic standards in the world. For decades, however, the primary way to use it was through command-line utilities designed in the 1990s—requiring users to memorize dozens of terminal flags, trust levels, and subkey hexadecimal IDs.
+          </p>
+          <p>
+            Strip away the terminal jargon and OpenPGP rests on three everyday building blocks that anyone can understand in under two minutes. Moaiy wraps those exact building blocks into a visual macOS window.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">The three building blocks: Public Key, Private Key, and Passphrase</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Think of OpenPGP public-key encryption like a high-security mailbox with a drop slot and a personal brass key:
+        </p>
+        <ul class="list-compact mt-4">
+          <li>
+            <strong class="text-text-primary">Public Key (The open padlock / mailbox slot):</strong> You can hand out copies of your public key to anyone—post it on your website, attach it to an email, or share it in Slack. Anyone with your public key can lock a file <em>for</em> you, but a public key cannot unlock files.
+          </li>
+          <li>
+            <strong class="text-text-primary">Private Key (Your personal mailbox key):</strong> This stays strictly on your Mac (or inside your hardware smart card). It is the only key in the world capable of unlocking files that were encrypted to your public key, and the only key that can place your cryptographic signature on a file.
+          </li>
+          <li>
+            <strong class="text-text-primary">Passphrase (The lock on your key cabinet):</strong> Because your private key sits on your Mac’s drive, OpenPGP encrypts the private key itself with a passphrase you choose. Even if someone copies your private key file, they cannot use it without your passphrase.
+          </li>
         </ul>
       </Panel>
 
-      <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">How it works visually in Moaiy</h2>
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How hybrid encryption works under the hood</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Newcomers often wonder how OpenPGP can encrypt a 2 GB video archive in just a few seconds if public-key math is computationally heavy. The answer is <strong>hybrid encryption</strong>:
+          </p>
+          <ol class="list-inside list-decimal space-y-2">
+            <li>When you drop a file into Moaiy and click <strong>Encrypt</strong>, Moaiy generates a brand-new, one-time random symmetric <strong>session key</strong> in memory and encrypts your file at high speed.</li>
+            <li>Moaiy then encrypts that tiny session key using each selected recipient’s <strong>public key</strong> and bundles everything into a single <code>.gpg</code> file.</li>
+            <li>When the recipient drops the <code>.gpg</code> file into Moaiy, their <strong>private key</strong> unlocks the session key, which immediately restores the original file.</li>
+          </ol>
+          <p>
+            This design also makes <strong>multi-recipient encryption</strong> effortless: if you select तीन teammates in Moaiy, the file data is encrypted once, and the session key is locked separately for each teammate’s public key—without tripling the file size.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How it works visually in Moaiy on macOS</h2>
         <ol class="mt-5 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
           <li><strong class="text-text-primary">Create your key pair:</strong> Open Moaiy’s Key Manager, enter your name, email, and a strong passphrase, and click <strong>Create</strong>.</li>
-          <li><strong class="text-text-primary">Share your public key:</strong> Click <strong>Export Public Key</strong> in Moaiy and send the <code>.asc</code> or <code>.key</code> file to your collaborators.</li>
-          <li><strong class="text-text-primary">Encrypt for a recipient:</strong> Import a colleague’s public key, drag <code>payroll.csv</code> into Moaiy, select their name, and click <strong>Encrypt</strong>.</li>
-          <li><strong class="text-text-primary">Decrypt incoming files:</strong> Drag an encrypted <code>.gpg</code> file addressed to you into Moaiy and enter your passphrase to unlock it.</li>
+          <li><strong class="text-text-primary">Share your public key:</strong> Click <strong>Export Public Key</strong> in Moaiy and send the resulting <code>.asc</code> file to your collaborators.</li>
+          <li><strong class="text-text-primary">Encrypt for a recipient:</strong> Import a colleague’s public key, drag <code>payroll.csv</code> into Moaiy, select their name in Recipient Mode, and click <strong>Encrypt</strong>.</li>
+          <li><strong class="text-text-primary">Decrypt incoming files:</strong> Drag an encrypted <code>.gpg</code> file addressed to you into Moaiy and enter your passphrase to unlock it locally.</li>
         </ol>
       </Panel>
 
-      <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Common mistakes to avoid</h2>
-        <ul class="list-compact">
-          <li>Accidentally sharing your private key instead of your public key.</li>
-          <li>Storing unencrypted private key backups in shared cloud folders.</li>
-          <li>Reusing weak passphrases or forgetting to keep an offline recovery backup.</li>
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Understanding digital signatures, fingerprints, and expiration</h2>
+        <div class="mt-4 space-y-4 text-sm leading-relaxed text-text-secondary">
+          <div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Key Fingerprints</h3>
+            <p class="mt-1">
+              Every OpenPGP key pair has a unique 40-character hexadecimal fingerprint (for example, <code>4F9A 8C12 ...</code>). Because anyone can create a key claiming to be “Alice &lt;alice@example.com&gt;”, checking the fingerprint with Alice over a trusted phone call or messaging app guarantees you imported her real public key.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Digital Signatures</h3>
+            <p class="mt-1">
+              While encryption keeps a file <em>secret</em>, a digital signature proves <em>who</em> created the file and confirms that not a single byte was altered in transit. When you sign and encrypt a file using your private key, the recipient can verify with your public key that the file genuinely came from you.
+            </p>
+          </div>
+          <div>
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Key Expiration & Revocation</h3>
+            <p class="mt-1">
+              An expiration date tells contacts not to encrypt new files to an old key after a chosen date—it does <em>not</em> prevent you from decrypting older files you already received. If a key is ever compromised or retired early, a revocation certificate marks the public key as no longer valid.
+            </p>
+          </div>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Common beginner mistakes to avoid</h2>
+        <ul class="list-compact mt-3">
+          <li><strong class="text-text-primary">Sharing the wrong key:</strong> Only export and share your <em>Public Key</em>. Never email or upload your Private Key to collaborators.</li>
+          <li><strong class="text-text-primary">Storing unencrypted key backups in cloud sync folders:</strong> Keep your exported private key backup on an offline drive rather than in an unencrypted cloud folder.</li>
+          <li><strong class="text-text-primary">Forgetting to include yourself when needed:</strong> If you encrypt a file solely to a client’s public key and delete your original plaintext copy, only the client’s private key can unlock that <code>.gpg</code> file. Include your own public key as a recipient if you also need to decrypt that archive later.</li>
         </ul>
       </Panel>
 
+      <AdSlot pageKey="openpgp-made-simple" {...openpgpSimpleAd} class="mt-10" />
+
       <section class="link-grid">
-        <LinkCard href="/docs/" title="Visual Docs" description="Step-by-step macOS guides and FAQs." />
-        <LinkCard href="/verification/" title="Verification" description="Trusted download and checksum checklist." />
+        <LinkCard href="/docs/" title="Visual User Manual" description="Step-by-step macOS guides and FAQs." />
+        <LinkCard href="/encrypt-files-on-macos/" title="macOS Encryption Guide" description="Compare FileVault, DMG, and OpenPGP workflows." />
         <LinkCard href="/gpg-tools-alternative/" title="Compare Workflows" description="Compare Moaiy with traditional GPG tools." />
       </section>
     </div>

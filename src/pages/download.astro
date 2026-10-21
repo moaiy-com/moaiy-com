@@ -2,14 +2,11 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
-import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.download;
 const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
-const [downloadMidAd] = adPlacementMap.download;
 ---
 
 <BaseLayout {...seo}>
@@ -17,13 +14,13 @@ const [downloadMidAd] = adPlacementMap.download;
     <div class="page-container">
       <PageHero
         title="Download Moaiy for macOS"
-        subtitle="Get the official native macOS app from GitHub Releases and verify your download before installing."
+        subtitle="Get the official native macOS application from GitHub Releases and verify your installer before opening."
       />
 
       <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official macOS release</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official macOS release channel</h2>
         <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-secondary">
-          Moaiy is distributed free and open source through GitHub Releases. Download the latest macOS build, check the published SHA-256 checksum, and drag <strong>Moaiy.app</strong> into your <strong>Applications</strong> folder.
+          Moaiy is distributed free and open source under the MIT License through GitHub Releases. Download the latest macOS build, compare the published SHA-256 checksum, and drag <strong>Moaiy.app</strong> into your <strong>Applications</strong> folder.
         </p>
         <div class="mt-6 flex flex-wrap gap-3">
           <a
@@ -42,33 +39,49 @@ const [downloadMidAd] = adPlacementMap.download;
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Platform availability</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">System requirements & specifications</h2>
         <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">macOS (Native GUI App)</p>
-            <p class="mt-1 text-sm text-text-secondary">Available now from official GitHub Releases.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Operating System</p>
+            <p class="mt-1 text-sm text-text-secondary">macOS 13.0 (Ventura), macOS 14 (Sonoma), macOS 15 (Sequoia), or later.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Windows / Linux</p>
-            <p class="mt-1 text-sm text-text-secondary">Planned. Follow progress in Roadmap and Release Notes.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Processor Architecture</p>
+            <p class="mt-1 text-sm text-text-secondary">Apple Silicon (M1 / M2 / M3 / M4) and Intel 64-bit Mac systems.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">iOS / Android</p>
-            <p class="mt-1 text-sm text-text-secondary">Planned, not available yet.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Encryption Standard</p>
+            <p class="mt-1 text-sm text-text-secondary">RFC 4880 / OpenPGP compatible (`.gpg`, `.pgp`, and `.asc` key & file formats).</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Automation / API</p>
-            <p class="mt-1 text-sm text-text-secondary">Planned, not publicly available yet.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Network & Privacy</p>
+            <p class="mt-1 text-sm text-text-secondary">Works 100% offline after installation; no account registration or cloud connection required.</p>
           </div>
         </div>
       </Panel>
 
-      <AdSlot pageKey="download" {...downloadMidAd} class="mt-12" />
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Installation & first-launch checklist</h2>
+        <ol class="mt-5 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
+          <li>
+            <strong class="text-text-primary">Download the release package:</strong> Visit the official <a href={releaseUrl} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">GitHub Releases page</a> and download the latest macOS asset along with its accompanying checksum file.
+          </li>
+          <li>
+            <strong class="text-text-primary">Verify file integrity:</strong> Run <code>shasum -a 256</code> in Terminal on the downloaded package and confirm the hash matches the release notes (see our <a href="/verification/" class="text-accent-primary hover:underline">Verification Guide</a>).
+          </li>
+          <li>
+            <strong class="text-text-primary">Move to Applications:</strong> Open the disk image or archive and drag <strong>Moaiy.app</strong> into your <code>/Applications</code> directory so macOS App Translocation does not restrict local keyring access.
+          </li>
+          <li>
+            <strong class="text-text-primary">Set up your first key:</strong> Launch Moaiy, open the visual Key Manager to generate a personal OpenPGP key pair or import a contact’s public key, and test encrypting a sample file before deleting any original sensitive documents.
+          </li>
+        </ol>
+      </Panel>
 
       <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Using Moaiy with smart cards</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          If you store OpenPGP keys on a smart card or hardware token (such as a YubiKey), verify your card unlock flow and offline backup process before relying on it for critical files.
+          If you store OpenPGP keys on a smart card or hardware security token (such as a YubiKey), test your card reader detection, PIN unlock flow, and offline backup keys before relying on hardware-backed encryption for daily production files.
         </p>
         <a href="/smartcard-encryption-guide/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">
           Open smart card encryption guide
@@ -78,7 +91,7 @@ const [downloadMidAd] = adPlacementMap.download;
       <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Build from source in Xcode (optional)</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          If you prefer to compile Moaiy yourself, clone the repository and build the native macOS target in Xcode:
+          Developers and security auditors who prefer to compile Moaiy from source can clone the public repository and build the native macOS target directly in Xcode:
         </p>
         <div class="code-block">
           <div>git clone https://github.com/moaiy-com/moaiy.git</div>
@@ -88,9 +101,9 @@ const [downloadMidAd] = adPlacementMap.download;
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/verification/" title="Verification" description="Checklist to verify downloads before install." />
-        <LinkCard href="/release-notes/" title="Release Notes" description="Recent product and site milestones." />
-        <LinkCard href="/roadmap/" title="Roadmap" description="What is available now and what comes next." />
+        <LinkCard href="/verification/" title="Verification" description="Step-by-step SHA-256 and signature checklist." />
+        <LinkCard href="/docs/" title="Documentation" description="Visual macOS user manual and troubleshooting." />
+        <LinkCard href="/release-notes/" title="Release Notes" description="Recent product and documentation milestones." />
       </section>
     </div>
   </main>

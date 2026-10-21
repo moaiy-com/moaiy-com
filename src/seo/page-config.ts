@@ -288,7 +288,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
   },
   privacy: {
     title: 'Privacy Policy - Moaiy',
-    description: 'Privacy policy for moaiy.com and official support channels.',
+    description: 'Privacy policy for moaiy.com, Google AdSense & analytics disclosures, and official support channels.',
     canonicalPath: '/privacy/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'privacy',
@@ -306,8 +306,8 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   terms: {
-    title: 'Terms - Moaiy',
-    description: 'Terms for using moaiy.com resources and open-source releases.',
+    title: 'Terms of Use - Moaiy',
+    description: 'Terms for using moaiy.com documentation, resources, and open-source software releases.',
     canonicalPath: '/terms/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'terms',
@@ -315,7 +315,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
-        name: 'Terms - Moaiy',
+        name: 'Terms of Use - Moaiy',
         url: 'https://moaiy.com/terms/',
       },
       breadcrumbSchema([
@@ -339,9 +339,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   securityWhitepaper: {
-    title: 'Moaiy Security Whitepaper (Draft) | Threat Model & Controls',
+    title: 'Moaiy Security Architecture & Threat Model Whitepaper',
     description:
-      'Read the technical draft covering local threat assumptions, security controls, and coordinated vulnerability reporting.',
+      'Technical whitepaper covering Moaiy’s local encryption architecture, threat model assumptions, security controls, and vulnerability disclosure.',
     canonicalPath: '/security-whitepaper/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'security-whitepaper',
@@ -351,9 +351,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         { name: 'Security Whitepaper', path: '/security-whitepaper/' },
       ]),
       techArticleSchema({
-        headline: 'Moaiy Security Whitepaper (Draft)',
+        headline: 'Moaiy Security Architecture and Threat Model Whitepaper',
         description:
-          'Technical summary of threat model assumptions, control priorities, and vulnerability disclosure for Moaiy on macOS.',
+          'Technical specification of threat model assumptions, cryptographic design, control priorities, and vulnerability disclosure for Moaiy on macOS.',
         path: '/security-whitepaper/',
       }),
     ],
@@ -393,9 +393,9 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     ],
   },
   encryptFilesOnMacos: {
-    title: 'Encrypt Files on macOS with Moaiy | Visual Drag-and-Drop Guide',
+    title: 'Encrypt Files on macOS with Moaiy | Complete Visual Guide',
     description:
-      'Encrypt files on your Mac in seconds with drag and drop, visual key management, and zero command-line setup.',
+      'Learn how to encrypt files on macOS with drag and drop, compare FileVault and DMG images vs. OpenPGP, and share encrypted files safely.',
     canonicalPath: '/encrypt-files-on-macos/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'encrypt-files-on-macos',
@@ -407,7 +407,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       techArticleSchema({
         headline: 'How to Encrypt Files on macOS with Drag and Drop Using Moaiy',
         description:
-          'Visual 4-step workflow for encrypting files on macOS with recipient public keys or shared passwords in Moaiy.',
+          'Complete guide comparing macOS encryption methods and walking through visual OpenPGP file encryption with Moaiy.',
         path: '/encrypt-files-on-macos/',
       }),
     ],
@@ -415,7 +415,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
   openpgpMadeSimple: {
     title: 'OpenPGP Made Simple | Visual Beginner Guide with Moaiy',
     description:
-      'Understand public keys, private keys, and passphrases in plain language and use them visually on macOS with Moaiy.',
+      'Understand public keys, private keys, passphrases, and digital signatures in plain language and use them visually on macOS with Moaiy.',
     canonicalPath: '/openpgp-made-simple/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'openpgp-made-simple',

@@ -2,11 +2,14 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.encryptFilesOnMacos;
 const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
+const [encryptMacosAd] = adPlacementMap['encrypt-files-on-macos'];
 ---
 
 <BaseLayout {...seo}>
@@ -14,15 +17,77 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
     <div class="page-container-compact">
       <PageHero
         centered={false}
-        title="Encrypt files on macOS with Moaiy"
-        subtitle="A visual, drag-and-drop workflow for locking sensitive files, managing keys, and sharing safely—with zero terminal commands."
+        title="How to Encrypt Files on macOS with Moaiy"
+        subtitle="A complete guide to protecting individual files and archives on your Mac—comparing FileVault, encrypted DMG disk images, and drag-and-drop OpenPGP encryption."
       />
 
-      <section class="space-y-5">
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Why full-disk encryption (FileVault) is not enough when sharing files</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Almost every modern Mac ships with <strong>Apple FileVault</strong> enabled. FileVault is essential because it encrypts your internal SSD at rest—protecting your data if your MacBook is physically lost or stolen while powered off.
+          </p>
+          <p>
+            However, as soon as you log into macOS, FileVault transparently unlocks every file for your active user session. The moment you attach a tax return to an email, upload a client contract to iCloud Drive, Google Drive, or Dropbox, or drop a <code>.env</code> configuration file into Slack, <strong>that file leaves your Mac as unencrypted plaintext</strong>. Anyone who compromises the cloud bucket, email server, or chat history can read it.
+          </p>
+          <p>
+            File-level encryption with <strong>Moaiy</strong> solves this exact gap: it locks individual files or archives on your Mac <em>before</em> they ever touch the network, so they remain encrypted in transit and at rest on remote servers.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Comparing macOS file encryption methods</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Different protection tools on macOS serve different threat models. Use this table to choose the right approach for your workflow:
+        </p>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[620px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Method</th>
+                <th class="px-4 py-3 font-heading">What it protects</th>
+                <th class="px-4 py-3 font-heading">Cross-platform sharing</th>
+                <th class="px-4 py-3 font-heading">Key / password model</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">macOS FileVault</td>
+                <td class="px-4 py-3">Entire Mac SSD when powered off</td>
+                <td class="px-4 py-3">None (files are plaintext when copied or emailed)</td>
+                <td class="px-4 py-3">macOS login password / recovery key</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Disk Utility Encrypted DMG</td>
+                <td class="px-4 py-3">Virtual disk container on macOS</td>
+                <td class="px-4 py-3">macOS only (cannot be opened natively on Windows/Linux)</td>
+                <td class="px-4 py-3">Shared password only</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Standard ZIP Password</td>
+                <td class="px-4 py-3">Basic casual archive locking</td>
+                <td class="px-4 py-3">High, but legacy ZipCrypto is cryptographically weak</td>
+                <td class="px-4 py-3">Shared password only</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Moaiy (OpenPGP)</td>
+                <td class="px-4 py-3">Individual files & archives locally and in transit</td>
+                <td class="px-4 py-3">Universal RFC 4880 OpenPGP across macOS, Linux, and Windows</td>
+                <td class="px-4 py-3">Both Recipient Public-Key Mode and Password Mode</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <section class="mt-10 space-y-5">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Step-by-step: Encrypting files on your Mac with Moaiy</h2>
+
         <Panel as="article" tone="strong" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Install the official macOS app</h2>
+          <h3 class="font-heading text-xl font-semibold text-text-primary">1. Install the official macOS app</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Download the latest Moaiy release for macOS from official GitHub Releases and move <strong>Moaiy.app</strong> to your Applications folder.
+            Download the latest Moaiy release for macOS from official GitHub Releases, verify its SHA-256 checksum if desired, and drag <strong>Moaiy.app</strong> into your <code>/Applications</code> folder. Moaiy runs natively on Apple Silicon (M1–M4) and Intel Macs without background daemons.
           </p>
           <a
             href={releaseUrl}
@@ -31,35 +96,60 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
             data-analytics-event="download_click"
             class="btn-primary mt-4"
           >
-            Open Releases
+            Open GitHub Releases
           </a>
         </Panel>
 
         <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Set up your keys in Key Manager</h2>
+          <h3 class="font-heading text-xl font-semibold text-text-primary">2. Create or import keys in Key Manager</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Open Moaiy and create your personal OpenPGP key pair in a few clicks, or import the public key of the colleague or client you want to share files with.
+            Launch Moaiy and open the visual <strong>Key Manager</strong>. If you are encrypting files for yourself or starting fresh, click <strong>New Key</strong> and enter your name, email address, and a strong passphrase. If you are sending confidential files to a client, auditor, or teammate who uses OpenPGP, click <strong>Import</strong> and select their <code>.asc</code> or <code>.gpg</code> public key file.
           </p>
         </Panel>
 
         <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Drag, drop, and encrypt</h2>
+          <h3 class="font-heading text-xl font-semibold text-text-primary">3. Drag, drop, and select your encryption mode</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Drag your file (for example, <code>contracts.zip</code>) directly into the Moaiy window. Choose <strong>Recipient Mode</strong> to lock it for specific public keys, or <strong>Password Mode</strong> to protect it with a shared passphrase, then click <strong>Encrypt</strong>.
+            Drag your file—such as <code>contracts.zip</code>, <code>tax-return-2026.pdf</code>, or <code>production.env</code>—directly from Finder into the Moaiy window:
           </p>
+          <ul class="list-compact mt-3">
+            <li>
+              <strong class="text-text-primary">Recipient Mode (Recommended for teams & clients):</strong> Check the box next to one or more recipients in your keyring. You do not need to invent or transmit a shared password—only the holder of the matching private key can decrypt the output file.
+            </li>
+            <li>
+              <strong class="text-text-primary">Password Mode (Best for personal backups or non-PGP contacts):</strong> Switch to Password Mode and enter a strong passphrase. Anyone who knows that passphrase can decrypt the file in Moaiy or any OpenPGP client.
+            </li>
+          </ul>
         </Panel>
 
         <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Share encrypted files anywhere</h2>
+          <h3 class="font-heading text-xl font-semibold text-text-primary">4. Share or back up the encrypted `.gpg` file</h3>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Because encryption happens locally on your Mac before the file ever leaves your drive, you can safely send the resulting <code>.gpg</code> file over email, chat, or cloud storage.
+            Click <strong>Encrypt</strong>. Moaiy writes a new encrypted file (for example, <code>contracts.zip.gpg</code>) alongside your original file or to your chosen destination folder. Because the file is already encrypted on your local disk, you can safely upload it to cloud storage, attach it to email, or copy it to an external drive.
           </p>
           <a href="/verification/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">Read download verification guide</a>
         </Panel>
       </section>
 
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Practical security tips for macOS users</h2>
+        <ul class="list-compact mt-3">
+          <li>
+            <strong class="text-text-primary">Compress multi-file folders before encrypting:</strong> Right-click a folder in Finder and click <em>Compress</em> to bundle filenames and subfolder structure into a single <code>.zip</code> before dragging it into Moaiy.
+          </li>
+          <li>
+            <strong class="text-text-primary">Remember that filenames outside the archive remain visible:</strong> Encrypting <code>acquisitions-target-acme.pdf</code> produces <code>acquisitions-target-acme.pdf.gpg</code>. If the filename itself is confidential, rename it to something neutral (such as <code>document-2026-04.pdf</code>) before encrypting.
+          </li>
+          <li>
+            <strong class="text-text-primary">Clean up unencrypted originals when appropriate:</strong> Encrypting a file creates a new <code>.gpg</code> copy and leaves your original file untouched so you never lose work accidentally. If you are preparing a machine for travel, remember to remove the plaintext copy and empty Trash on your FileVault-protected volume.
+          </li>
+        </ul>
+      </Panel>
+
+      <AdSlot pageKey="encrypt-files-on-macos" {...encryptMacosAd} class="mt-10" />
+
       <section class="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <LinkCard href="/docs/" title="Full Docs" description="Visual step-by-step guides and FAQs." />
+        <LinkCard href="/docs/" title="Full User Manual" description="Complete visual macOS documentation and FAQs." />
         <LinkCard href="/gpg-tools-alternative/" title="Compare Alternatives" description="See how Moaiy compares with traditional GPG tools." />
       </section>
     </div>
