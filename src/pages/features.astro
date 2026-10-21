@@ -16,59 +16,88 @@ const [featuresMidAd] = adPlacementMap.features;
     <div class="page-container">
       <PageHero
         title="Features built for everyday Mac encryption"
-        subtitle="Moaiy brings standard OpenPGP file protection into a clean, native macOS interface—so you can protect files without touching the command line."
+        subtitle="Moaiy brings standard OpenPGP file protection into a clean, native macOS interface—so you can lock sensitive files, manage keys, and verify downloads without touching the command line."
       />
 
       <section class="grid grid-cols-1 gap-5 md:grid-cols-3">
         <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-xl font-semibold text-text-primary">Drag-and-drop simplicity</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Drop any file or archive directly into Moaiy to encrypt or decrypt in seconds through a guided visual workflow.
+            Drop any document, spreadsheet, PDF, or zip archive directly into Moaiy to encrypt or decrypt in seconds through a guided native macOS workflow.
           </p>
         </Panel>
         <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-xl font-semibold text-text-primary">Recipient & password modes</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Encrypt files for specific contacts using OpenPGP public keys, or lock files with a shared passphrase when recipients do not use PGP yet.
+            Encrypt files for specific contacts using OpenPGP public keys, or lock files with a shared passphrase when recipients do not use PGP keys yet.
           </p>
         </Panel>
         <Panel as="article" tone="strong" class="p-6">
           <h2 class="font-heading text-xl font-semibold text-text-primary">Visual keyring & local trust</h2>
           <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Create, import, and export keys in a clear visual keyring. All encryption happens locally on your Mac with public open-source code.
+            Create, import, inspect, and export keys in a clear visual keyring. All encryption runs locally on your Mac with public MIT open-source code.
           </p>
         </Panel>
       </section>
-
-      <AdSlot pageKey="features" {...featuresMidAd} class="mt-12" />
 
       <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Visual workflow at a glance</h2>
         <ol class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <li class="rounded-lg border border-line-subtle bg-bg-primary/50 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 1 · Set up keys</p>
-            <p class="mt-1 text-sm text-text-secondary">Create your own OpenPGP key pair in Moaiy’s visual Key Manager, or import a collaborator’s public key.</p>
+            <p class="mt-1 text-sm text-text-secondary">Create your own OpenPGP key pair in Moaiy’s visual Key Manager, or import a collaborator’s public key file (`.asc` / `.gpg`).</p>
           </li>
           <li class="rounded-lg border border-line-subtle bg-bg-primary/50 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 2 · Drag & drop files</p>
-            <p class="mt-1 text-sm text-text-secondary">Drop documents, zip archives, or backups directly into the Moaiy window on your Mac.</p>
+            <p class="mt-1 text-sm text-text-secondary">Drop confidential documents, project secrets, or zip archives directly from Finder into the Moaiy window on your Mac.</p>
           </li>
           <li class="rounded-lg border border-line-subtle bg-bg-primary/50 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 3 · Choose protection mode</p>
-            <p class="mt-1 text-sm text-text-secondary">Select recipient public keys or enter a password, then click Encrypt to lock the file locally.</p>
+            <p class="mt-1 text-sm text-text-secondary">Select one or more recipient public keys—or enter a strong password—and click Encrypt to lock the file locally.</p>
           </li>
           <li class="rounded-lg border border-line-subtle bg-bg-primary/50 p-4">
-            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 4 · Share or decrypt easily</p>
-            <p class="mt-1 text-sm text-text-secondary">Send the encrypted `.gpg` file over any channel, or drop encrypted files back into Moaiy to unlock them.</p>
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 4 · Share or decrypt anywhere</p>
+            <p class="mt-1 text-sm text-text-secondary">Send the standard `.gpg` output over email, chat, or cloud drive, or drop encrypted files back into Moaiy to unlock them.</p>
           </li>
         </ol>
       </Panel>
 
       <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Detailed capability breakdown</h2>
+        <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">100% Interoperable OpenPGP Output</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Moaiy produces standard RFC 4880 OpenPGP packets. You are never locked into a proprietary file wrapper—teammates on macOS, Linux, or Windows can decrypt your files using Moaiy, GnuPG, Kleopatra, or any compliant OpenPGP tool.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Multi-Recipient Team Encryption</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Need to share a financial report or `.env` configuration bundle with three engineers and an external auditor? Select all of their public keys in one pass so each recipient can unlock the archive with their own private key.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Standalone, Zero-Daemon Architecture</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Unlike legacy suites that install root packages, background daemons, and fragile Apple Mail bundles, Moaiy lives cleanly inside <code>/Applications</code> and runs only when you open it.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Hardware Smart Card & YubiKey Ready</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Keep your private keys isolated inside a hardware security token (such as a YubiKey) so private key material never touches your Mac’s internal drive.
+            </p>
+          </div>
+        </div>
+      </Panel>
+
+      <AdSlot pageKey="features" {...featuresMidAd} class="mt-12" />
+
+      <Panel class="mt-12">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Hardware-backed smart card support</h2>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          Many users combine Moaiy with OpenPGP smart cards or hardware tokens (such as YubiKey) so private keys never touch the Mac’s internal disk.
-          This setup pairs well with a clear backup and recovery plan.
+          Many users combine Moaiy with OpenPGP smart cards or hardware tokens so private keys stay isolated on dedicated hardware. Read our setup guide to learn how to organize subkeys, configure User and Admin PINs, and plan offline recovery backups.
         </p>
         <a href="/smartcard-encryption-guide/" class="mt-4 inline-flex text-sm font-semibold text-accent-primary hover:underline">
           Read the smart card setup guide
@@ -76,9 +105,9 @@ const [featuresMidAd] = adPlacementMap.features;
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/docs/" title="Read Docs" description="Step-by-step visual guides and FAQs." />
-        <LinkCard href="/download/" analyticsEvent="download_click" title="Get Releases" description="Official macOS app and install path." />
-        <LinkCard href="/security/" title="Security Model" description="Local privacy, verification, and disclosure policy." />
+        <LinkCard href="/docs/" title="Read User Manual" description="Step-by-step visual guides, troubleshooting, and FAQs." />
+        <LinkCard href="/download/" analyticsEvent="download_click" title="Get Releases" description="Official macOS app and system requirements." />
+        <LinkCard href="/security-whitepaper/" title="Security Whitepaper" description="Threat model, local architecture, and disclosure policy." />
       </section>
     </div>
   </main>

@@ -12,41 +12,59 @@ const seo = pageSeo.verification;
   <main class="page-shell">
     <div class="page-container-narrow">
       <PageHero
-        title="Verification and checksum guide"
-        subtitle="Confirm that your downloaded Moaiy macOS installer is authentic and unmodified before opening it."
+        title="Download Verification & Checksum Guide"
+        subtitle="Step-by-step instructions to confirm that your downloaded Moaiy macOS installer is authentic, complete, and unmodified before opening it."
       />
 
       <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Verification checklist</h2>
-        <ol class="mt-5 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
-          <li>Download the macOS installer (such as <code>Moaiy.dmg</code> or <code>Moaiy.pkg</code>) only from official GitHub Releases.</li>
-          <li>Download the matching <code>SHA256SUMS</code> or signature file from the same release entry.</li>
-          <li>Compute the local SHA-256 hash on your Mac and confirm it matches the published value character for character.</li>
-          <li>Verify the cryptographic signature when a release signing file (<code>.sig</code>) is provided.</li>
-        </ol>
-      </Panel>
-
-      <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">How to check your download on macOS</h2>
-        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          You can use macOS’s built-in <code>shasum</code> utility to check the downloaded installer file (replace <code>Moaiy.dmg</code> with the exact filename you downloaded):
-        </p>
-        <div class="code-block">
-          <div class="text-text-tertiary"># 1. Compute SHA-256 hash of the downloaded installer</div>
-          <div><span class="text-accent-primary">$</span> shasum -a 256 ~/Downloads/Moaiy.dmg</div>
-          <div class="text-text-tertiary"># 2. Optional: verify detached signature if provided on the release</div>
-          <div><span class="text-accent-primary">$</span> gpg --verify ~/Downloads/Moaiy.dmg.sig ~/Downloads/Moaiy.dmg</div>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Why verify encryption software before installing?</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            When you install a local file encryption app on your Mac, you are trusting that binary with your confidential documents and OpenPGP keys. Even when downloading over HTTPS, verifying the file’s cryptographic checksum protects you against corrupted downloads, mirror tampering, or accidental file substitution.
+          </p>
+          <p>
+            Every official Moaiy release on GitHub Releases includes published <strong>SHA-256 checksums</strong> (and detached OpenPGP signatures when applicable) so you can verify binary integrity in under 30 seconds using built-in macOS tools.
+          </p>
         </div>
       </Panel>
 
       <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">If verification fails</h2>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Pre-install verification checklist</h2>
+        <ol class="mt-5 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
+          <li>Download the macOS installer (such as <code>Moaiy.dmg</code> or <code>Moaiy.pkg</code>) exclusively from the official <a href="https://github.com/moaiy-com/moaiy/releases" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">GitHub Releases page</a>.</li>
+          <li>Download the matching <code>SHA256SUMS</code> file (or review the SHA-256 hash listed in the release notes) from the exact same release tag.</li>
+          <li>Compute the local SHA-256 hash on your Mac and confirm that the 64-character hexadecimal string matches the published value character for character.</li>
+          <li>When a detached signature file (<code>.sig</code> or <code>.asc</code>) is provided, verify the signature against the official release signing key.</li>
+        </ol>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">How to check SHA-256 hashes on macOS</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          macOS includes the <code>shasum</code> command-line utility out of the box—no extra software is required to verify your download. Open the built-in macOS <strong>Terminal</strong> app and run the following command (replace <code>Moaiy.dmg</code> with the exact filename in your <code>Downloads</code> folder):
+        </p>
+        <div class="code-block">
+          <div class="text-text-tertiary"># 1. Compute the SHA-256 hash of the downloaded macOS installer</div>
+          <div><span class="text-accent-primary">$</span> shasum -a 256 ~/Downloads/Moaiy.dmg</div>
+          <div class="text-text-tertiary"># 2. Automatically check against a downloaded SHA256SUMS file</div>
+          <div><span class="text-accent-primary">$</span> cd ~/Downloads && shasum -a 256 -c SHA256SUMS</div>
+          <div class="text-text-tertiary"># 3. Optional: verify detached OpenPGP signature if provided</div>
+          <div><span class="text-accent-primary">$</span> gpg --verify ~/Downloads/Moaiy.dmg.sig ~/Downloads/Moaiy.dmg</div>
+        </div>
+        <p class="mt-4 text-sm leading-relaxed text-text-secondary">
+          If you use <code>shasum -a 256 -c SHA256SUMS</code>, macOS will print <code>Moaiy.dmg: OK</code> when the file matches the published hash.
+        </p>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">What to do if verification fails</h2>
         <ul class="list-compact">
-          <li>Do not open or install the downloaded file.</li>
-          <li>Delete the file and download a fresh copy directly from the official GitHub Releases page.</li>
+          <li><strong class="text-text-primary">Do not open or mount the installer:</strong> Immediately move the mismatched file to Trash and empty Trash.</li>
+          <li><strong class="text-text-primary">Check for incomplete downloads:</strong> A dropped network connection can truncate a download and change its SHA-256 hash. Download a fresh copy directly from <code>https://github.com/moaiy-com/moaiy/releases</code> over a trusted connection.</li>
           <li>
-            Report any persistent checksum or signature mismatch to
-            <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>.
+            <strong class="text-text-primary">Report persistent mismatches:</strong> If a freshly downloaded official release asset still fails checksum verification, report the issue immediately to
+            <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>
+            with the release version, download URL, and the hash you observed.
           </li>
         </ul>
       </Panel>
@@ -54,7 +72,7 @@ const seo = pageSeo.verification;
       <section class="link-grid">
         <LinkCard href="/download/" title="Download" description="Official macOS release channel." />
         <LinkCard href="/security/" title="Security" description="Disclosure flow and assurance status." />
-        <LinkCard href="/release-notes/" title="Release Notes" description="Recent milestones and release links." />
+        <LinkCard href="/security-whitepaper/" title="Security Whitepaper" description="Threat model and supply-chain controls." />
       </section>
     </div>
   </main>

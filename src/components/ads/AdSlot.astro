@@ -12,7 +12,7 @@ const {
   pageKey,
   placementId,
   slotId = '',
-  minHeight = 280,
+  minHeight = 90,
   label = 'Sponsored',
   class: className = '',
 } = Astro.props;
@@ -29,6 +29,7 @@ const elementId = `ads-${pageKey}-${placementId}`;
       data-page-key={pageKey}
       data-placement-id={placementId}
       aria-label={label}
+      hidden
     >
       <p class="ad-slot-label">{label}</p>
       <div class="ad-slot-frame">
@@ -54,10 +55,10 @@ const elementId = `ads-${pageKey}-${placementId}`;
             if (slotRoot && !adElement.dataset.statusObserverAttached) {
               const syncSlotVisibility = () => {
                 const status = adElement.getAttribute('data-ad-status');
-                if (status === 'unfilled' || status === 'unfill-optimized') {
-                  slotRoot.setAttribute('hidden', 'hidden');
-                } else if (status === 'filled') {
+                if (status === 'filled') {
                   slotRoot.removeAttribute('hidden');
+                } else {
+                  slotRoot.setAttribute('hidden', 'hidden');
                 }
               };
 

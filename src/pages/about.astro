@@ -2,13 +2,10 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
-import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.about;
-const [aboutMidAd] = adPlacementMap.about;
 ---
 
 <BaseLayout {...seo}>
@@ -22,14 +19,24 @@ const [aboutMidAd] = adPlacementMap.about;
       <Panel tone="strong">
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Mission & why “Moaiy”</h2>
         <p class="mt-4 text-sm leading-relaxed text-text-secondary">
-          Inspired by the monolithic Moai statues of Rapa Nui—silent, enduring guardians carved from stone—Moaiy was built to stand guard over your most important files right on your Mac.
+          Inspired by the monolithic Moai statues of Rapa Nui—silent, enduring guardians carved from volcanic stone—Moaiy was created to stand guard over your most important files right on your Mac.
         </p>
         <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-          Strong OpenPGP encryption has existed for decades, yet most people still avoid it because terminal flags and legacy suites feel intimidating. Moaiy brings proven local encryption into a calm, drag-and-drop macOS app anyone can use in seconds.
+          Strong OpenPGP cryptography has protected journalists, engineers, and researchers for decades. Yet everyday Mac users frequently avoid it because traditional tools require memorizing terminal flags or installing intrusive system-wide plugins. Moaiy bridges that gap by packaging standard, interoperable OpenPGP file protection into a calm, native macOS drag-and-drop application anyone can master in minutes.
         </p>
       </Panel>
 
-      <AdSlot pageKey="about" {...aboutMidAd} class="mt-12" />
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">What makes Moaiy different</h2>
+        <div class="mt-4 space-y-4 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Unlike cloud-based “secure vaults” that ask you to upload your confidential files to someone else’s servers, Moaiy runs entirely on your local macOS hardware. Your plaintext documents, private keys, and passphrases never leave your machine. Once a file is encrypted into a standard <code>.gpg</code> archive, you are free to transmit it over email, Slack, iCloud Drive, Dropbox, or USB drives without trusting the transport provider.
+          </p>
+          <p>
+            Because Moaiy adheres to open standards (RFC 4880 / OpenPGP), files you encrypt in Moaiy are never locked into a proprietary vendor format. Collaborators on macOS, Linux, or Windows can decrypt them using Moaiy or any standards-compliant OpenPGP implementation.
+          </p>
+        </div>
+      </Panel>
 
       <section class="mt-12">
         <h2 class="text-center font-heading text-2xl font-semibold text-text-primary md:text-3xl">Core principles</h2>

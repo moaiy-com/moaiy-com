@@ -13,43 +13,91 @@ const seo = pageSeo.securityWhitepaper;
     <div class="page-container-compact">
       <PageHero
         centered={false}
-        title="Security whitepaper (draft)"
-        subtitle="Draft summary of threat assumptions, control priorities, and disclosure process."
+        title="Moaiy Security Architecture & Threat Model Whitepaper"
+        subtitle="Technical specification of trust boundaries, local OpenPGP processing guarantees, supply-chain release verification, and coordinated vulnerability disclosure."
       />
 
-      <section class="space-y-5">
+      <section class="space-y-6">
         <Panel as="article" tone="strong" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Threat model scope</h2>
-          <ul class="list-compact">
-            <li>Focus: confidentiality and integrity for locally handled artifacts.</li>
-            <li>Primary risks: compromised binaries, key leakage, and operator mistakes.</li>
-            <li>Out of scope: full endpoint compromise and hostile operating systems.</li>
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">1. Executive summary & design philosophy</h2>
+          <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+            <p>
+              Moaiy is a native macOS application designed to lower the operational barrier to RFC 4880 OpenPGP file encryption. In real-world security incidents, data exposure rarely happens because modern cryptographic primitives (such as AES-256, RSA-4096, or Curve25519) are broken mathematically; instead, exposure occurs because users skip encryption altogether due to complex command-line tooling, or because they upload unencrypted files to third-party cloud vaults.
+            </p>
+            <p>
+              Moaiy’s security architecture is built around three strict invariants: <strong>(1) 100% local execution on the user’s Mac</strong> with zero network transmission of plaintext or key material, <strong>(2) strict adherence to interoperable OpenPGP standards</strong> rather than custom cryptographic schemes, and <strong>(3) full source-code and release-channel auditability</strong> under the MIT License.
+            </p>
+          </div>
+        </Panel>
+
+        <Panel as="article" class="p-6 md:p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Threat model & trust boundaries</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Clear security engineering requires distinguishing between threats a local file encryption tool is designed to mitigate and threats that fall outside its boundary:
+          </p>
+          <div class="mt-5 grid grid-cols-1 gap-4 md:grid-cols-2">
+            <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">In-Scope Threats Mitigated</h3>
+              <ul class="list-compact mt-2">
+                <li><strong>Untrusted transit & cloud storage:</strong> Protects confidentiality and integrity of files stored on iCloud Drive, Google Drive, Dropbox, S3, or sent via email/chat.</li>
+                <li><strong>Third-party service breaches:</strong> Because Moaiy requires no user account or cloud backend, there is no central database of user keys or files to breach.</li>
+                <li><strong>Operator CLI mistakes:</strong> Guided visual recipient selection and passphrase prompts reduce accidental plaintext output or flag misconfiguration.</li>
+                <li><strong>At-rest key extraction (with Smart Cards):</strong> When paired with a YubiKey or OpenPGP smart card, private keys remain isolated inside hardware token silicon.</li>
+              </ul>
+            </div>
+            <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+              <h3 class="font-heading text-lg font-semibold text-text-primary">Out-of-Scope Assumptions</h3>
+              <ul class="list-compact mt-2">
+                <li><strong>Compromised host OS or root malware:</strong> If an attacker already has root access, screen-recording permissions, or a keylogger on the Mac during encryption or decryption, local software cannot protect plaintext in use.</li>
+                <li><strong>Metadata in outer filenames:</strong> Standard <code>.gpg</code> files remain visible as files on disk; users must rename sensitive outer filenames before encrypting if filename confidentiality is required.</li>
+                <li><strong>Lost passphrases without backup:</strong> Zero-knowledge local design means lost keys or forgotten passphrases cannot be recovered by the project maintainers.</li>
+              </ul>
+            </div>
+          </div>
+        </Panel>
+
+        <Panel as="article" class="p-6 md:p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Local data flow & cryptographic lifecycle</h2>
+          <ol class="mt-4 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
+            <li>
+              <strong class="text-text-primary">Key generation & storage:</strong> Public and private keys are generated using standard OpenPGP algorithms on the local machine. Private keys stored on disk are encrypted using OpenPGP String-to-Key (S2K) iterated and salted passphrase derivation before being written to the local keyring.
+            </li>
+            <li>
+              <strong class="text-text-primary">File encryption pipeline:</strong> When a user drops a file into Moaiy, the file is read directly from the local macOS filesystem, compressed and encrypted using a fresh per-file symmetric session key with integrity protection (SEIPD / MDC), and written back to the local filesystem as a standard <code>.gpg</code> or <code>.pgp</code> packet stream.
+            </li>
+            <li>
+              <strong class="text-text-primary">Non-destructive file handling:</strong> To prevent accidental data loss, Moaiy writes encrypted or decrypted output to a validated destination file rather than overwriting source files in place before completion.
+            </li>
+          </ol>
+        </Panel>
+
+        <Panel as="article" class="p-6 md:p-7">
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">4. Supply-chain integrity & release verification</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Because local encryption software must be trusted at installation time, Moaiy enforces a transparent distribution workflow:
+          </p>
+          <ul class="list-compact mt-3">
+            <li>All source code commits, pull requests, and build configurations are publicly inspectable in the official GitHub repository (<a href="https://github.com/moaiy-com/moaiy" target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">github.com/moaiy-com/moaiy</a>).</li>
+            <li>Official macOS binaries are published exclusively on GitHub Releases alongside SHA-256 checksums so users can verify binary integrity using macOS’s built-in <code>shasum -a 256</code> tool prior to execution.</li>
+            <li>Users and organizations with strict compliance requirements can compile <code>Moaiy.app</code> directly from source in Xcode without third-party binary dependencies.</li>
           </ul>
         </Panel>
 
         <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">2. Control priorities</h2>
-          <ul class="list-compact">
-            <li>Publish through auditable release channels with traceable history.</li>
-            <li>Recommend checksum and signature verification before installation.</li>
-            <li>Keep shipped and planned capabilities explicitly separated.</li>
-          </ul>
-        </Panel>
-
-        <Panel as="article" class="p-6 md:p-7">
-          <h2 class="font-heading text-2xl font-semibold text-text-primary">3. Disclosure and response</h2>
-          <p class="mt-4 text-sm leading-relaxed text-text-secondary">
-            Report vulnerabilities to
-            <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a>
-            with reproduction details. Current targets are acknowledgement within 3 business days and triage within 7 business days when reproducible.
+          <h2 class="font-heading text-2xl font-semibold text-text-primary">5. Coordinated vulnerability disclosure & response SLA</h2>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            We welcome independent security review of both the Moaiy macOS application and documentation. If you discover a potential cryptographic, memory-handling, or operational vulnerability, please report it privately to <a href="mailto:security@moaiy.com" class="text-accent-primary hover:underline">security@moaiy.com</a> (also listed in <a href="/.well-known/security.txt" class="text-accent-primary hover:underline">/.well-known/security.txt</a>) with affected version details and reproduction steps.
+          </p>
+          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+            Our target service levels are initial acknowledgement within <strong>3 business days</strong> and technical triage within <strong>7 business days</strong> for reproducible reports. We ask researchers to allow reasonable remediation time before public disclosure so users can update safely.
           </p>
         </Panel>
       </section>
 
       <section class="link-grid">
-        <LinkCard href="/security/" title="Security Policy" description="Current public security model." />
-        <LinkCard href="/verification/" title="Verification Guide" description="Checksum and signature workflow." />
-        <LinkCard href="/release-notes/" title="Release Notes" description="Version updates and timing." />
+        <LinkCard href="/security/" title="Security Overview" description="Plain-language security summary and status." />
+        <LinkCard href="/verification/" title="Verification Guide" description="SHA-256 checksum and signature workflow." />
+        <LinkCard href="/smartcard-encryption-guide/" title="Smart Card Guide" description="Hardware-backed private key isolation." />
       </section>
     </div>
   </main>

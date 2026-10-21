@@ -2,68 +2,131 @@
 import LinkCard from '../components/ui/LinkCard.astro';
 import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
+import AdSlot from '../components/ads/AdSlot.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { adPlacementMap } from '../config/ad-placements';
 import { pageSeo } from '../seo/page-config';
 
 const seo = pageSeo.gpgToolsAlternative;
+const [gpgAltAd] = adPlacementMap['gpg-tools-alternative'];
 ---
 
 <BaseLayout {...seo}>
   <main class="page-shell">
     <div class="page-container-narrow">
       <PageHero
-        title="Is Moaiy a simpler GPG alternative on macOS?"
-        subtitle="Compare everyday drag-and-drop usability, key management clarity, and system footprint."
+        title="Moaiy vs. Traditional GPG Tools on macOS"
+        subtitle="An honest architectural comparison between Moaiy’s standalone drag-and-drop macOS app and legacy GPG suites or command-line toolchains."
       />
 
-      <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Workflow comparison</h2>
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Why macOS users look for a simpler GPG alternative</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            For years, Mac users who wanted OpenPGP encryption faced a frustrating choice: either install command-line <code>gnupg</code> via Homebrew and memorize terminal flags, or install a multi-component legacy bundle (such as GPG Suite) that injects plugins into Apple Mail, installs system-wide Preference Panes, and runs persistent background daemons.
+          </p>
+          <p>
+            Whenever Apple releases a major macOS update (such as Ventura, Sonoma, or Sequoia), system-wide Mail bundles and background services frequently break or require paid support upgrades—even if all you really wanted was a reliable way to encrypt a file before sending it over email, Slack, or cloud drive.
+          </p>
+          <p>
+            <strong>Moaiy</strong> takes a clean, modern approach: a self-contained, native macOS application focused 100% on visual drag-and-drop file encryption and key management—with zero system-invasive plugins and a permissive MIT open-source license.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Side-by-side comparison</h2>
         <div class="mt-6 overflow-x-auto">
-          <table class="w-full min-w-[620px] text-left text-sm text-text-secondary">
+          <table class="w-full min-w-[640px] text-left text-sm text-text-secondary">
             <thead>
               <tr class="border-b border-line-subtle text-text-primary">
                 <th class="py-3 pr-4 font-heading">Dimension</th>
-                <th class="px-4 py-3 font-heading">Traditional GPG suites & CLI</th>
+                <th class="px-4 py-3 font-heading">Command-Line GnuPG (CLI)</th>
+                <th class="px-4 py-3 font-heading">Legacy GPG Suites</th>
                 <th class="px-4 py-3 font-heading">Moaiy on macOS</th>
               </tr>
             </thead>
             <tbody>
               <tr class="border-b border-line-strong">
-                <td class="py-3 pr-4">Daily file encryption</td>
-                <td class="px-4 py-3">Terminal flags or multi-app toolchains</td>
-                <td class="px-4 py-3">Focused drag-and-drop macOS window</td>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Everyday file workflow</td>
+                <td class="px-4 py-3">Terminal commands (`gpg -e -r ...`)</td>
+                <td class="px-4 py-3">Context-menu services & multi-app windows</td>
+                <td class="px-4 py-3">Single drag-and-drop native macOS window</td>
               </tr>
               <tr class="border-b border-line-strong">
-                <td class="py-3 pr-4">Key management</td>
-                <td class="px-4 py-3">Complex subkey flags and technical jargon</td>
-                <td class="px-4 py-3">Visual keyring for creating, importing, and exporting keys</td>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Key management UX</td>
+                <td class="px-4 py-3">Interactive CLI prompts & hex IDs</td>
+                <td class="px-4 py-3">Separate keychain utility app</td>
+                <td class="px-4 py-3">Built-in visual Key Manager in the same app</td>
               </tr>
               <tr class="border-b border-line-strong">
-                <td class="py-3 pr-4">System footprint</td>
-                <td class="px-4 py-3">System-wide Mail plugins and background services</td>
-                <td class="px-4 py-3">Standalone local app that runs only when you open it</td>
+                <td class="py-3 pr-4 font-semibold text-text-primary">System footprint</td>
+                <td class="px-4 py-3">Homebrew packages + background `gpg-agent`</td>
+                <td class="px-4 py-3">Root installer `.pkg`, Mail plugins, daemons</td>
+                <td class="px-4 py-3">Standalone `Moaiy.app`—runs only when opened</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">macOS upgrade resilience</td>
+                <td class="px-4 py-3">High, but requires terminal maintenance</td>
+                <td class="px-4 py-3">Mail plugins often break on major OS updates</td>
+                <td class="px-4 py-3">High—uses standard macOS app boundaries</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">File format compatibility</td>
+                <td class="px-4 py-3">RFC 4880 OpenPGP (`.gpg` / `.asc`)</td>
+                <td class="px-4 py-3">RFC 4880 OpenPGP (`.gpg` / `.asc`)</td>
+                <td class="px-4 py-3">RFC 4880 OpenPGP (100% interoperable)</td>
               </tr>
               <tr>
-                <td class="py-3 pr-4">License & pricing</td>
-                <td class="px-4 py-3">Mixed licensing or paid support subscriptions</td>
-                <td class="px-4 py-3">100% free and open source (MIT License)</td>
+                <td class="py-3 pr-4 font-semibold text-text-primary">License & cost</td>
+                <td class="px-4 py-3">Free (GPL)</td>
+                <td class="px-4 py-3">Paid support plans / mixed licensing</td>
+                <td class="px-4 py-3">100% Free & Open Source (MIT License)</td>
               </tr>
             </tbody>
           </table>
         </div>
       </Panel>
 
-      <Panel class="mt-12">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">When Moaiy fits well</h2>
-        <ul class="list-compact">
-          <li>You want to encrypt and decrypt files on macOS with drag and drop rather than terminal commands.</li>
-          <li>You need both recipient public-key mode and simple password mode in one clean window.</li>
-          <li>You prefer a lightweight, 100% open-source Mac app with verifiable GitHub releases.</li>
-        </ul>
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">When Moaiy is the best fit—and when you might still want CLI tools</h2>
+        <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Choose Moaiy when:</h3>
+            <ul class="list-compact mt-2">
+              <li>You want a fast, visual drag-and-drop window to encrypt files, folders, and backups on macOS.</li>
+              <li>You collaborate with non-technical clients or teammates who need a zero-command-line app.</li>
+              <li>You want both Recipient Public-Key Mode and Symmetric Password Mode in one place.</li>
+              <li>You prefer a clean app in <code>/Applications</code> without system-wide plugins or subscription fees.</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Keep CLI `gpg` alongside Moaiy when:</h3>
+            <ul class="list-compact mt-2">
+              <li>You automate headless CI/CD pipelines or server-side shell scripts.</li>
+              <li>You use automated Git commit signing hooks inside terminal-based workflows.</li>
+              <li>Because Moaiy uses standard OpenPGP formats, keys and <code>.gpg</code> files work seamlessly across both tools.</li>
+            </ul>
+          </div>
+        </div>
       </Panel>
 
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How to migrate your existing GPG keys to Moaiy</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          If you already have OpenPGP keys in GPG Keychain or command-line GnuPG, you do not need to generate new keys or ask your contacts to update their address books:
+        </p>
+        <ol class="mt-4 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
+          <li>Export your existing public keys (and your private key backup, if migrating your primary identity) as standard ASCII-armored <code>.asc</code> or binary <code>.gpg</code> key files from your previous tool.</li>
+          <li>Open <strong>Moaiy</strong> on your Mac, go to <strong>Key Manager</strong>, and click <strong>Import</strong>.</li>
+          <li>Select your exported key files. Moaiy immediately recognizes your existing key fingerprint, subkeys, and recipient list—so you can decrypt all historical <code>.gpg</code> archives right away.</li>
+        </ol>
+      </Panel>
+
+      <AdSlot pageKey="gpg-tools-alternative" {...gpgAltAd} class="mt-10" />
+
       <section class="link-grid">
-        <LinkCard href="/docs/" title="Read Docs" description="Visual step-by-step macOS guides." />
+        <LinkCard href="/docs/" title="Read User Manual" description="Visual step-by-step macOS guides." />
         <LinkCard href="/download/" analyticsEvent="download_click" title="Get Moaiy" description="Download the official macOS release." />
         <LinkCard href="/openpgp-made-simple/" title="OpenPGP Primer" description="Plain-language guide to keys and passphrases." />
       </section>
