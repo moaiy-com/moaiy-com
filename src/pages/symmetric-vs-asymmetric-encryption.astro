@@ -1,0 +1,125 @@
+---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.symmetricVsAsymmetricEncryption;
+---
+
+<BaseLayout {...seo}>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <PageHero
+        centered={false}
+        title="Symmetric vs. Asymmetric Encryption: Password Mode vs. Public Keys"
+        subtitle="Understand the cryptographic and practical differences between locking files with a shared passphrase and encrypting files for recipient public keys on macOS."
+      />
+
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Two ways to lock a file—and why Moaiy gives you both</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            When you drag a file into Moaiy on your Mac, you can protect it using either <strong>Password Mode (Symmetric Encryption)</strong> or <strong>Recipient Mode (Asymmetric Public-Key Encryption)</strong>. Both modes produce standard, RFC 4880-compliant OpenPGP <code>.gpg</code> files and both use modern symmetric ciphers (such as AES-256) to encrypt the underlying payload.
+          </p>
+          <p>
+            What differs is <strong>how the encryption key is locked and unlocked</strong>—and that difference determines how easily you can share files with clients, teammates, or your future self.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How Symmetric Encryption (Password Mode) works</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            In <strong>Symmetric Encryption</strong>, the exact same secret passphrase is used both to lock (encrypt) the file and to unlock (decrypt) it—just like a physical combination safe.
+          </p>
+          <ul class="list-compact">
+            <li>
+              <strong class="text-text-primary">Under the hood:</strong> When you type a passphrase into Moaiy’s Password Mode, OpenPGP combines your passphrase with a random cryptographic salt and runs it through an iterated String-to-Key (S2K) derivation function to produce a 256-bit key that encrypts the file.
+            </li>
+            <li>
+              <strong class="text-text-primary">Strength:</strong> Zero preliminary setup. Neither you nor the recipient needs to generate or exchange an OpenPGP key pair beforehand.
+            </li>
+            <li>
+              <strong class="text-text-primary">Limitation (The Key-Distribution Problem):</strong> If you encrypt a contract for a client in another city using Password Mode, you must somehow tell the client the password. If you send both the <code>.gpg</code> file and the password in the same email thread, anyone who compromises that email account gets both the safe and the combination.
+            </li>
+          </ul>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How Asymmetric Encryption (Recipient Public-Key Mode) solves the sharing problem</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            <strong>Asymmetric Encryption</strong> splits the key into two mathematically linked halves: a <strong>Public Key</strong> (which locks data) and a <strong>Private Key</strong> (which unlocks data).
+          </p>
+          <ul class="list-compact">
+            <li>
+              <strong class="text-text-primary">No secret password ever travels over the network:</strong> Your colleague sends you their public key openly. You drag your file into Moaiy, select their public key in Recipient Mode, and click <strong>Encrypt</strong>. Even if an attacker intercepts both the public key and the encrypted <code>.gpg</code> file, they cannot decrypt the file because they do not possess your colleague’s private key.
+            </li>
+            <li>
+              <strong class="text-text-primary">Effortless multi-recipient encryption:</strong> In a 5-person team, you can check all 5 teammates’ public keys in Moaiy. Moaiy encrypts the file payload once with a random session key and locks that session key individually for each teammate’s public key. If one teammate leaves the company later, you simply stop selecting their public key on future files—nobody else has to change their personal passphrase.
+            </li>
+          </ul>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Decision matrix: Which mode should you choose?</h2>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[620px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Real-World Scenario</th>
+                <th class="px-4 py-3 font-heading">Recommended Mode</th>
+                <th class="px-4 py-3 font-heading">Why it fits best</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Sharing `.env` secrets or contracts with regular teammates</td>
+                <td class="px-4 py-3 text-accent-primary font-semibold">Recipient Mode</td>
+                <td class="px-4 py-3">Import their public keys once; never coordinate shared passwords over chat.</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Sending a one-off tax PDF to an accountant who doesn’t use PGP</td>
+                <td class="px-4 py-3 text-accent-primary font-semibold">Password Mode</td>
+                <td class="px-4 py-3">Email the `.gpg` file and read the passphrase over a quick phone call or SMS.</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Archiving personal files to cloud storage (iCloud / Google Drive)</td>
+                <td class="px-4 py-3 text-accent-primary font-semibold">Recipient Mode (Self)</td>
+                <td class="px-4 py-3">Encrypt to your own public key so you can batch-encrypt files without typing a password every time.</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Creating a cold-storage emergency archive on a USB drive</td>
+                <td class="px-4 py-3 text-accent-primary font-semibold">Password Mode</td>
+                <td class="px-4 py-3">Can be unlocked on any clean machine with just your memorized Diceware passphrase, even before importing keyfiles.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Best practices when using Password Mode</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Whenever you choose Password Mode for convenience, follow these three rules to keep the security level comparable to public-key encryption:
+        </p>
+        <ol class="mt-4 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
+          <li><strong class="text-text-primary">Never send the passphrase in the same channel as the file:</strong> If you email the <code>.gpg</code> file, send the passphrase via Signal, iMessage, or a voice call.</li>
+          <li><strong class="text-text-primary">Use a unique passphrase per external recipient:</strong> Do not reuse the same shared password across multiple clients.</li>
+          <li><strong class="text-text-primary">Prefer 4+ random words over short passwords:</strong> Symmetric archives rely entirely on passphrase entropy to resist offline brute-force attacks.</li>
+        </ol>
+      </Panel>
+
+      <section class="link-grid">
+        <LinkCard href="/guides/" title="All Guides" description="Browse the full macOS encryption knowledge base." />
+        <LinkCard href="/openpgp-made-simple/" title="OpenPGP Made Simple" description="Visual primer on public keys, private keys, and hybrid encryption." />
+        <LinkCard href="/encrypt-files-on-macos/" title="macOS Encryption Guide" description="Step-by-step file encryption walkthrough on Mac." />
+      </section>
+    </div>
+  </main>
+</BaseLayout>

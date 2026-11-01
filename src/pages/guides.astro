@@ -1,0 +1,163 @@
+---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.guides;
+
+const beginnerGuides = [
+  {
+    href: '/encrypt-files-on-macos/',
+    title: 'How to Encrypt Files on macOS with Moaiy',
+    tag: 'macOS Essentials · 5 min read',
+    summary:
+      'Compare Apple FileVault, encrypted DMG disk images, ZIP passwords, and OpenPGP file encryption—and walk through encrypting files on your Mac with drag and drop.',
+  },
+  {
+    href: '/openpgp-made-simple/',
+    title: 'OpenPGP Made Simple: Public Keys, Private Keys & Passphrases',
+    tag: 'Cryptography Fundamentals · 6 min read',
+    summary:
+      'Understand how hybrid encryption, session keys, public keys, private keys, and passphrases work together without memorizing terminal flags.',
+  },
+  {
+    href: '/symmetric-vs-asymmetric-encryption/',
+    title: 'Symmetric vs. Asymmetric Encryption: Password Mode vs. Public Keys',
+    tag: 'Architecture & Workflows · 7 min read',
+    summary:
+      'Learn the cryptographic and operational trade-offs between symmetric passphrase encryption and asymmetric recipient public keys for everyday file sharing.',
+  },
+  {
+    href: '/gpg-tools-alternative/',
+    title: 'Moaiy vs. Traditional GPG Suites & Command-Line Tools',
+    tag: 'Tool Comparison · 5 min read',
+    summary:
+      'See how a standalone, native macOS drag-and-drop application compares with command-line GnuPG and legacy suites that inject system-wide plugins.',
+  },
+];
+
+const advancedGuides = [
+  {
+    href: '/protect-env-files-and-secrets/',
+    title: 'How to Protect .env Files, API Keys & Config Secrets on macOS',
+    tag: 'Developer Security · 7 min read',
+    summary:
+      'Prevent accidental credential leaks in Slack, email, and Git repositories by locking environment files and production secrets with OpenPGP.',
+  },
+  {
+    href: '/openpgp-key-backup-and-recovery/',
+    title: 'OpenPGP Key Backup, Passphrase Hygiene & Revocation Guide',
+    tag: 'Key Lifecycle · 8 min read',
+    summary:
+      'Design a resilient 3-2-1 offline backup strategy for your private keys, choose strong passphrases, and prepare revocation certificates before emergencies happen.',
+  },
+  {
+    href: '/verify-openpgp-fingerprints/',
+    title: 'How to Verify OpenPGP Key Fingerprints & Prevent Key Substitution',
+    tag: 'Identity Verification · 6 min read',
+    summary:
+      'Learn why email display names can be spoofed, how 40-character hexadecimal fingerprints guarantee key authenticity, and how to verify contacts out of band.',
+  },
+  {
+    href: '/smartcard-encryption-guide/',
+    title: 'Smart Card & YubiKey Encryption Guide for macOS',
+    tag: 'Hardware Security · 7 min read',
+    summary:
+      'Isolate your OpenPGP private keys inside a tamper-resistant YubiKey or smart card chip, configure User and Admin PINs, and provision backup hardware tokens.',
+  },
+  {
+    href: '/macos-file-security-for-professionals/',
+    title: 'macOS File Security Playbook for Journalists, Lawyers & Freelancers',
+    tag: 'Professional Compliance · 8 min read',
+    summary:
+      'Practical client-confidentiality workflows for protecting legal discovery bundles, source materials, financial audits, and tax records on macOS.',
+  },
+  {
+    href: '/cryptographic-signatures-vs-checksums/',
+    title: 'Cryptographic Signatures (.sig) vs. SHA-256 Checksums Explained',
+    tag: 'Supply-Chain Security · 7 min read',
+    summary:
+      'Understand why a SHA-256 hash alone cannot prove authorship if a server is compromised, and how detached OpenPGP signatures protect software and document integrity.',
+  },
+];
+---
+
+<BaseLayout {...seo}>
+  <main class="page-shell">
+    <div class="page-container">
+      <PageHero
+        title="macOS File Encryption & OpenPGP Guides"
+        subtitle="In-depth tutorials, cryptographic primers, and practical security playbooks for protecting sensitive files on your Mac without touching the command line."
+      />
+
+      <Panel tone="strong">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Start here: Essential macOS encryption guides</h2>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-secondary">
+          New to file-level encryption or switching from command-line tools? Start with these four foundational guides to understand how local OpenPGP protection fits into your daily macOS workflow.
+        </p>
+        <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+          {beginnerGuides.map((guide) => (
+            <article class="flex flex-col justify-between rounded-xl border border-line-subtle bg-bg-primary/60 p-6 transition-colors hover:border-accent-primary/60">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">{guide.tag}</p>
+                <h3 class="mt-2 font-heading text-xl font-semibold text-text-primary">
+                  <a href={guide.href} class="hover:text-accent-primary hover:underline">{guide.title}</a>
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-text-secondary">{guide.summary}</p>
+              </div>
+              <a href={guide.href} class="mt-5 inline-flex items-center text-sm font-semibold text-accent-primary hover:underline">
+                Read full guide →
+              </a>
+            </article>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Deep-dive playbooks & operational security</h2>
+        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-secondary">
+          Explore specialized guides for software engineers, journalists, legal professionals, and privacy-conscious users managing hardware tokens, key backups, and fingerprint verification.
+        </p>
+        <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+          {advancedGuides.map((guide) => (
+            <article class="flex flex-col justify-between rounded-xl border border-line-subtle bg-bg-primary/50 p-6 transition-colors hover:border-accent-primary/60">
+              <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">{guide.tag}</p>
+                <h3 class="mt-2 font-heading text-xl font-semibold text-text-primary">
+                  <a href={guide.href} class="hover:text-accent-primary hover:underline">{guide.title}</a>
+                </h3>
+                <p class="mt-3 text-sm leading-relaxed text-text-secondary">{guide.summary}</p>
+              </div>
+              <a href={guide.href} class="mt-5 inline-flex items-center text-sm font-semibold text-accent-primary hover:underline">
+                Read full guide →
+              </a>
+            </article>
+          ))}
+        </div>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Reference & verification manuals</h2>
+        <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <LinkCard
+            href="/docs/"
+            title="Moaiy User Manual"
+            description="Complete four-step macOS visual setup, troubleshooting, and FAQs."
+          />
+          <LinkCard
+            href="/verification/"
+            title="Download Verification Guide"
+            description="How to check SHA-256 hashes and detached signatures before installing."
+          />
+          <LinkCard
+            href="/security-whitepaper/"
+            title="Security Architecture Whitepaper"
+            description="Threat model boundaries, cryptographic data flow, and disclosure SLA."
+          />
+        </div>
+      </Panel>
+    </div>
+  </main>
+</BaseLayout>

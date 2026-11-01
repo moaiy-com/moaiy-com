@@ -1,0 +1,125 @@
+---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.openpgpKeyBackupAndRecovery;
+---
+
+<BaseLayout {...seo}>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <PageHero
+        centered={false}
+        title="OpenPGP Key Backup, Passphrase Hygiene & Revocation Guide"
+        subtitle="How to design a resilient offline backup strategy on macOS so a lost laptop, forgotten passphrase, or hardware failure never locks you out of your encrypted archives."
+      />
+
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">The golden rule of local-first encryption: You are your own key custodian</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Cloud services train us to click <em>“Forgot Password?”</em> and wait for a reset link. Local OpenPGP encryption works on a fundamentally stronger mathematical guarantee: <strong>there is no central server, no master administrator key, and no backdoor</strong>.
+          </p>
+          <p>
+            When you encrypt a file in Moaiy on your Mac, only the holder of the matching private key (in Recipient Mode) or passphrase (in Password Mode) can unlock those bytes. That gives you genuine sovereignty over your data—but it also means that if your MacBook’s logic board fails and you never backed up your private key, nobody on Earth can decrypt your historical <code>.gpg</code> archives.
+          </p>
+          <p>
+            Setting up a solid backup and recovery plan takes fifteen minutes once and protects your encrypted archives for decades.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">The 3-2-1 backup strategy for OpenPGP private keys</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          Security engineers apply the classic <strong>3-2-1 rule</strong> to cryptographic keys just as they do to critical databases:
+        </p>
+        <ul class="list-compact mt-4">
+          <li>
+            <strong class="text-text-primary">3 copies of your key material:</strong> (1) Your active key in Moaiy on your Mac (or on your primary YubiKey), (2) a primary offline backup on an encrypted USB flash drive, and (3) a secondary disaster-recovery copy.
+          </li>
+          <li>
+            <strong class="text-text-primary">2 different storage media types:</strong> Combine solid-state flash storage (such as an APFS-encrypted USB drive or backup hardware smart card) with a durable physical record of your passphrase and recovery metadata (such as archival paper or a stamped metal recovery plate).
+          </li>
+          <li>
+            <strong class="text-text-primary">1 copy stored off-site:</strong> Keep one encrypted backup in a separate physical location (such as a bank safe-deposit box or a trusted family safe) so a single home or office fire cannot destroy both your Mac and your backup USB drive.
+          </li>
+        </ul>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How to choose a passphrase that is both unguessable and memorable</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Your OpenPGP private key is encrypted on disk using a passphrase via the OpenPGP String-to-Key (S2K) key-derivation function. If an attacker steals your exported private key file, their only option is offline passphrase guessing.
+          </p>
+          <div class="mt-4 overflow-x-auto">
+            <table class="w-full min-w-[580px] text-left text-sm text-text-secondary">
+              <thead>
+                <tr class="border-b border-line-subtle text-text-primary">
+                  <th class="py-3 pr-4 font-heading">Passphrase Style</th>
+                  <th class="px-4 py-3 font-heading">Example Structure</th>
+                  <th class="px-4 py-3 font-heading">Security & Usability Verdict</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-line-strong">
+                  <td class="py-3 pr-4 font-semibold text-text-primary">Short complex word (8 chars)</td>
+                  <td class="px-4 py-3"><code>P@ssw0rd!</code></td>
+                  <td class="px-4 py-3">Weak—vulnerable to modern GPU dictionary attacks</td>
+                </tr>
+                <tr class="border-b border-line-strong">
+                  <td class="py-3 pr-4 font-semibold text-text-primary">5–6 random Diceware words</td>
+                  <td class="px-4 py-3"><code>cobalt-harbor-velvet-glacier-lantern-maple</code></td>
+                  <td class="px-4 py-3">Excellent (~65–77 bits of entropy) and easy to type on macOS</td>
+                </tr>
+                <tr>
+                  <td class="py-3 pr-4 font-semibold text-text-primary">Password Manager 24+ char random</td>
+                  <td class="px-4 py-3">Stored in local 1Password / KeePassXC / Apple Passwords</td>
+                  <td class="px-4 py-3">Maximum entropy; ensure the password manager recovery key is also written offline</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">What is a Revocation Certificate—and why you must generate it upfront</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Suppose you publish your public key on your website or GitHub profile, and two years later your laptop is stolen or you lose your private key. How do you warn colleagues around the world to stop encrypting files to that old public key?
+          </p>
+          <p>
+            In OpenPGP, you do this with a <strong>Revocation Certificate</strong>—a small, pre-signed cryptographic statement generated while you still have your private key. If your key is ever lost, retired, or compromised, you publish or share that revocation certificate so anyone who imports it sees immediately that the old key is revoked.
+          </p>
+          <p>
+            Keep your revocation certificate stored alongside your offline key backup, separate from your everyday public key file so you do not accidentally share it during normal work.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Annual 10-minute recovery drill checklist</h2>
+        <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+          An untested backup is not a true backup. Once a year (or whenever you upgrade your Mac), run through this quick verification checklist:
+        </p>
+        <ol class="mt-4 list-inside list-decimal space-y-2 text-sm leading-relaxed text-text-secondary">
+          <li>Plug in your offline backup USB drive and confirm the drive mounts cleanly and the exported private key file (<code>.asc</code> / <code>.gpg</code>) is readable.</li>
+          <li>Verify that you can still recall or read your private-key passphrase (and smart card Admin PIN) without hesitation.</li>
+          <li>Check your key’s expiration date in Moaiy’s Key Manager. If it expires within the next 60 days, extend the expiration date and send the refreshed public key to your regular collaborators.</li>
+          <li>Decrypt one historical <code>.gpg</code> archive in Moaiy to confirm end-to-end key availability.</li>
+        </ol>
+      </Panel>
+
+      <section class="link-grid">
+        <LinkCard href="/guides/" title="All Guides" description="Browse the full macOS encryption knowledge base." />
+        <LinkCard href="/openpgp-made-simple/" title="OpenPGP Made Simple" description="Beginner guide to public keys, private keys, and passphrases." />
+        <LinkCard href="/smartcard-encryption-guide/" title="Smart Card Guide" description="Hardware-backed key isolation and backup tokens." />
+      </section>
+    </div>
+  </main>
+</BaseLayout>

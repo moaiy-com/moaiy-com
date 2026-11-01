@@ -11,7 +11,10 @@ function loadHeroScene3D() {
 
 const HeroScene3D = lazy(loadHeroScene3D);
 
-function StaticFallback() {
+const BOT_USER_AGENT_PATTERN =
+  /Googlebot|Mediapartners-Google|AdsBot-Google|Google-InspectionTool|Storebot-Google|bingbot|Slurp|DuckDuckBot|Baiduspider|YandexBot|Sogou|Exabot|facebot|ia_archiver|HeadlessChrome|Lighthouse|PTST/i;
+
+export function StaticFallback() {
   return (
     <div
       aria-hidden="true"
@@ -28,7 +31,24 @@ function StaticFallback() {
   );
 }
 
+function isAutomatedCrawler() {
+  if (typeof navigator === 'undefined') {
+    return true;
+  }
+
+  if (navigator.webdriver) {
+    return true;
+  }
+
+  const ua = navigator.userAgent || '';
+  return BOT_USER_AGENT_PATTERN.test(ua);
+}
+
 function shouldDisable3D() {
+  if (isAutomatedCrawler()) {
+    return true;
+  }
+
   const connection =
     navigator.connection || navigator.mozConnection || navigator.webkitConnection;
 

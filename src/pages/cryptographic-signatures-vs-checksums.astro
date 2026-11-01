@@ -1,0 +1,107 @@
+---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.cryptographicSignaturesVsChecksums;
+---
+
+<BaseLayout {...seo}>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <PageHero
+        centered={false}
+        title="Cryptographic Signatures (.sig) vs. SHA-256 Checksums Explained"
+        subtitle="Understand the difference between file integrity and cryptographic authenticity—and how SHA-256 hashes and OpenPGP signatures work together on macOS."
+      />
+
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Why a SHA-256 checksum alone is not a signature</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            When downloading software installers or exchanging critical archives, you will often see a 64-character <strong>SHA-256 checksum</strong> alongside a detached <strong>OpenPGP signature file (<code>.sig</code> or <code>.asc</code>)</strong>. Many users assume they do the exact same thing, but they actually solve two different problems:
+          </p>
+          <ul class="list-compact">
+            <li>
+              <strong class="text-text-primary">SHA-256 Checksum = Integrity against accidental corruption (or tampering when the hash is hosted separately):</strong> Anyone can compute the SHA-256 hash of any file—no secret key is involved. If an attacker compromises a download server and replaces <code>App.dmg</code> with a malicious file, they can also recompute a brand-new SHA-256 hash and edit the webpage to display their new hash.
+            </li>
+            <li>
+              <strong class="text-text-primary">OpenPGP Digital Signature (`.sig`) = Cryptographic proof of authorship + integrity:</strong> A cryptographic signature can <em>only</em> be created by the holder of the author’s private key. Even if an attacker compromises a mirror server and replaces both the file and the webpage text, they cannot forge a valid signature that verifies against the author’s previously verified public key.
+            </li>
+          </ul>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Side-by-side comparison: SHA-256 Checksum vs. OpenPGP Signature vs. Encryption</h2>
+        <div class="mt-6 overflow-x-auto">
+          <table class="w-full min-w-[620px] text-left text-sm text-text-secondary">
+            <thead>
+              <tr class="border-b border-line-subtle text-text-primary">
+                <th class="py-3 pr-4 font-heading">Mechanism</th>
+                <th class="px-4 py-3 font-heading">Hides file contents?</th>
+                <th class="px-4 py-3 font-heading">Detects bit corruption?</th>
+                <th class="px-4 py-3 font-heading">Proves author identity?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">SHA-256 Checksum</td>
+                <td class="px-4 py-3">No (file remains plaintext)</td>
+                <td class="px-4 py-3">Yes—any 1-bit change alters the hash completely</td>
+                <td class="px-4 py-3">Only if the hash list itself comes from a trusted origin</td>
+              </tr>
+              <tr class="border-b border-line-strong">
+                <td class="py-3 pr-4 font-semibold text-text-primary">Detached OpenPGP Signature (`.sig`)</td>
+                <td class="px-4 py-3">No (file remains readable by anyone)</td>
+                <td class="px-4 py-3">Yes—hashes the file and locks the digest with a private key</td>
+                <td class="px-4 py-3">Yes—mathematically tied to the signer’s public key</td>
+              </tr>
+              <tr>
+                <td class="py-3 pr-4 font-semibold text-text-primary">Signed & Encrypted OpenPGP File (`.gpg`)</td>
+                <td class="px-4 py-3">Yes—only selected recipients can decrypt</td>
+                <td class="px-4 py-3">Yes—authenticated encryption (SEIPD / MDC)</td>
+                <td class="px-4 py-3">Yes—verifies the sender’s signature upon decryption</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">How a digital signature works step by step</h2>
+        <ol class="mt-4 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
+          <li>
+            <strong class="text-text-primary">Hashing the document:</strong> When a developer or author signs <code>release-v1.dmg</code>, OpenPGP first computes a cryptographic hash (such as SHA-256 or SHA-512) of the exact bytes of the file.
+          </li>
+          <li>
+            <strong class="text-text-primary">Signing with the Private Key:</strong> OpenPGP applies a mathematical signature operation to that hash using the author’s <strong>private signing key</strong> (unlocked via passphrase or YubiKey PIN) and writes the result to a small <code>release-v1.dmg.sig</code> file.
+          </li>
+          <li>
+            <strong class="text-text-primary">Verification with the Public Key:</strong> When you verify the file against the author’s <strong>public key</strong>, your Mac computes the SHA-256 hash of your downloaded file and checks whether the signature mathematically matches both that hash and the author’s public key. If even a single byte was modified in transit, verification immediately fails.
+          </li>
+        </ol>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Why “Sign + Encrypt” is the gold standard for sensitive file transfers</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Remember that anyone who has your public key can encrypt a file <em>to</em> you. That means encryption by itself keeps a file confidential on its way to you, but does not by itself prove <em>who</em> encrypted it unless the sender also signed it with their private key.
+          </p>
+          <p>
+            When exchanging high-stakes files—such as wire-transfer instructions, signed legal agreements, or software deployment bundles—combining <strong>Recipient Encryption</strong> (using the recipient’s public key) with <strong>Digital Signing</strong> (using the sender’s private key) guarantees both confidentiality and sender authenticity.
+          </p>
+        </div>
+      </Panel>
+
+      <section class="link-grid">
+        <LinkCard href="/guides/" title="All Guides" description="Browse the full macOS encryption knowledge base." />
+        <LinkCard href="/verification/" title="Verify Moaiy Downloads" description="Practical commands for checking SHA-256 and signatures." />
+        <LinkCard href="/verify-openpgp-fingerprints/" title="Verify Fingerprints" description="Confirm public key authenticity before verifying signatures." />
+      </section>
+    </div>
+  </main>
+</BaseLayout>

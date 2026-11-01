@@ -36,152 +36,197 @@ const personaCards = [
 ---
 
 <BaseLayout {...seo}>
-  <main class="relative isolate min-h-screen overflow-hidden bg-bg-primary">
-    <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
-      <HeroScene client:load />
-    </div>
-    <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/35 via-bg-primary/18 to-bg-secondary/42" style="opacity: var(--hero-overlay-opacity, 1)"></div>
+  <main>
+    <section class="relative isolate min-h-screen overflow-hidden bg-bg-primary">
+      <div id="hero-canvas" class="pointer-events-none absolute inset-0 z-0">
+        <HeroScene client:load />
+      </div>
+      <div class="pointer-events-none absolute inset-0 z-[1] bg-gradient-to-b from-bg-primary/35 via-bg-primary/18 to-bg-secondary/42" style="opacity: var(--hero-overlay-opacity, 1)"></div>
 
-    <div class="relative z-10 flex min-h-screen items-center px-4 py-20">
-      <div class="mx-auto w-full max-w-7xl">
-        <div class="max-w-2xl text-center md:translate-x-6 md:text-left lg:translate-x-8">
-          <p class="mb-4 inline-flex items-center rounded-full border border-accent-primary/30 bg-bg-primary/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent-primary/90 backdrop-blur-sm">
-            Private on Your Mac • Free & Open Source
-          </p>
-          <h1 class="text-balance font-heading text-4xl font-bold leading-tight text-text-primary md:text-6xl animate-fade-in-up">
-            Encrypt Files With Drag and Drop
-          </h1>
-          <p class="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl animate-fade-in-up" style="animation-delay: 0.12s;">
-            Protect sensitive files on your Mac in a few clicks. Drag in a file, lock it locally with OpenPGP, and share it anywhere with confidence.
-          </p>
-          <p class="hero-muted mt-4 text-sm font-medium uppercase tracking-[0.1em] animate-fade-in-up" style="animation-delay: 0.18s;">
-            No cloud upload · No command line · 100% open source
-          </p>
+      <div class="relative z-10 flex min-h-screen items-center px-4 py-20">
+        <div class="mx-auto w-full max-w-7xl">
+          <div class="max-w-2xl text-center md:translate-x-6 md:text-left lg:translate-x-8">
+            <p class="mb-4 inline-flex items-center rounded-full border border-accent-primary/30 bg-bg-primary/40 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-accent-primary/90 backdrop-blur-sm">
+              Private on Your Mac • Free & Open Source
+            </p>
+            <h1 class="text-balance font-heading text-4xl font-bold leading-tight text-text-primary md:text-6xl animate-fade-in-up">
+              Encrypt Files With Drag and Drop
+            </h1>
+            <p class="mt-5 max-w-xl text-lg leading-relaxed text-text-secondary md:text-xl animate-fade-in-up" style="animation-delay: 0.12s;">
+              Protect sensitive files on your Mac in a few clicks. Drag in a file, lock it locally with OpenPGP, and share it anywhere with confidence.
+            </p>
+            <p class="hero-muted mt-4 text-sm font-medium uppercase tracking-[0.1em] animate-fade-in-up" style="animation-delay: 0.18s;">
+              No cloud upload · No command line · 100% open source
+            </p>
 
-          <div class="mt-9 flex flex-col gap-3 sm:flex-row animate-fade-in-up" style="animation-delay: 0.24s">
+            <div class="mt-9 flex flex-col gap-3 sm:flex-row animate-fade-in-up" style="animation-delay: 0.24s">
+              <a
+                href={releaseUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-analytics-event="download_click"
+                class="inline-flex items-center justify-center rounded-lg bg-accent-primary px-6 py-3 text-base font-semibold text-bg-primary transition-colors hover:bg-accent-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              >
+                Download for macOS
+              </a>
+              <a
+                href="/guides/"
+                data-analytics-event="docs_cta_click"
+                class="inline-flex items-center justify-center rounded-lg border border-line-strong/70 px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              >
+                Explore Guides
+              </a>
+            </div>
             <a
-              href={releaseUrl}
+              href={repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              data-analytics-event="download_click"
-              class="inline-flex items-center justify-center rounded-lg bg-accent-primary px-6 py-3 text-base font-semibold text-bg-primary transition-colors hover:bg-accent-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
+              data-analytics-event="github_click"
+              class="mt-4 inline-flex items-center text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary animate-fade-in-up"
+              style="animation-delay: 0.3s;"
             >
-              Download for macOS
+              View Source on GitHub
             </a>
-            <a
-              href="/docs/"
-              data-analytics-event="docs_cta_click"
-              class="inline-flex items-center justify-center rounded-lg border border-line-strong/70 px-6 py-3 text-base font-semibold text-text-primary transition-colors hover:border-accent-primary/60 hover:text-accent-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary"
-            >
-              How It Works
-            </a>
-          </div>
-          <a
-            href={repositoryUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            data-analytics-event="github_click"
-            class="mt-4 inline-flex items-center text-sm font-semibold text-text-secondary transition-colors hover:text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary/70 focus-visible:ring-offset-2 focus-visible:ring-offset-bg-primary animate-fade-in-up"
-            style="animation-delay: 0.3s;"
-          >
-            View Source on GitHub
-          </a>
-          <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 animate-fade-in-up" style="animation-delay: 0.36s;">
-            <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Experience</p>
-              <p class="mt-1 text-sm font-semibold text-text-primary">Native macOS App</p>
-            </div>
-            <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">License</p>
-              <p class="mt-1 text-sm font-semibold text-text-primary">MIT Open Source</p>
-            </div>
-            <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
-              <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Privacy</p>
-              <p class="mt-1 text-sm font-semibold text-text-primary">100% Local Processing</p>
+            <div class="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3 animate-fade-in-up" style="animation-delay: 0.36s;">
+              <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Experience</p>
+                <p class="mt-1 text-sm font-semibold text-text-primary">Native macOS App</p>
+              </div>
+              <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">License</p>
+                <p class="mt-1 text-sm font-semibold text-text-primary">MIT Open Source</p>
+              </div>
+              <div class="rounded-lg border border-line-subtle/80 bg-bg-primary/55 px-4 py-3 text-center backdrop-blur-sm md:text-left">
+                <p class="text-xs font-semibold uppercase tracking-[0.08em] text-text-tertiary">Privacy</p>
+                <p class="mt-1 text-sm font-semibold text-text-primary">100% Local Processing</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </section>
 
-  <section class="bg-bg-secondary px-4 py-20">
-    <div class="mx-auto max-w-6xl">
-      <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
-        Why people choose Moaiy
-      </h2>
-      <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
-        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
-          <h3 class="font-heading text-xl font-semibold text-text-primary">Visual drag-and-drop</h3>
-          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Drop files into the app to encrypt or decrypt with recipients or passwords—no terminal commands needed.
-          </p>
-        </article>
-        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
-          <h3 class="font-heading text-xl font-semibold text-text-primary">Steadfast local privacy</h3>
-          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            Every key and file stays on your Mac. Nothing is uploaded to external servers or cloud dashboards.
-          </p>
-        </article>
-        <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
-          <h3 class="font-heading text-xl font-semibold text-text-primary">Built in the open</h3>
-          <p class="mt-3 text-sm leading-relaxed text-text-secondary">
-            The source code, official releases, and verification steps are public on GitHub for anyone to inspect.
-          </p>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="bg-bg-primary px-4 py-20">
-    <div class="mx-auto max-w-6xl">
-      <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
-        Who uses Moaiy
-      </h2>
-      <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
-        {personaCards.map((card) => (
-          <article class="rounded-xl border border-line-strong bg-bg-secondary/65 p-6">
-            <h3 class="font-heading text-xl font-semibold text-text-primary">{card.role}</h3>
-            <p class="mt-3 text-sm leading-relaxed text-text-secondary">{card.copy}</p>
+    <section class="bg-bg-secondary px-4 py-20">
+      <div class="mx-auto max-w-6xl">
+        <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
+          Why people choose Moaiy
+        </h2>
+        <p class="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-text-secondary md:text-base">
+          Built specifically for macOS, Moaiy replaces complex terminal flags and intrusive legacy plugins with a calm, focused local window.
+        </p>
+        <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+          <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
+            <h3 class="font-heading text-xl font-semibold text-text-primary">Visual drag-and-drop</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+              Drop files or archives into Moaiy to encrypt or decrypt using recipient public keys or shared passwords—no command line needed.
+            </p>
           </article>
-        ))}
+          <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
+            <h3 class="font-heading text-xl font-semibold text-text-primary">Steadfast local privacy</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+              Every key, passphrase, and file stays on your Mac. Nothing is uploaded to external servers, cloud vaults, or telemetry endpoints.
+            </p>
+          </article>
+          <article class="rounded-xl border border-line-strong bg-bg-primary/45 p-6">
+            <h3 class="font-heading text-xl font-semibold text-text-primary">Interoperable & open source</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+              Moaiy produces standard RFC 4880 OpenPGP (`.gpg` / `.pgp`) files and is 100% auditable under the permissive MIT License on GitHub.
+            </p>
+          </article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="bg-bg-secondary px-4 py-20">
-    <div class="mx-auto max-w-6xl">
-      <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
-        Guides & practical workflows
-      </h2>
-      <p class="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-text-secondary md:text-base">
-        Learn how to lock files on macOS, understand OpenPGP keys in plain language, or pair Moaiy with a hardware smart card.
-      </p>
-      <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
-        <LinkCard
-          href="/encrypt-files-on-macos/"
-          title="Encrypt Files on macOS"
-          description="Step-by-step drag-and-drop workflow for Mac users."
-        />
-        <LinkCard
-          href="/openpgp-made-simple/"
-          title="OpenPGP Made Simple"
-          description="Plain-language primer on public keys, private keys, and passphrases."
-        />
-        <LinkCard
-          href="/gpg-tools-alternative/"
-          title="Moaiy vs GPG Tools"
-          description="Compare visual drag-and-drop encryption with traditional GPG suites."
-        />
-        <LinkCard
-          href="/smartcard-encryption-guide/"
-          title="Smart Card Guide"
-          description="Pair Moaiy with a YubiKey or OpenPGP hardware token."
-        />
+    <section class="bg-bg-primary px-4 py-20">
+      <div class="mx-auto max-w-6xl">
+        <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
+          How local file protection works in 3 steps
+        </h2>
+        <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-3">
+          <article class="rounded-xl border border-line-strong bg-bg-secondary/65 p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 1 · Visual Keyring</p>
+            <h3 class="mt-2 font-heading text-xl font-semibold text-text-primary">Create or import keys</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+              Generate your personal OpenPGP key pair in Moaiy’s visual Key Manager, import a collaborator’s `.asc` public key, or connect a hardware YubiKey smart card.
+            </p>
+          </article>
+          <article class="rounded-xl border border-line-strong bg-bg-secondary/65 p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 2 · Drag & Lock</p>
+            <h3 class="mt-2 font-heading text-xl font-semibold text-text-primary">Choose recipient or password</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+              Drag any document, `.env` file, or `.zip` folder into the window. Select Recipient Mode for public-key encryption or Password Mode for passphrase locking.
+            </p>
+          </article>
+          <article class="rounded-xl border border-line-strong bg-bg-secondary/65 p-6">
+            <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Step 3 · Share Anywhere</p>
+            <h3 class="mt-2 font-heading text-xl font-semibold text-text-primary">Send or back up safely</h3>
+            <p class="mt-3 text-sm leading-relaxed text-text-secondary">
+              Because encryption completes on your Mac before the file touches the network, you can safely send the `.gpg` output over email, Slack, iCloud, or Google Drive.
+            </p>
+          </article>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
+    <section class="bg-bg-secondary px-4 py-20">
+      <div class="mx-auto max-w-6xl">
+        <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
+          Who uses Moaiy
+        </h2>
+        <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3">
+          {personaCards.map((card) => (
+            <article class="rounded-xl border border-line-strong bg-bg-primary/55 p-6">
+              <h3 class="font-heading text-xl font-semibold text-text-primary">{card.role}</h3>
+              <p class="mt-3 text-sm leading-relaxed text-text-secondary">{card.copy}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-bg-primary px-4 py-20">
+      <div class="mx-auto max-w-6xl">
+        <h2 class="text-balance text-center font-heading text-3xl font-bold text-text-primary md:text-4xl">
+          Guides & practical workflows
+        </h2>
+        <p class="mx-auto mt-3 max-w-2xl text-center text-sm leading-relaxed text-text-secondary md:text-base">
+          Learn how to lock files on macOS, understand OpenPGP keys in plain language, protect developer `.env` secrets, or pair Moaiy with a hardware smart card.
+        </p>
+        <div class="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <LinkCard
+            href="/encrypt-files-on-macos/"
+            title="Encrypt Files on macOS"
+            description="Compare FileVault, DMG, and drag-and-drop OpenPGP encryption on Mac."
+          />
+          <LinkCard
+            href="/openpgp-made-simple/"
+            title="OpenPGP Made Simple"
+            description="Plain-language primer on public keys, private keys, and passphrases."
+          />
+          <LinkCard
+            href="/protect-env-files-and-secrets/"
+            title="Protect .env & API Secrets"
+            description="Developer playbook for locking credentials before sharing in Slack or Git."
+          />
+          <LinkCard
+            href="/symmetric-vs-asymmetric-encryption/"
+            title="Password vs. Public-Key Mode"
+            description="When to use symmetric passphrases versus recipient public keys."
+          />
+          <LinkCard
+            href="/smartcard-encryption-guide/"
+            title="Smart Card & YubiKey Guide"
+            description="Isolate your private keys inside an OpenPGP hardware security token."
+          />
+          <LinkCard
+            href="/guides/"
+            title="Browse All 10+ Guides"
+            description="Explore key backups, fingerprint verification, and professional playbooks."
+          />
+        </div>
+      </div>
+    </section>
+  </main>
 </BaseLayout>
 
 <style>
