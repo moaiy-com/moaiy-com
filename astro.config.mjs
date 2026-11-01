@@ -8,6 +8,7 @@ const excludedPaths = new Set(['/404/', '/roadmap/', '/release-notes/']);
 // https://astro.build/config
 export default defineConfig({
   site: 'https://moaiy.com',
+  trailingSlash: 'always',
   integrations: [
     react(),
     sitemap({
@@ -23,15 +24,12 @@ export default defineConfig({
   ],
   output: 'static',
   build: {
-    format: 'directory',
+    assets: 'assets',
   },
   vite: {
     plugins: [tailwindcss()],
-    resolve: {
-      dedupe: ['react', 'react-dom', 'three'],
-    },
-    optimizeDeps: {
-      include: ['react', 'react-dom', 'three', '@react-three/fiber', '@react-three/drei'],
+    ssr: {
+      noExternal: ['@react-three/fiber', '@react-three/drei', 'three'],
     },
   },
 });
