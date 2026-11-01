@@ -1,4 +1,4 @@
-import { Suspense, useMemo } from 'react';
+import { Component, Suspense, useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { Box3, Vector3 } from 'three';
 
@@ -6,6 +6,29 @@ const MODEL_SCALE_RATIO = 0.7;
 const EXTERNAL_MODEL_PATH = '/models/moai/angelito-moai.glb';
 const EXTERNAL_TARGET_HEIGHT = 4.6 * MODEL_SCALE_RATIO;
 const EXTERNAL_BASELINE_Y = -2.12;
+
+class MoaiErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error) {
+    console.warn('Moai GLB fallback activated:', error?.message || error);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <MoaiPlaceholder />;
+    }
+
+    return this.props.children;
+  }
+}
 
 function ExternalMoai() {
   const { scene } = useGLTF(EXTERNAL_MODEL_PATH);
@@ -93,12 +116,12 @@ function MoaiPlaceholder() {
   );
 }
 
-useGLTF.preload(EXTERNAL_MODEL_PATH);
-
 export default function Moai() {
   return (
-    <Suspense fallback={<MoaiPlaceholder />}>
-      <ExternalMoai />
-    </Suspense>
+    <MoaiErrorBoundary>
+      <Suspense fallback={<MoaiPlaceholder />}>
+        <ExternalMoai />
+      </Suspense>
+    </MoaiErrorBoundary>
   );
 }

@@ -1,0 +1,93 @@
+---
+import LinkCard from '../components/ui/LinkCard.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Panel from '../components/ui/Panel.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { pageSeo } from '../seo/page-config';
+
+const seo = pageSeo.macosFileSecurityForProfessionals;
+---
+
+<BaseLayout {...seo}>
+  <main class="page-shell">
+    <div class="page-container-compact">
+      <PageHero
+        centered={false}
+        title="macOS File Security Playbook for Journalists, Lawyers & Freelancers"
+        subtitle="Practical, zero-command-line workflows for protecting confidential client documents, source materials, financial records, and legal discovery files on a Mac."
+      />
+
+      <Panel tone="strong" class="p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Confidentiality duties in a cloud-first work environment</h2>
+        <div class="mt-3 space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Attorneys, investigative journalists, independent accountants, medical researchers, and M&A consultants handle documents whose unauthorized disclosure can cause severe legal, financial, or personal harm. Yet modern professional workflows rely heavily on cloud email providers, shared client portals, and automated cloud backup folders.
+          </p>
+          <p>
+            Even when a cloud provider advertises “encryption at rest,” the provider holds the decryption keys—meaning third-party subpoenas, misconfigured sharing links, compromised employee accounts, or vendor data breaches can expose raw client files.
+          </p>
+          <p>
+            By encrypting sensitive files locally on your Mac with <strong>Moaiy</strong> before uploading or emailing them, you enforce true <strong>end-to-end, client-side confidentiality</strong> without asking clients to learn terminal commands.
+          </p>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Role-specific workflows on macOS</h2>
+        <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-2">
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Legal Counsel & Paralegals</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Bundle discovery productions, settlement drafts, or patent filings into a `.zip` archive, drag it into Moaiy, and lock it using co-counsel’s OpenPGP public key (or a strong Password Mode passphrase shared over phone) before transmitting via email or client portal.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Investigative Journalists & Editors</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Publish your OpenPGP public key and 40-character fingerprint on your author profile so sources can encrypt leaked documents locally before sending them. Store your private decryption key on a hardware YubiKey so source files cannot be unlocked without physical access and your PIN.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Accountants, CPAs & Financial Advisors</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Tax returns, K-1 schedules, and payroll spreadsheets contain Social Security Numbers and bank routing details. Lock client deliverables in Moaiy’s Password Mode and read the passphrase over a quick phone call rather than sending raw PDFs over email.
+            </p>
+          </div>
+          <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-5">
+            <h3 class="font-heading text-lg font-semibold text-text-primary">Independent Consultants & Agencies</h3>
+            <p class="mt-2 text-sm leading-relaxed text-text-secondary">
+              Archive completed client project folders as `.zip.gpg` files encrypted to your own public key before moving them to cold cloud storage. If your cloud storage account is ever compromised years later, archived client deliverables remain unreadable.
+            </p>
+          </div>
+        </div>
+      </Panel>
+
+      <Panel class="mt-10 p-6 md:p-7">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary">Five-point macOS document hygiene checklist</h2>
+        <ol class="mt-4 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
+          <li>
+            <strong class="text-text-primary">Keep Apple FileVault enabled Alongside Moaiy:</strong> Use FileVault to protect your entire Mac SSD when your laptop is asleep or powered off, and use Moaiy to protect confidential files before they leave your Mac or sit in cloud-synced folders.
+          </li>
+          <li>
+            <strong class="text-text-primary">Sanitize outer filenames before encrypting:</strong> OpenPGP encrypts the file contents, but the outer filename on disk (for example, <code>whistleblower-interview-john-doe.mp3.gpg</code>) is still visible in email headers and cloud logs. Rename sensitive files to neutral identifiers (such as <code>archive-2026-11A.zip</code>) before dragging them into Moaiy.
+          </li>
+          <li>
+            <strong class="text-text-primary">Do not store unencrypted drafts in auto-synced cloud folders:</strong> Keep your active working folder in a local-only directory on your Mac rather than inside a live Dropbox or Google Drive sync folder, and copy only the finished `.gpg` file into the shared cloud folder.
+          </li>
+          <li>
+            <strong class="text-text-primary">Include your own public key when archiving:</strong> When encrypting a deliverable in Recipient Mode for a client, check your own public key as a second recipient if you need to retain a decryptable copy for your own compliance records.
+          </li>
+          <li>
+            <strong class="text-text-primary">Separate passphrase delivery from file delivery:</strong> When using Password Mode with a non-technical client, send the `.gpg` file by email or portal link, and deliver the passphrase over a voice call, SMS, or Signal message.
+          </li>
+        </ol>
+      </Panel>
+
+      <section class="link-grid">
+        <LinkCard href="/guides/" title="All Guides" description="Browse the full macOS encryption knowledge base." />
+        <LinkCard href="/encrypt-files-on-macos/" title="Encrypt Files on macOS" description="Compare FileVault, DMG, and OpenPGP workflows." />
+        <LinkCard href="/smartcard-encryption-guide/" title="Smart Card & YubiKey" description="Hardware-backed key isolation for high-risk work." />
+      </section>
+    </div>
+  </main>
+</BaseLayout>

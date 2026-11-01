@@ -25,23 +25,28 @@
 ## Core Pages
 
 - [Home](https://moaiy.com/): Product overview, core benefits, and user personas.
+- [Guides Knowledge Hub](https://moaiy.com/guides/): Complete directory of macOS encryption tutorials, cryptographic primers, and security playbooks.
 - [Features](https://moaiy.com/features/): Native macOS drag-and-drop workflow, dual encryption modes, visual keyring, and smart card support.
-- [Download](https://moaiy.com/download/): Official macOS release channel, platform availability, and build-from-source instructions.
-- [Documentation](https://moaiy.com/docs/): Four-step visual guide for installing Moaiy, managing keys, encrypting/decrypting files, and FAQs.
+- [Download](https://moaiy.com/download/): Official macOS release channel, system requirements, and build-from-source instructions.
+- [Documentation](https://moaiy.com/docs/): Four-step visual manual for installing Moaiy, managing keys, encrypting/decrypting files, troubleshooting, and FAQs.
 - [Security](https://moaiy.com/security/): Plain-language security summary, local-first guarantees, vulnerability disclosure policy, and audit status.
 - [About](https://moaiy.com/about/): Mission, the Rapa Nui Moai guardian inspiration, core principles, and contact channels.
 
 ## Practical Guides & Comparisons
 
-- [Encrypt Files on macOS with Moaiy](https://moaiy.com/encrypt-files-on-macos/): Step-by-step visual walkthrough for encrypting Mac files before sharing over email, chat, or cloud storage.
-- [OpenPGP Made Simple](https://moaiy.com/openpgp-made-simple/): Plain-language primer on public keys, private keys, and passphrases using Moaiy's visual interface.
-- [Moaiy vs. Traditional GPG Tools](https://moaiy.com/gpg-tools-alternative/): Comparison between Moaiy's lightweight drag-and-drop macOS app and complex CLI or system-invasive GPG suites.
-- [Smart Card Encryption Guide](https://moaiy.com/smartcard-encryption-guide/): Best practices for pairing YubiKey and OpenPGP smart cards with Moaiy on macOS.
+- [Encrypt Files on macOS with Moaiy](https://moaiy.com/encrypt-files-on-macos/): Step-by-step visual walkthrough and comparison with FileVault, DMG, and ZIP passwords.
+- [OpenPGP Made Simple](https://moaiy.com/openpgp-made-simple/): Plain-language primer on public keys, private keys, passphrases, hybrid encryption, and signatures.
+- [Symmetric vs. Asymmetric Encryption](https://moaiy.com/symmetric-vs-asymmetric-encryption/): When to use Password Mode vs. Recipient Public-Key Mode on macOS.
+- [Moaiy vs. Traditional GPG Tools](https://moaiy.com/gpg-tools-alternative/): Comparison between Moaiy's lightweight drag-and-drop macOS app and CLI or legacy GPG suites.
+- [How to Protect .env Files & API Keys](https://moaiy.com/protect-env-files-and-secrets/): Developer playbook for encrypting `.env` files, credentials, and signing certificates.
+- [OpenPGP Key Backup & Recovery Guide](https://moaiy.com/openpgp-key-backup-and-recovery/): 3-2-1 offline backup strategy, Diceware passphrases, and revocation certificates.
+- [Verify OpenPGP Key Fingerprints](https://moaiy.com/verify-openpgp-fingerprints/): How 40-character hexadecimal fingerprints prevent key substitution attacks.
+- [Smart Card & YubiKey Encryption Guide](https://moaiy.com/smartcard-encryption-guide/): Best practices for pairing YubiKey and OpenPGP smart cards with Moaiy on macOS.
+- [macOS File Security for Professionals](https://moaiy.com/macos-file-security-for-professionals/): Client-side encryption workflows for journalists, lawyers, CPAs, and consultants.
+- [Cryptographic Signatures vs. SHA-256 Checksums](https://moaiy.com/cryptographic-signatures-vs-checksums/): Technical comparison of SHA-256 file integrity hashes and detached `.sig` signatures.
 - [Download Verification Guide](https://moaiy.com/verification/): How to verify SHA-256 checksums and cryptographic signatures before installing Moaiy.
 
 ## Project & Governance
 
-- [Security Whitepaper (Draft)](https://moaiy.com/security-whitepaper/): Threat model scope, control priorities, and vulnerability response targets.
-- [Roadmap](https://moaiy.com/roadmap/): Shipped macOS capabilities, in-progress features, and planned cross-platform builds.
-- [Release Notes](https://moaiy.com/release-notes/): Product and documentation milestones.
+- [Security Whitepaper](https://moaiy.com/security-whitepaper/): Threat model scope, control priorities, and vulnerability response targets.
 - [Full LLM Context](https://moaiy.com/llms-full.txt): Complete single-file Markdown documentation for AI agents and RAG pipelines.

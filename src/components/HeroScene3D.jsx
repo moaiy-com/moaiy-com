@@ -71,43 +71,32 @@ function useAdaptiveDprRange() {
 class ErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false, error: null };
+    this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
-    return { hasError: true, error };
+  static getDerivedStateFromError() {
+    return { hasError: true };
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.error('React Error:', error, errorInfo);
+  componentDidCatch(error) {
+    console.warn('3D scene fallback activated:', error?.message || error);
   }
 
   render() {
     if (this.state.hasError) {
       return (
         <div
+          aria-hidden="true"
           style={{
-            width: '100vw',
-            height: '100vh',
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            background: '#ffffff',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#1768ac',
-            fontFamily: 'monospace',
-            padding: '20px',
+            position: 'absolute',
+            inset: 0,
+            background: [
+              'radial-gradient(circle at 15% 20%, rgba(6, 190, 225, 0.16), transparent 35%)',
+              'radial-gradient(circle at 80% 10%, rgba(23, 104, 172, 0.2), transparent 30%)',
+              'linear-gradient(180deg, #ffffff 0%, #f4f8ff 56%, #e9f1ff 100%)',
+            ].join(','),
           }}
-        >
-          <div>
-            <h1 style={{ color: '#03256c' }}>Error Loading 3D Scene</h1>
-            <pre style={{ fontSize: '12px', color: '#2541b2', maxWidth: '600px', overflow: 'auto' }}>
-              {this.state.error?.message || 'Unknown error'}
-            </pre>
-          </div>
-        </div>
+        />
       );
     }
 
