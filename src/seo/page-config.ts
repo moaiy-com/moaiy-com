@@ -11,6 +11,7 @@ export interface SeoPageConfig {
   currentPage?:
     | 'home'
     | 'features'
+    | 'guides'
     | 'security'
     | 'docs'
     | 'download'
@@ -24,7 +25,13 @@ export interface SeoPageConfig {
     | 'encrypt-files-on-macos'
     | 'openpgp-made-simple'
     | 'gpg-tools-alternative'
-    | 'smartcard-encryption-guide';
+    | 'smartcard-encryption-guide'
+    | 'protect-env-files-and-secrets'
+    | 'openpgp-key-backup-and-recovery'
+    | 'symmetric-vs-asymmetric-encryption'
+    | 'verify-openpgp-fingerprints'
+    | 'macos-file-security-for-professionals'
+    | 'cryptographic-signatures-vs-checksums';
   schema?: SeoSchema[];
 }
 
@@ -221,6 +228,20 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       softwareApplicationSchema,
     ],
   },
+  guides: {
+    title: 'macOS Encryption & OpenPGP Guides | Moaiy Knowledge Base',
+    description:
+      'In-depth tutorials, OpenPGP primers, and macOS file security playbooks for protecting sensitive files, .env secrets, and hardware smart cards.',
+    canonicalPath: '/guides/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'guides',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+      ]),
+    ],
+  },
   security: {
     title: 'Moaiy Security | How Your Files Stay Protected Locally',
     description:
@@ -330,6 +351,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       'See what Moaiy offers on macOS today and what capabilities are in progress or planned next.',
     canonicalPath: '/roadmap/',
     ogImage: DEFAULT_OG_IMAGE,
+    robots: 'noindex, follow',
     currentPage: 'roadmap',
     schema: [
       breadcrumbSchema([
@@ -364,6 +386,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
       'Review recent Moaiy product and documentation milestones and access official macOS downloads on GitHub Releases.',
     canonicalPath: '/release-notes/',
     ogImage: DEFAULT_OG_IMAGE,
+    robots: 'noindex, follow',
     currentPage: 'release-notes',
     schema: [
       breadcrumbSchema([
@@ -402,6 +425,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     schema: [
       breadcrumbSchema([
         { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
         { name: 'Encrypt Files on macOS', path: '/encrypt-files-on-macos/' },
       ]),
       techArticleSchema({
@@ -422,6 +446,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     schema: [
       breadcrumbSchema([
         { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
         { name: 'OpenPGP Made Simple', path: '/openpgp-made-simple/' },
       ]),
       techArticleSchema({
@@ -442,6 +467,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     schema: [
       breadcrumbSchema([
         { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
         { name: 'GPG Tools Alternative', path: '/gpg-tools-alternative/' },
       ]),
       gpgAlternativeFaqSchema,
@@ -457,6 +483,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
     schema: [
       breadcrumbSchema([
         { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
         { name: 'Smart Card Encryption Guide', path: '/smartcard-encryption-guide/' },
       ]),
       techArticleSchema({
@@ -464,6 +491,132 @@ export const pageSeo: Record<string, SeoPageConfig> = {
         description:
           'Best practices for pairing YubiKey and OpenPGP smart cards with Moaiy on macOS, including PIN management and recovery planning.',
         path: '/smartcard-encryption-guide/',
+      }),
+    ],
+  },
+  protectEnvFilesAndSecrets: {
+    title: 'How to Protect .env Files & API Keys on macOS | Moaiy Guide',
+    description:
+      'Prevent accidental credential leaks in Slack, email, and Git by encrypting .env files, API keys, and service-account secrets locally with OpenPGP on macOS.',
+    canonicalPath: '/protect-env-files-and-secrets/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'protect-env-files-and-secrets',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+        { name: 'Protect .env Files & Secrets', path: '/protect-env-files-and-secrets/' },
+      ]),
+      techArticleSchema({
+        headline: 'How to Protect .env Files, API Keys, and Config Secrets on macOS',
+        description:
+          'Developer playbook for encrypting environment variables, database credentials, and signing certificates with OpenPGP on macOS.',
+        path: '/protect-env-files-and-secrets/',
+      }),
+    ],
+  },
+  openpgpKeyBackupAndRecovery: {
+    title: 'OpenPGP Key Backup, Passphrase & Revocation Guide | Moaiy',
+    description:
+      'Learn how to back up OpenPGP private keys using the 3-2-1 strategy, choose strong Diceware passphrases, and prepare revocation certificates on macOS.',
+    canonicalPath: '/openpgp-key-backup-and-recovery/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'openpgp-key-backup-and-recovery',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+        { name: 'OpenPGP Key Backup & Recovery', path: '/openpgp-key-backup-and-recovery/' },
+      ]),
+      techArticleSchema({
+        headline: 'OpenPGP Key Backup, Passphrase Hygiene, and Revocation Guide',
+        description:
+          'Resilient 3-2-1 offline backup strategy for OpenPGP keys, passphrase selection, and annual recovery drills on macOS.',
+        path: '/openpgp-key-backup-and-recovery/',
+      }),
+    ],
+  },
+  symmetricVsAsymmetricEncryption: {
+    title: 'Symmetric vs. Asymmetric Encryption: Password vs. Public Keys',
+    description:
+      'Understand the cryptographic and practical differences between OpenPGP Password Mode (symmetric) and Recipient Mode (asymmetric public keys) on macOS.',
+    canonicalPath: '/symmetric-vs-asymmetric-encryption/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'symmetric-vs-asymmetric-encryption',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+        { name: 'Symmetric vs. Asymmetric Encryption', path: '/symmetric-vs-asymmetric-encryption/' },
+      ]),
+      techArticleSchema({
+        headline: 'Symmetric vs. Asymmetric Encryption: When to Use Password Mode vs. Public Keys',
+        description:
+          'Detailed comparison of symmetric passphrase encryption and asymmetric public-key encryption for macOS file protection.',
+        path: '/symmetric-vs-asymmetric-encryption/',
+      }),
+    ],
+  },
+  verifyOpenpgpFingerprints: {
+    title: 'How to Verify OpenPGP Key Fingerprints on macOS | Moaiy',
+    description:
+      'Learn why email display names in public keys can be spoofed, how 40-character hexadecimal fingerprints prevent key substitution, and how to verify contacts.',
+    canonicalPath: '/verify-openpgp-fingerprints/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'verify-openpgp-fingerprints',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+        { name: 'Verify OpenPGP Fingerprints', path: '/verify-openpgp-fingerprints/' },
+      ]),
+      techArticleSchema({
+        headline: 'How to Verify OpenPGP Key Fingerprints and Prevent Key Substitution',
+        description:
+          'Guide to verifying 40-character hexadecimal OpenPGP key fingerprints out of band to prevent man-in-the-middle key substitution.',
+        path: '/verify-openpgp-fingerprints/',
+      }),
+    ],
+  },
+  macosFileSecurityForProfessionals: {
+    title: 'macOS File Security Playbook for Lawyers, Journalists & CPAs',
+    description:
+      'Client-side OpenPGP file encryption workflows on macOS for lawyers, investigative journalists, accountants, and independent consultants.',
+    canonicalPath: '/macos-file-security-for-professionals/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'macos-file-security-for-professionals',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+        { name: 'macOS File Security for Professionals', path: '/macos-file-security-for-professionals/' },
+      ]),
+      techArticleSchema({
+        headline: 'macOS File Security Playbook for Journalists, Lawyers, and Freelancers',
+        description:
+          'Practical client-confidentiality workflows and document hygiene checklist for protecting sensitive files on macOS.',
+        path: '/macos-file-security-for-professionals/',
+      }),
+    ],
+  },
+  cryptographicSignaturesVsChecksums: {
+    title: 'Cryptographic Signatures (.sig) vs. SHA-256 Checksums | Moaiy',
+    description:
+      'Understand the difference between SHA-256 checksums and detached OpenPGP digital signatures (.sig), and how they protect file integrity and authenticity.',
+    canonicalPath: '/cryptographic-signatures-vs-checksums/',
+    ogImage: DEFAULT_OG_IMAGE,
+    currentPage: 'cryptographic-signatures-vs-checksums',
+    schema: [
+      breadcrumbSchema([
+        { name: 'Home', path: '/' },
+        { name: 'Guides', path: '/guides/' },
+        { name: 'Signatures vs. Checksums', path: '/cryptographic-signatures-vs-checksums/' },
+      ]),
+      techArticleSchema({
+        headline: 'Cryptographic Signatures (.sig) vs. SHA-256 Checksums Explained',
+        description:
+          'Technical explanation of SHA-256 checksum integrity versus OpenPGP cryptographic digital signatures on macOS.',
+        path: '/cryptographic-signatures-vs-checksums/',
       }),
     ],
   },

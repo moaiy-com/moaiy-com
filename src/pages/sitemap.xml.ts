@@ -4,14 +4,19 @@ import { pageSeo } from '../seo/page-config';
 const staticPaths = Array.from(
   new Set(
     Object.values(pageSeo)
+      .filter((entry) => !entry.robots?.toLowerCase().includes('noindex'))
       .map((entry) => entry.canonicalPath)
       .filter((path) => path !== '/404/'),
   ),
 );
 
 function toAbsoluteUrl(base: URL, pagePath: string) {
-  const normalized = pagePath === '/' ? '/' : pagePath.endsWith('/') ? pagePath : `${pagePath}/`;
+  const normalized = pagePath === '/' ? '/' : pagePath.endsWith('/') ? canonicalPathWithSlash(pagePath) : `${pagePath}/`;
   return new URL(normalized, base).toString();
+}
+
+function canonicalPathWithSlash(pagePath: string) {
+  return pagePath.endsWith('/') ? pagePath : `${pagePath}/`;
 }
 
 export const GET: APIRoute = ({ site }) => {
@@ -21,12 +26,13 @@ export const GET: APIRoute = ({ site }) => {
   const urlEntries = staticPaths
     .map((pagePath) => {
       const absoluteUrl = toAbsoluteUrl(baseUrl, pagePath);
+      const isTopPriority = pagePath === '/' || pagePath === '/guides/' || pagePath === '/docs/';
       return [
         '  <url>',
         `    <loc>${absoluteUrl}</loc>`,
         `    <lastmod>${lastMod}</lastmod>`,
         '    <changefreq>weekly</changefreq>',
-        pagePath === '/download/' || pagePath === '/' ? '    <priority>1.0</priority>' : '    <priority>0.7</priority>',
+        isTopPriority ? '    <priority>1.0</priority>' : '    <priority>0.8</priority>',
         '  </url>',
       ].join('\n');
     })
