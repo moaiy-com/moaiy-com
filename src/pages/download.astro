@@ -4,9 +4,10 @@ import PageHero from '../components/ui/PageHero.astro';
 import Panel from '../components/ui/Panel.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { pageSeo } from '../seo/page-config';
+import { release } from '../seo/release';
 
 const seo = pageSeo.download;
-const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
+const { appleSiliconDmg, sha256Sums } = release;
 ---
 
 <BaseLayout {...seo}>
@@ -14,27 +15,64 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
     <div class="page-container">
       <PageHero
         title="Download Moaiy for macOS"
-        subtitle="Get the official native macOS application from GitHub Releases and verify your installer before opening."
+        subtitle={`Get official Moaiy ${release.version} for Apple Silicon and verify the disk image before you open it.`}
       />
 
       <Panel tone="strong">
-        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official macOS release channel</h2>
-        <p class="mt-3 max-w-3xl text-sm leading-relaxed text-text-secondary">
-          Moaiy is distributed free and open source under the MIT License through GitHub Releases. Download the latest macOS build, compare the published SHA-256 checksum, and drag <strong>Moaiy.app</strong> into your <strong>Applications</strong> folder.
-        </p>
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Official Moaiy {release.version} for Apple Silicon</h2>
+        <div class="mt-3 max-w-3xl space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Version <strong class="text-text-primary">{release.version}</strong> is the current official macOS release. Moaiy is free under the MIT License. This page links the disk image and checksum file published for that release.
+          </p>
+          <p>
+            The only installer in this release is <strong class="text-text-primary">{appleSiliconDmg.fileName}</strong> for Apple Silicon (<code>{appleSiliconDmg.arch}</code>). Version {release.version} does not include an Intel (<code>x86_64</code>) disk image.
+          </p>
+        </div>
         <div class="mt-6 flex flex-wrap gap-3">
           <a
-            href={releaseUrl}
+            href={appleSiliconDmg.url}
             target="_blank"
             rel="noopener noreferrer"
             data-analytics-event="download_click"
             class="btn-primary"
           >
-            Open GitHub Releases
+            Download Moaiy {release.version} for Apple Silicon
+          </a>
+          <a
+            href={sha256Sums.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-secondary"
+          >
+            Download {sha256Sums.fileName}
           </a>
           <a href="/verification/" class="btn-secondary">
-            Check Verification Guide
+            Verify the checksum
           </a>
+        </div>
+        <p class="mt-4 max-w-3xl text-sm leading-relaxed text-text-secondary">
+          GitHub remains the entry for source code and release history:
+          <a href={release.releaseUrl} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">{release.tag} release</a>
+          and the
+          <a href={release.sourceUrl} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">source repository</a>.
+        </p>
+      </Panel>
+
+      <Panel class="mt-12">
+        <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Signing status</h2>
+        <div class="mt-3 max-w-3xl space-y-3 text-sm leading-relaxed text-text-secondary">
+          <p>
+            Moaiy {release.version} is an unsigned build (<code>Signing Mode: {release.signingMode}</code>). It is not Developer ID signed and it is not notarized. macOS Gatekeeper may block the first open until you allow it in <strong class="text-text-primary">System Settings → Privacy &amp; Security</strong>, or right-click <strong class="text-text-primary">Moaiy.app</strong> and choose <strong class="text-text-primary">Open</strong>.
+          </p>
+          <p>
+            Before you open the disk image, compare its SHA-256 checksum with the official
+            <a href={sha256Sums.url} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">{sha256Sums.fileName}</a>.
+            The steps are on the <a href="/verification/" class="text-accent-primary hover:underline">verification page</a>.
+          </p>
+        </div>
+        <div class="code-block">
+          <div>{appleSiliconDmg.fileName}</div>
+          <div class="break-all">{appleSiliconDmg.sha256}</div>
         </div>
       </Panel>
 
@@ -43,11 +81,11 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         <div class="mt-6 grid grid-cols-1 gap-4 md:grid-cols-2">
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Operating System</p>
-            <p class="mt-1 text-sm text-text-secondary">macOS 13.0 (Ventura), macOS 14 (Sonoma), macOS 15 (Sequoia), or later.</p>
+            <p class="mt-1 text-sm text-text-secondary">{release.operatingSystem}.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Processor Architecture</p>
-            <p class="mt-1 text-sm text-text-secondary">Apple Silicon (M1 / M2 / M3 / M4) and Intel 64-bit Mac systems.</p>
+            <p class="mt-1 text-sm text-text-secondary">Apple Silicon ({appleSiliconDmg.arch}) only for version {release.version}. This release does not include an Intel (x86_64) disk image.</p>
           </div>
           <div class="rounded-lg border border-line-subtle bg-bg-primary/45 p-4">
             <p class="text-xs font-semibold uppercase tracking-[0.08em] text-accent-primary">Encryption Standard</p>
@@ -64,13 +102,16 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
         <h2 class="font-heading text-2xl font-semibold text-text-primary md:text-3xl">Installation & first-launch checklist</h2>
         <ol class="mt-5 list-inside list-decimal space-y-3 text-sm leading-relaxed text-text-secondary">
           <li>
-            <strong class="text-text-primary">Download the release package:</strong> Visit the official <a href={releaseUrl} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">GitHub Releases page</a> and download the latest macOS asset along with its accompanying checksum file.
+            <strong class="text-text-primary">Download the official disk image:</strong> Use <a href={appleSiliconDmg.url} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">{appleSiliconDmg.fileName}</a> and the matching <a href={sha256Sums.url} target="_blank" rel="noopener noreferrer" class="text-accent-primary hover:underline">{sha256Sums.fileName}</a> from this page. Both files are the official v{release.version} release assets. There is no Intel package for this release.
           </li>
           <li>
-            <strong class="text-text-primary">Verify file integrity:</strong> Run <code>shasum -a 256</code> in Terminal on the downloaded package and confirm the hash matches the release notes (see our <a href="/verification/" class="text-accent-primary hover:underline">Verification Guide</a>).
+            <strong class="text-text-primary">Verify file integrity:</strong> Follow the <a href="/verification/" class="text-accent-primary hover:underline">verification guide</a>. On macOS, <code>shasum -a 256</code> of <code>{appleSiliconDmg.fileName}</code> must match the digest shown above, which is the value published in <code>{sha256Sums.fileName}</code>.
           </li>
           <li>
-            <strong class="text-text-primary">Move to Applications:</strong> Open the disk image or archive and drag <strong>Moaiy.app</strong> into your <code>/Applications</code> directory so macOS App Translocation does not restrict local keyring access.
+            <strong class="text-text-primary">Move to Applications:</strong> Open the disk image and drag <strong>Moaiy.app</strong> into your <code>/Applications</code> directory so macOS App Translocation does not restrict local keyring access.
+          </li>
+          <li>
+            <strong class="text-text-primary">Allow the first open if Gatekeeper blocks it:</strong> This build is unsigned and not notarized. If macOS refuses to open it, allow Moaiy in System Settings → Privacy & Security, or right-click the app and choose Open.
           </li>
           <li>
             <strong class="text-text-primary">Set up your first key:</strong> Launch Moaiy, open the visual Key Manager to generate a personal OpenPGP key pair or import a contact’s public key, and test encrypting a sample file before deleting any original sensitive documents.
@@ -101,7 +142,7 @@ const releaseUrl = 'https://github.com/moaiy-com/moaiy/releases';
       </Panel>
 
       <section class="link-grid">
-        <LinkCard href="/verification/" title="Verification" description="Step-by-step SHA-256 and signature checklist." />
+        <LinkCard href="/verification/" title="Verification" description="Step-by-step SHA-256 checksum checklist for the official disk image." />
         <LinkCard href="/docs/" title="Documentation" description="Visual macOS user manual and troubleshooting." />
         <LinkCard href="/release-notes/" title="Release Notes" description="Recent product and documentation milestones." />
       </section>

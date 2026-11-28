@@ -3,7 +3,15 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
-const excludedPaths = new Set(['/404/', '/roadmap/', '/release-notes/']);
+const excludedPaths = new Set([
+  '/404/',
+  '/roadmap/',
+  '/release-notes/',
+  '/llms.txt',
+  '/llms.txt/',
+  '/llms-full.txt',
+  '/llms-full.txt/',
+]);
 
 // https://astro.build/config
 export default defineConfig({
