@@ -1,3 +1,5 @@
+import { release } from './release';
+
 export interface SeoSchema {
   [key: string]: unknown;
 }
@@ -70,17 +72,17 @@ const softwareApplicationSchema: SeoSchema = {
   name: 'Moaiy',
   applicationCategory: 'SecurityApplication',
   applicationSubCategory: 'File Encryption Software',
-  operatingSystem: 'macOS',
+  operatingSystem: release.operatingSystem,
   isAccessibleForFree: true,
   license: 'https://opensource.org/licenses/MIT',
   offers: {
     '@type': 'Offer',
-    price: '0',
+    price: 0,
     priceCurrency: 'USD',
   },
-  softwareVersion: 'Active development',
+  softwareVersion: release.version,
   url: SITE_URL,
-  downloadUrl: 'https://github.com/moaiy-com/moaiy/releases',
+  downloadUrl: release.releaseUrl,
   image: `${SITE_URL}${DEFAULT_OG_IMAGE}`,
   author: {
     '@type': 'Organization',
@@ -279,8 +281,7 @@ export const pageSeo: Record<string, SeoPageConfig> = {
   },
   download: {
     title: 'Download Moaiy | Official macOS App Release',
-    description:
-      'Download the official Moaiy macOS app from GitHub Releases and verify the installer before opening.',
+    description: `Download official Moaiy ${release.version} for Apple Silicon, verify the SHA-256 checksum, and read the unsigned Gatekeeper notice before opening.`,
     canonicalPath: '/download/',
     ogImage: DEFAULT_OG_IMAGE,
     currentPage: 'download',

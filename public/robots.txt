@@ -29,7 +29,6 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://moaiy.com/sitemap.xml
 Sitemap: https://moaiy.com/sitemap-index.xml
 
 # AI / LLM structured context endpoints
