@@ -104,16 +104,16 @@ async function main() {
     issues.push('dist/robots.txt is missing');
   } else {
     const robotsContent = await readFile(robotsPath, 'utf8');
-    if (!/Sitemap:\s+https:\/\/moaiy\.com\/sitemap\.xml/i.test(robotsContent)) {
-      issues.push('dist/robots.txt is missing https://moaiy.com/sitemap.xml directive');
-    }
-    if (!/Sitemap:\s+https:\/\/moaiy\.com\/sitemap-index\.xml/i.test(robotsContent)) {
-      issues.push('dist/robots.txt is missing https://moaiy.com/sitemap-index.xml directive');
+    const sitemapDirectives = robotsContent.match(/^Sitemap:\s+\S+/gim) ?? [];
+    if (sitemapDirectives.length !== 1 || sitemapDirectives[0] !== 'Sitemap: https://moaiy.com/sitemap-index.xml') {
+      issues.push(
+        'dist/robots.txt must declare exactly one canonical sitemap: https://moaiy.com/sitemap-index.xml',
+      );
     }
   }
 
-  if (!existsSync(path.join(distRoot, 'sitemap.xml'))) {
-    issues.push('dist/sitemap.xml is missing');
+  if (existsSync(path.join(distRoot, 'sitemap.xml'))) {
+    issues.push('dist/sitemap.xml duplicates sitemap-index.xml and must not be published');
   }
   if (!existsSync(path.join(distRoot, 'sitemap-index.xml'))) {
     issues.push('dist/sitemap-index.xml is missing');
